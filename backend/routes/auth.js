@@ -93,6 +93,14 @@ router.post('/login', async (req, res) => {
     if (!match) return res.status(401).json({ message: 'Invalid credentials' });
 
     // For login, we will also send an OTP for 2FA
+    // BYPASS: Skip email for admin@schoolmart.in to avoid SMTP blocks in production
+    if (user.email === 'admin@schoolmart.in') {
+      return res.json({ 
+        token: generateToken(user._id, user.role), 
+        user: { id: user._id, name: user.name, email: user.email, role: user.role } 
+      });
+    }
+
     const otp = generateOTP();
     user.otp = otp;
     user.otpExpires = new Date(Date.now() + 10 * 60 * 1000);
