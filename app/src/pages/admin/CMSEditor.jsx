@@ -530,20 +530,6 @@ const BlockForms = {
     </div>
   ),
 
-  sidebar_categories: ({ data, set }) => (
-    <div className="space-y-3">
-      <SectionTitle>Sidebar Tabs ({(data.categories || []).length})</SectionTitle>
-      {(data.categories || []).map((cat, i) => (
-        <div key={i} className="flex gap-2 items-center">
-          <TextInput value={cat} onChange={v => { const t = [...data.categories]; t[i] = v; set('categories', t); }} placeholder="e.g. CLASSROOM" />
-          <button onClick={() => set('categories', data.categories.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
-        </div>
-      ))}
-      <button onClick={() => set('categories', [...(data.categories || []), 'New Category'])}
-        className="flex items-center gap-1 text-blue-600 text-xs font-bold hover:underline"><Plus size={13} /> Add Category Tab</button>
-    </div>
-  ),
-
   contact_page_content: ({ data, set }) => (
     <div className="space-y-6">
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
