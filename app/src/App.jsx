@@ -78,6 +78,7 @@ function App() {
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin" element={<AdminLayout />}>
             <Route index element={<AdminDashboard />} />
+            <Route path="dashboard" element={<AdminDashboard />} />
             <Route path="cms" element={<CMSEditor />} />
             <Route path="products" element={<ProductManager />} />
             <Route path="quotes" element={<QuotesInbox />} />
