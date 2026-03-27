@@ -10,6 +10,7 @@ import {
 const NAV = [
   { label: 'Overview', path: '/admin', icon: LayoutDashboard, color: 'text-blue-400' },
   { label: 'Edit Pages', path: '/admin/cms', icon: FileText, color: 'text-purple-400' },
+  { label: 'Products', path: '/admin/products', icon: Package, color: 'text-orange-400' },
   { label: 'Quote Requests', path: '/admin/quotes', icon: MessageSquare, color: 'text-green-400' },
   { label: 'Messages', path: '/admin/contacts', icon: Mail, color: 'text-pink-400' },
 ];
@@ -58,7 +59,10 @@ export default function AdminLayout() {
           <p className="text-white/20 text-[9px] font-black uppercase tracking-widest px-3 mb-3">Main Menu</p>
           {NAV.map(item => {
             const Icon = item.icon;
-            const active = location.pathname === item.path || (item.path !== '/admin' && location.pathname.startsWith(item.path));
+            const isOverview = item.path === '/admin';
+            const active = isOverview 
+              ? (location.pathname === '/admin' || location.pathname === '/admin/dashboard')
+              : location.pathname.startsWith(item.path);
             return (
               <Link key={item.path} to={item.path}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all ${
