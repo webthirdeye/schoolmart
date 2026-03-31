@@ -3,13 +3,19 @@ const router = express.Router();
 const Quote = require('../models/Quote');
 const auth = require('../middleware/auth');
 const { adminOnly } = require('../middleware/auth');
+const { sendQuoteEmail } = require('../utils/mailer');
 
 // POST /api/quotes  — public (submit quote)
 router.post('/', async (req, res) => {
   try {
     const { schoolName, pinCode, message, email, phone } = req.body;
     if (!schoolName) return res.status(400).json({ message: 'School name is required' });
+    
     const quote = await Quote.create({ schoolName, pinCode, message, email, phone });
+    
+    // Send email notification to admin asynchronously
+    sendQuoteEmail(quote).catch(err => console.error('Silent fail on quote email:', err));
+
     res.status(201).json({ message: 'Quote submitted successfully', quote });
   } catch (err) {
     res.status(500).json({ message: err.message });
