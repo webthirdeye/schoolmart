@@ -1,32 +1,31 @@
 /**
  * fixAllPageBlocks.js
  * 
- * Fixes the mismatch between what the admin CMS stores in MongoDB
- * and what the frontend pages actually read.
- *
- * For all catalogue-type pages:
- *   - Renames "page_hero" block → "inner_page_hero"
- *   - Remaps old page_hero data fields (title→titleHtml, subtitle stays,
- *     bgGradient dropped, mediaUrl/mediaType/img all preserved)
- *   - Adds missing "sidebar_resources" block if absent
- *   - Adds missing "sidebar_trending" block if absent
- *
- * Safe to run multiple times — idempotent checks are in place.
+ * Ensures that all catalogue pages have the standard set of blocks automatically.
+ * This saves the user from having to manually click "Add Missing Section" for each.
  */
 
 const mongoose = require('mongoose');
-require('dotenv').config();
+require('dotenv').config({ path: require('path').join(__dirname, '../.env') });
 const Page = require('../models/Page');
 
-// These page slugs use "inner_page_hero" in their JSX frontend files
 const CATALOGUE_SLUGS = [
   'furniture', 'architecture', 'digital', 'sports',
   'libraries', 'labs', 'mathematics', 'science', 'design',
-  'manufacturing', 'corporate',
+  'manufacturing', 'corporate'
+];
+
+const REQUIRED_BLOCKS = [
+  { type: 'inner_page_hero', data: { badge: '', titleHtml: '', subtitle: '', mediaType: 'image', mediaUrl: '' } },
+  { type: 'sidebar_categories', data: { title: 'Core Categories', categories: [] } },
+  { type: 'sidebar_resources', data: { items: [] } },
+  { type: 'sidebar_trending', data: { items: [] } },
+  { type: 'cta_whatsapp', data: { badge: 'Get a Quote', headline: 'Need help with procurement?', description: 'Chat with our experts.', whatsappNumber: '919966109191', phone: '+91 9966109191' } }
 ];
 
 async function fixPages() {
-  await mongoose.connect(process.env.MONGO_URI);
+  const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/schoolmart';
+  await mongoose.connect(MONGO_URI);
   console.log('✅ Connected to MongoDB\n');
 
   for (const slug of CATALOGUE_SLUGS) {
@@ -37,90 +36,41 @@ async function fixPages() {
     }
 
     let changed = false;
+    const currentTypes = page.blocks.map(b => b.blockType);
 
-    // ── 1. Rename page_hero → inner_page_hero and remap data fields ──────────
+    for (const req of REQUIRED_BLOCKS) {
+      if (!currentTypes.includes(req.type)) {
+        page.blocks.push({
+          blockType: req.type,
+          data: req.data,
+          order: page.blocks.length,
+          isVisible: true
+        });
+        changed = true;
+        console.log(`  ➕ [${slug}] Added missing block: ${req.type}`);
+      }
+    }
+
+    // Special case: migration from page_hero to inner_page_hero
     const pageHeroIdx = page.blocks.findIndex(b => b.blockType === 'page_hero');
-    const innerHeroIdx = page.blocks.findIndex(b => b.blockType === 'inner_page_hero');
-
-    if (pageHeroIdx !== -1 && innerHeroIdx === -1) {
-      const oldBlock = page.blocks[pageHeroIdx];
-      const oldData = oldBlock.data || {};
-
-      // Remap: "title" in page_hero → "titleHtml" in inner_page_hero
-      // Preserve: subtitle, mediaType, mediaUrl, img
-      const newData = {
-        badge:      oldData.badge      || '',
-        badgeIcon:  oldData.badgeIcon  || '',
-        titleHtml:  oldData.titleHtml  || oldData.title || '',
-        subtitle:   oldData.subtitle   || '',
-        mediaType:  oldData.mediaType  || 'image',
-        mediaUrl:   oldData.mediaUrl   || oldData.img   || '',
-        darkBlock: oldData.darkBlock   || { title: '', subtitle: '' },
-      };
-
-      page.blocks[pageHeroIdx].blockType = 'inner_page_hero';
-      page.blocks[pageHeroIdx].data = newData;
-      changed = true;
-      console.log(`  🔄 [${slug}] Renamed page_hero → inner_page_hero, remapped data fields`);
-    } else if (pageHeroIdx === -1 && innerHeroIdx === -1) {
-      // Neither exists: add a blank inner_page_hero
-      page.blocks.push({
-        blockType: 'inner_page_hero',
-        data: {
-          badge: '',
-          badgeIcon: '',
-          titleHtml: '',
-          subtitle: '',
-          mediaType: 'image',
-          mediaUrl: '',
-          darkBlock: { title: '', subtitle: '' },
-        },
-        order: 0,
-        isVisible: true,
-      });
-      changed = true;
-      console.log(`  ➕ [${slug}] Added missing inner_page_hero block`);
-    } else if (pageHeroIdx !== -1 && innerHeroIdx !== -1) {
-      // Both exist — remove the stale page_hero
-      page.blocks.splice(pageHeroIdx, 1);
-      changed = true;
-      console.log(`  🗑️  [${slug}] Removed duplicate page_hero (inner_page_hero already present)`);
-    } else {
-      console.log(`  ✔️  [${slug}] inner_page_hero already correct`);
+    if (pageHeroIdx !== -1) {
+      const innerHeroIdx = page.blocks.findIndex(b => b.blockType === 'inner_page_hero');
+      if (innerHeroIdx !== -1) {
+        // Transfer data if inner was blank and page_hero had something
+        if (!page.blocks[innerHeroIdx].data.titleHtml && page.blocks[pageHeroIdx].data.title) {
+           page.blocks[innerHeroIdx].data.titleHtml = page.blocks[pageHeroIdx].data.title;
+           page.blocks[innerHeroIdx].data.subtitle = page.blocks[pageHeroIdx].data.subtitle;
+           page.blocks[innerHeroIdx].data.mediaUrl = page.blocks[pageHeroIdx].data.img;
+        }
+        page.blocks.splice(pageHeroIdx, 1);
+        changed = true;
+        console.log(`  🗑️  [${slug}] Migrated page_hero to inner_page_hero`);
+      }
     }
 
-    // ── 2. Ensure sidebar_resources block exists ─────────────────────────────
-    const hasSidebarResources = page.blocks.some(b => b.blockType === 'sidebar_resources');
-    if (!hasSidebarResources) {
-      page.blocks.push({
-        blockType: 'sidebar_resources',
-        data: { items: [] },
-        order: page.blocks.length,
-        isVisible: true,
-      });
-      changed = true;
-      console.log(`  ➕ [${slug}] Added missing sidebar_resources block`);
-    }
-
-    // ── 3. Ensure sidebar_trending block exists ──────────────────────────────
-    const hasSidebarTrending = page.blocks.some(b => b.blockType === 'sidebar_trending');
-    if (!hasSidebarTrending) {
-      page.blocks.push({
-        blockType: 'sidebar_trending',
-        data: { items: [] },
-        order: page.blocks.length,
-        isVisible: true,
-      });
-      changed = true;
-      console.log(`  ➕ [${slug}] Added missing sidebar_trending block`);
-    }
-
-    // ── 4. Re-order blocks cleanly ───────────────────────────────────────────
     if (changed) {
-      const ORDER = [
-        'inner_page_hero', 'sidebar_categories', 'sidebar_resources',
-        'sidebar_trending', 'cta_whatsapp', 'text_content',
-      ];
+      // Re-order cleanly based on standard arrangement
+      const ORDER = REQUIRED_BLOCKS.map(b => b.type);
       page.blocks.sort((a, b) => {
         const ai = ORDER.indexOf(a.blockType);
         const bi = ORDER.indexOf(b.blockType);
@@ -129,26 +79,17 @@ async function fixPages() {
         if (bi === -1) return -1;
         return ai - bi;
       });
-      page.blocks.forEach((b, i) => { b.order = i; });
+      page.blocks.forEach((b, i) => b.order = i);
 
       await page.save();
-      console.log(`  💾 [${slug}] Saved!\n`);
+      console.log(`  💾 [${slug}] Saved changes!\n`);
     } else {
-      console.log(`  ✅ [${slug}] No changes needed\n`);
+      console.log(`  ✅ [${slug}] Already has all blocks\n`);
     }
   }
 
-  // ── 5. Verify summary ─────────────────────────────────────────────────────
-  console.log('\n═══ POST-FIX VERIFICATION ═══');
-  for (const slug of CATALOGUE_SLUGS) {
-    const page = await Page.findOne({ pageSlug: slug }).lean();
-    if (!page) continue;
-    const types = page.blocks.map(b => b.blockType).join(', ');
-    console.log(`${slug}: [${types}]`);
-  }
-
   await mongoose.disconnect();
-  console.log('\n✅ Done! Refresh the website — admin edits will now appear correctly.');
+  console.log('✅ All catalog pages have been standardized.');
 }
 
 fixPages().catch(err => {
