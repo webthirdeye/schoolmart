@@ -141,6 +141,30 @@ const BlockForms = {
       <MediaUpload label="Hero Media" value={data.mediaUrl || data.img} onChange={v => set('mediaUrl', v)} />
     </div>
   ),
+  inner_page_hero: ({ data, set }) => (
+    <div className="space-y-4">
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Badge Icon (Lucide)"><TextInput value={data.badgeIcon} onChange={v => set('badgeIcon', v)} placeholder="Zap" /></Field>
+        <Field label="Badge Text"><TextInput value={data.badge} onChange={v => set('badge', v)} placeholder="New Launch 2025" /></Field>
+      </div>
+      <Field label="Headline HTML (e.g. Future <br/> Digital)"><TextArea value={data.titleHtml} onChange={v => set('titleHtml', v)} rows={3} /></Field>
+      <Field label="Sub-headline"><TextArea value={data.subtitle} onChange={v => set('subtitle', v)} rows={2} /></Field>
+      
+      <SectionTitle>Hero Visual</SectionTitle>
+      <div className="flex gap-2 mb-2">
+        {['image', 'video'].map(mode => (
+          <button key={mode} onClick={() => set('mediaType', mode)} className={`flex-1 py-1.5 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider border transition-all ${data.mediaType === mode || (!data.mediaType && mode === 'image') ? 'bg-blue-600 text-white border-blue-600' : 'bg-white text-gray-400 border-gray-200'}`}>{mode}</button>
+        ))}
+      </div>
+      <MediaUpload label="Hero Media" value={data.mediaUrl} onChange={v => set('mediaUrl', v)} />
+      
+      <SectionTitle>Overlay Text (Optional)</SectionTitle>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Box Title"><TextInput value={data.darkBlock?.title} onChange={v => set('darkBlock', { ...data.darkBlock, title: v })} placeholder="Success Metric" /></Field>
+        <Field label="Box Content"><TextInput value={data.darkBlock?.subtitle} onChange={v => set('darkBlock', { ...data.darkBlock, subtitle: v })} placeholder="99.9% Uptime" /></Field>
+      </div>
+    </div>
+  ),
 
   cta_whatsapp: ({ data, set }) => (
     <div className="space-y-3">
@@ -1055,8 +1079,8 @@ function PageEditor({ slug }) {
         </div>
       </div>
 
-      {/* Dynamic Inner Page Cards Manager (if applicable page) */}
-      {['furniture', 'architecture', 'digital', 'sports', 'libraries', 'labs', 'mathematics', 'science', 'design'].includes(slug) && (
+      {/* Dynamic Inner Page Cards Manager (always show to allow site-wide product editing) */}
+      {true && (
         <div className="bg-white rounded-3xl shadow-xl border border-gray-100 overflow-hidden mt-8">
           <div className="px-6 py-5 border-b border-gray-100 bg-gray-50/50 flex items-center justify-between">
             <div>
