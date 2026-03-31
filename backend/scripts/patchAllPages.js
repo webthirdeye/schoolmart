@@ -73,6 +73,9 @@ TARGET_FILES.forEach(filename => {
      }
   }
 
+  // 5. Remove Highlight Filtering (ensure all categories show with fallbacks)
+  content = content.replace(/\{cats\.filter\(c => c\.img \|\| c\.description\)\.map/g, '{cats.map');
+
   fs.writeFileSync(filePath, content);
   console.log(`✅ Patched ${filename}`);
 });

@@ -5,6 +5,7 @@ import { ArrowRight, MessageSquare, FileText } from 'lucide-react';
 import ImageOverlayCard from './ImageOverlayCard';
 import { submitQuote } from '../services/api';
 import { useCMSPage } from '../hooks/useCMSBlock';
+import ProductCarousel from './ProductCarousel';
 
 const tiles = [
   {
@@ -140,7 +141,7 @@ const solutions = [
 ];
 
 const ResourceTiles = () => {
-  const [quoteForm, setQuoteForm] = useState({ schoolName: '', pinCode: '', message: '' });
+  const [quoteForm, setQuoteForm] = useState({ schoolName: '', phone: '', pinCode: '', message: '' });
   const [quoteStatus, setQuoteStatus] = useState(null);
 
   // Fetch CMS data — fall back to static arrays above
@@ -163,7 +164,7 @@ const ResourceTiles = () => {
     try {
       await submitQuote(quoteForm);
       setQuoteStatus('success');
-      setQuoteForm({ schoolName: '', pinCode: '', message: '' });
+      setQuoteForm({ schoolName: '', phone: '', pinCode: '', message: '' });
     } catch {
       setQuoteStatus('error');
     }
@@ -175,6 +176,11 @@ const ResourceTiles = () => {
         <div className="flex flex-col lg:flex-row gap-2">
           {/* Main Content Area */}
           <div className="flex-1">
+            {/* Product Carousel - Moved Inside Grid Layout */}
+            <div className="mb-6">
+              <ProductCarousel />
+            </div>
+
             {/* Masonry Tiles Grid */}
             <div className="columns-2 lg:columns-3 gap-1.5 space-y-1.5">
               {activeTiles.map((tile) => (
@@ -201,7 +207,7 @@ const ResourceTiles = () => {
                     <p className="text-white/80 text-xs mt-1 font-medium leading-relaxed">
                       {tile.subtitle}
                     </p>
-                    <div className="mt-2 flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <div className="mt-2 flex items-center gap-1.5 opacity-100 transition-opacity duration-300">
                       <span className="text-white text-xs font-black uppercase tracking-widest">Explore</span>
                       <ArrowRight size={12} className="text-white" />
                     </div>
@@ -280,6 +286,7 @@ const ResourceTiles = () => {
                   {quoteStatus === 'error' && <div className="bg-red-50 text-red-600 rounded-xl p-3 text-xs font-bold text-center">❌ Failed to submit. Please try again.</div>}
                   <div className="space-y-4">
                     <input type="text" placeholder="School Name" value={quoteForm.schoolName} onChange={e => setQuoteForm(f => ({ ...f, schoolName: e.target.value }))} required className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs focus:ring-1 focus:ring-sm-blue outline-none transition-all placeholder:text-gray-400 font-medium" />
+                    <input type="tel" placeholder="Phone Number" value={quoteForm.phone} onChange={e => setQuoteForm(f => ({ ...f, phone: e.target.value }))} required className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs focus:ring-1 focus:ring-sm-blue outline-none transition-all placeholder:text-gray-400 font-medium" />
                     <input type="text" placeholder="Pin Code" value={quoteForm.pinCode} onChange={e => setQuoteForm(f => ({ ...f, pinCode: e.target.value }))} className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs focus:ring-1 focus:ring-sm-blue outline-none transition-all placeholder:text-gray-400 font-medium" />
                     <textarea placeholder="What are you looking for?" value={quoteForm.message} onChange={e => setQuoteForm(f => ({ ...f, message: e.target.value }))} rows="4" className="w-full px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-xs focus:ring-1 focus:ring-sm-blue outline-none transition-all resize-none placeholder:text-gray-400 font-medium"></textarea>
                   </div>
@@ -293,11 +300,15 @@ const ResourceTiles = () => {
                 <h3 className="text-white font-bold text-center uppercase tracking-wide text-xs">TRENDING</h3>
               </div>
               <div className="px-3 py-1">
-                {(sidebarTrending.items?.length ? sidebarTrending.items : ['Schools for Sale / Lease', 'Fundraising', 'Partnerships', 'Workshops']).map((item) => (
-                  <Link key={item} to="#" className="block text-[10px] font-bold text-gray-700 hover:text-sm-blue py-3 border-b border-gray-200 last:border-0 uppercase tracking-wider">
-                    {item}
-                  </Link>
-                ))}
+                {(sidebarTrending.items?.length ? sidebarTrending.items : ['Schools for Sale / Lease', 'Fundraising', 'Partnerships', 'Workshops']).map((item, i) => {
+                  const label = typeof item === 'string' ? item : item.label;
+                  const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                  return (
+                    <Link key={i} to={path} className="block text-[10px] font-bold text-gray-700 hover:text-sm-blue py-3 border-b border-gray-200 last:border-0 uppercase tracking-wider">
+                      {label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 
@@ -327,11 +338,15 @@ const ResourceTiles = () => {
                   'Library trends',
                   'JOB OPENINGS',
                   'Join as Influencers',
-                ]).map((item) => (
-                  <Link key={item} to="#" className="block text-[10px] font-bold text-gray-700 hover:text-sm-blue py-2.5 border-b border-gray-200 last:border-0 uppercase tracking-widest">
-                    {item}
-                  </Link>
-                ))}
+                ]).map((item, i) => {
+                  const label = typeof item === 'string' ? item : item.label;
+                  const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                  return (
+                    <Link key={i} to={path} className="block text-[10px] font-bold text-gray-700 hover:text-sm-blue py-2.5 border-b border-gray-200 last:border-0 uppercase tracking-widest">
+                      {label}
+                    </Link>
+                  );
+                })}
               </div>
             </div>
 

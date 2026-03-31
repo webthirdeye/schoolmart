@@ -113,7 +113,7 @@ const Environments = () => {
               {(d.masonryItems || []).map((work, i) => (
                  <React.Fragment key={i}>
                     <div 
-                      className={`relative overflow-hidden rounded-[20px] shadow-sm group cursor-pointer min-h-[300px] border border-gray-300 transition-all duration-500 scale-100 ${selectedItem?.t === work.t ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
+                      className={`relative overflow-hidden rounded-[20px] shadow-sm group cursor-pointer aspect-[4/5] border border-gray-300 transition-all duration-500 scale-100 ${selectedItem?.t === work.t ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
                       onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)}
                     >
                        <img src={work.img} alt={work.t} className="w-full h-full object-cover transition-all duration-700 hover:scale-110" />

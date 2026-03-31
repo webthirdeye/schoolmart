@@ -18,7 +18,7 @@ if (!fs.existsSync(uploadPath)) {
 // Middleware
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({ 
-  origin: ['https://sclmart-3uvq.vercel.app', 'http://localhost:5173'], 
+  origin: true, 
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true
 }));

@@ -89,26 +89,34 @@ const Mathematics = () => {
                   {sidebarResources?.items?.length > 0 && (
                      <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
                         <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-3">
-                           {sidebarResources.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <FileText size={14} className="text-blue-600" />
-                                 <span className="text-[9px] font-black uppercase text-gray-900 leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarResources.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}
                   {sidebarTrending?.items?.length > 0 && (
                      <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
                         <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-3">
-                           {sidebarTrending.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <Stars size={14} className="text-yellow-400" />
-                                 <span className="text-[9px] font-black uppercase text-white leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarTrending.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}</aside>
@@ -124,12 +132,10 @@ const Mathematics = () => {
                   {filteredItems.map((work, i) => (
                      <React.Fragment key={i}>
                        <div 
-                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 h-[220px] transition-all duration-500 bg-gray-50 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
+                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 aspect-[4/5] transition-all duration-500 bg-gray-50 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
                          onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
                        >
-                           <div className="h-[220px] overflow-hidden">
-                              <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
-                           </div>
+                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
                           <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                           <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
                              <div className="w-10 h-10 rounded-full bg-sm-blue shadow-xl flex items-center justify-center text-white">

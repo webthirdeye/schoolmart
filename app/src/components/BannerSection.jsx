@@ -2,6 +2,7 @@
 import { Link } from 'react-router-dom';
 import SchoolReel from './SchoolReel';
 import { useCMSBlock } from '../hooks/useCMSBlock';
+import VideoPlayer from './ui/VideoPlayer';
 
 const DEFAULTS = {
   badge: 'Price · Quality · Range Promise',
@@ -63,12 +64,8 @@ const BannerSection = () => {
             <div className="flex-1 p-4 lg:p-5 flex items-center">
               <div className="w-full relative h-[260px] rounded-2xl overflow-hidden shadow-2xl bg-gray-900/40">
                 {d.mediaType === 'video' ? (
-                  <video 
+                  <VideoPlayer 
                     src={d.mediaUrl} 
-                    autoPlay 
-                    loop 
-                    muted 
-                    playsInline 
                     className="w-full h-full object-cover" 
                   />
                 ) : d.mediaType === 'image' ? (

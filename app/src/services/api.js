@@ -35,8 +35,9 @@ export const uploadFile = async (file) => {
     headers: token ? { 'Authorization': `Bearer ${token}` } : {},
     body: formData
   });
-  if (!res.ok) throw new Error('Upload failed');
-  return await res.json();
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || 'Upload failed');
+  return data;
 };
 
 // ─── CMS ────────────────────────────────────

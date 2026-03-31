@@ -2,6 +2,7 @@
 // Form-field based CMS editor — proper inputs for every block type
 import { useEffect, useState } from 'react';
 import { getAllPages, getPage, updateBlock, addBlock, deleteBlock } from '../../services/api';
+import { clearCMSCache } from '../../hooks/useCMSBlock';
 import { ChevronDown, ChevronRight, Trash2, Plus, Eye, EyeOff, Save, GripVertical, Image as ImageIcon, Link2, Type, List, ToggleLeft, Upload, Layers } from 'lucide-react';
 import ProductManager from './ProductManager';
 import ImageUpload from '../../components/admin/ImageUpload';
@@ -64,7 +65,7 @@ const BlockForms = {
       <Field label="Ticker Items" hint="One item per line">
         <TextArea
           value={(data.items || []).join('\n')}
-          onChange={v => set('items', v.split('\n').map(s => s.trim()).filter(Boolean))}
+          onChange={v => set('items', v.split('\n'))}
           rows={6}
           placeholder={"Item 1\nItem 2\nItem 3"}
         />
@@ -109,8 +110,8 @@ const BlockForms = {
                 <span className="text-xs font-bold text-gray-500">Slide {i + 1}</span>
                 <button onClick={() => set('slides', data.slides.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13}/></button>
               </div>
-              <TextInput value={slide.caption} onChange={v => { const s = [...data.slides]; s[i] = { ...s[i], caption: v }; set('slides', s); }} placeholder="Slide Caption" />
-              <ImageUpload label="Slide Image" value={slide.src} onChange={v => { const s = [...data.slides]; s[i] = { ...s[i], src: v }; set('slides', s); }} />
+              <TextInput value={slide.caption} onChange={v => { const s = [...(data.slides || [])]; s[i] = { ...s[i], caption: v }; set('slides', s); }} placeholder="Slide Caption" />
+              <ImageUpload label="Slide Image" value={slide.src} onChange={v => { const s = [...(data.slides || [])]; s[i] = { ...s[i], src: v }; set('slides', s); }} />
             </div>
           ))}
           <button onClick={() => set('slides', [...(data.slides || []), { src: '', caption: '' }])}
@@ -158,9 +159,9 @@ const BlockForms = {
       <SectionTitle>Stats</SectionTitle>
       {(data.stats || []).map((stat, i) => (
         <div key={i} className="flex gap-2 items-center bg-gray-50 rounded-lg p-2">
-          <TextInput value={stat.value} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], value: v }; set('stats', s); }} placeholder="4000+" />
-          <TextInput value={stat.label} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], label: v }; set('stats', s); }} placeholder="Partner Schools" />
-          <button onClick={() => set('stats', data.stats.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
+          <TextInput value={stat.value} onChange={v => { const s = [...(data.stats || [])]; s[i] = { ...s[i], value: v }; set('stats', s); }} placeholder="4000+" />
+          <TextInput value={stat.label} onChange={v => { const s = [...(data.stats || [])]; s[i] = { ...s[i], label: v }; set('stats', s); }} placeholder="Partner Schools" />
+          <button onClick={() => set('stats', (data.stats || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
         </div>
       ))}
       <button onClick={() => set('stats', [...(data.stats || []), { value: '', label: '', color: 'text-blue-600' }])}
@@ -168,8 +169,8 @@ const BlockForms = {
       <SectionTitle>Partner Schools (Name only)</SectionTitle>
       {(data.clients || []).map((c, i) => (
         <div key={i} className="flex gap-2 items-center">
-          <TextInput value={c.name} onChange={v => { const cl = [...data.clients]; cl[i] = { ...cl[i], name: v }; set('clients', cl); }} placeholder="School Name" />
-          <button onClick={() => set('clients', data.clients.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
+          <TextInput value={c.name} onChange={v => { const cl = [...(data.clients || [])]; cl[i] = { ...cl[i], name: v }; set('clients', cl); }} placeholder="School Name" />
+          <button onClick={() => set('clients', (data.clients || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
         </div>
       ))}
       <button onClick={() => set('clients', [...(data.clients || []), { name: '', icon: 'GraduationCap', color: 'text-blue-600' }])}
@@ -184,12 +185,12 @@ const BlockForms = {
         <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-gray-500">Tile {i + 1}</span>
-            <button onClick={() => set('tiles', data.tiles.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
+            <button onClick={() => set('tiles', (data.tiles || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
           </div>
-          <TextInput value={tile.title} onChange={v => { const t = [...data.tiles]; t[i] = { ...t[i], title: v }; set('tiles', t); }} placeholder="Tile Title (uppercase)" />
-          <TextInput value={tile.subtitle} onChange={v => { const t = [...data.tiles]; t[i] = { ...t[i], subtitle: v }; set('tiles', t); }} placeholder="Subtitle" />
-          <TextInput value={tile.path} onChange={v => { const t = [...data.tiles]; t[i] = { ...t[i], path: v }; set('tiles', t); }} placeholder="/path" />
-          <ImageUpload label="Tile Image" value={tile.img} onChange={v => { const t = [...data.tiles]; t[i] = { ...t[i], img: v }; set('tiles', t); }} />
+          <TextInput value={tile.title} onChange={v => { const t = [...(data.tiles || [])]; t[i] = { ...t[i], title: v }; set('tiles', t); }} placeholder="Tile Title (uppercase)" />
+          <TextInput value={tile.subtitle} onChange={v => { const t = [...(data.tiles || [])]; t[i] = { ...t[i], subtitle: v }; set('tiles', t); }} placeholder="Subtitle" />
+          <TextInput value={tile.path} onChange={v => { const t = [...(data.tiles || [])]; t[i] = { ...t[i], path: v }; set('tiles', t); }} placeholder="/path" />
+          <ImageUpload label="Tile Image" value={tile.img} onChange={v => { const t = [...(data.tiles || [])]; t[i] = { ...t[i], img: v }; set('tiles', t); }} />
         </div>
       ))}
       <button onClick={() => set('tiles', [...(data.tiles || []), { title: '', subtitle: '', path: '/', img: '', height: 'h-56' }])}
@@ -206,18 +207,18 @@ const BlockForms = {
         <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-gray-500">Card {i + 1}</span>
-            <button onClick={() => set('items', data.items.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
+            <button onClick={() => set('items', (data.items || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
           </div>
-          <TextInput value={item.title} onChange={v => { const t = [...data.items]; t[i] = { ...t[i], title: v }; set('items', t); }} placeholder="Card Title" />
-          <TextArea rows={2} value={item.description} onChange={v => { const t = [...data.items]; t[i] = { ...t[i], description: v }; set('items', t); }} placeholder="Short description..." />
-          <TextInput value={item.path} onChange={v => { const t = [...data.items]; t[i] = { ...t[i], path: v }; set('items', t); }} placeholder="/path" />
+          <TextInput value={item.title} onChange={v => { const t = [...(data.items || [])]; t[i] = { ...t[i], title: v }; set('items', t); }} placeholder="Card Title" />
+          <TextArea rows={2} value={item.description} onChange={v => { const t = [...(data.items || [])]; t[i] = { ...t[i], description: v }; set('items', t); }} placeholder="Short description..." />
+          <TextInput value={item.path} onChange={v => { const t = [...(data.items || [])]; t[i] = { ...t[i], path: v }; set('items', t); }} placeholder="/path" />
           <div className="flex gap-2">
-            <TextInput value={item.badge?.label} onChange={v => { const t = [...data.items]; t[i] = { ...t[i], badge: { ...t[i].badge, label: v } }; set('items', t); }} placeholder="Badge label" />
+            <TextInput value={item.badge?.label} onChange={v => { const t = [...(data.items || [])]; t[i] = { ...t[i], badge: { ...t[i].badge, label: v } }; set('items', t); }} placeholder="Badge label" />
             <input type="color" value={item.badge?.color || '#000000'}
-              onChange={e => { const t = [...data.items]; t[i] = { ...t[i], badge: { ...t[i].badge, color: e.target.value } }; set('items', t); }}
+              onChange={e => { const t = [...(data.items || [])]; t[i] = { ...t[i], badge: { ...t[i].badge, color: e.target.value } }; set('items', t); }}
               className="w-10 h-9 rounded cursor-pointer border border-gray-200 p-0.5" title="Badge color" />
           </div>
-          <ImageUpload label="Solution Image" value={item.img} onChange={v => { const t = [...data.items]; t[i] = { ...t[i], img: v }; set('items', t); }} />
+          <ImageUpload label="Solution Image" value={item.img} onChange={v => { const t = [...(data.items || [])]; t[i] = { ...t[i], img: v }; set('items', t); }} />
         </div>
       ))}
       <button onClick={() => set('items', [...(data.items || []), { title: '', description: '', path: '/', img: '', badge: { label: '', color: '#3B82F6' } }])}
@@ -233,13 +234,13 @@ const BlockForms = {
         <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50">
           <div className="flex items-center justify-between">
             <span className="text-xs font-bold text-gray-500">Card {i + 1}</span>
-            <button onClick={() => set('cards', data.cards.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
+            <button onClick={() => set('cards', (data.cards || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13} /></button>
           </div>
-          <TextInput value={card.title} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], title: v }; set('cards', t); }} placeholder="Card Title" />
-          <TextArea rows={2} value={card.description} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], description: v }; set('cards', t); }} placeholder="Description..." />
-          <TextInput value={card.img} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], img: v }; set('cards', t); }} placeholder="Image URL" />
-          <TextInput value={card.path} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], path: v }; set('cards', t); }} placeholder="/path" />
-          <ImageUpload label="Card Image" value={card.img} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], img: v }; set('cards', t); }} />
+          <TextInput value={card.title} onChange={v => { const t = [...(data.cards || [])]; t[i] = { ...t[i], title: v }; set('cards', t); }} placeholder="Card Title" />
+          <TextArea rows={2} value={card.description} onChange={v => { const t = [...(data.cards || [])]; t[i] = { ...t[i], description: v }; set('cards', t); }} placeholder="Description..." />
+          <TextInput value={card.img} onChange={v => { const t = [...(data.cards || [])]; t[i] = { ...t[i], img: v }; set('cards', t); }} placeholder="Image URL" />
+          <TextInput value={card.path} onChange={v => { const t = [...(data.cards || [])]; t[i] = { ...t[i], path: v }; set('cards', t); }} placeholder="/path" />
+          <ImageUpload label="Card Image" value={card.img} onChange={v => { const t = [...(data.cards || [])]; t[i] = { ...t[i], img: v }; set('cards', t); }} />
         </div>
       ))}
       <button onClick={() => set('cards', [...(data.cards || []), { title: '', description: '', img: '', path: '/' }])}
@@ -247,19 +248,102 @@ const BlockForms = {
     </div>
   ),
 
-  sidebar_trending: ({ data, set }) => (
-    <div className="space-y-2">
-      <Field label="Trending Items" hint="One item per line">
-        <TextArea value={(data.items || []).join('\n')} onChange={v => set('items', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={6} placeholder={"Schools for Sale / Lease\nFundraising\nPartnerships"} />
+  product_carousel: ({ data, set }) => (
+    <div className="space-y-3">
+      <SectionTitle>Category Carousel Editor (Slidable Grid Tiles)</SectionTitle>
+      <Field label="Carousel Heading">
+        <TextInput value={data.heading} onChange={v => set('heading', v)} placeholder="Explore Categories" />
       </Field>
+      <div className="space-y-3">
+        {(data.items || []).map((item, i) => (
+          <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50 relative group">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">TILE #{i + 1}</span>
+              <button onClick={() => set('items', (data.items || []).filter((_, j) => j !== i))} className="text-red-400 hover:text-red-700 transition-colors">
+                <Trash2 size={13} />
+              </button>
+            </div>
+            <div className="grid grid-cols-2 gap-2">
+              <TextInput value={item.title} onChange={v => { const s = [...(data.items || [])]; s[i] = { ...s[i], title: v }; set('items', s); }} placeholder="Card Title" />
+              <TextInput value={item.subtitle} onChange={v => { const s = [...(data.items || [])]; s[i] = { ...s[i], subtitle: v }; set('items', s); }} placeholder="Subtitle / Short Description" />
+            </div>
+            <Field label="Link Path">
+                <TextInput value={item.path} onChange={v => { const s = [...(data.items || [])]; s[i] = { ...s[i], path: v }; set('items', s); }} placeholder="/page-link" />
+            </Field>
+            <ImageUpload label="Background Image" value={item.img} onChange={v => { const s = [...(data.items || [])]; s[i] = { ...s[i], img: v }; set('items', s); }} />
+          </div>
+        ))}
+      </div>
+      <button onClick={() => set('items', [...(data.items || []), { title: '', subtitle: '', img: '', path: '#' }])}
+        className="flex items-center gap-1 text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline mt-1 bg-blue-50 px-3 py-2 rounded-lg w-full justify-center border border-dashed border-blue-200">
+        <Plus size={13} /> Add Slide Card
+      </button>
+    </div>
+  ),
+
+  sidebar_trending: ({ data, set }) => (
+    <div className="space-y-3">
+      <SectionTitle>Trending Items ({(data.items || []).length})</SectionTitle>
+      {(data.items || []).map((item, i) => (
+        <div key={i} className="flex gap-2 items-center bg-white border border-gray-100 rounded-lg p-2 shadow-sm relative group">
+          <div className="flex-1 space-y-2">
+            <TextInput 
+              value={typeof item === 'string' ? item : item.label} 
+              onChange={v => {
+                const ts = [...data.items];
+                ts[i] = typeof ts[i] === 'string' ? { label: v, path: '#' } : { ...ts[i], label: v };
+                set('items', ts);
+              }} 
+              placeholder="Label (e.g. Schools for Sale)" 
+            />
+            <TextInput 
+              value={typeof item === 'string' ? '#' : item.path} 
+              onChange={v => {
+                const ts = [...data.items];
+                ts[i] = typeof ts[i] === 'string' ? { label: ts[i], path: v } : { ...ts[i], path: v };
+                set('items', ts);
+              }} 
+              placeholder="Link Path (e.g. /furniture or #)" 
+            />
+          </div>
+          <button onClick={() => set('items', data.items.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 transition-colors"><Trash2 size={14} /></button>
+        </div>
+      ))}
+      <button onClick={() => set('items', [...(data.items || []), { label: '', path: '#' }])}
+        className="flex items-center gap-1 text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline mt-1 bg-blue-50 px-3 py-2 rounded-lg w-full justify-center border border-blue-100"><Plus size={13} /> Add Trending Item</button>
     </div>
   ),
 
   sidebar_resources: ({ data, set }) => (
-    <div className="space-y-2">
-      <Field label="Resource Links" hint="One item per line">
-        <TextArea value={(data.items || []).join('\n')} onChange={v => set('items', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={10} placeholder={"Complete guide to digitization\nProduct catalog 2025\n..."} />
-      </Field>
+    <div className="space-y-3">
+      <SectionTitle>Resource Links ({(data.items || []).length})</SectionTitle>
+      {(data.items || []).map((item, i) => (
+        <div key={i} className="flex gap-2 items-center bg-white border border-gray-100 rounded-lg p-2 shadow-sm relative group">
+          <div className="flex-1 space-y-2">
+            <TextInput 
+              value={typeof item === 'string' ? item : item.label} 
+              onChange={v => {
+                const ts = [...data.items];
+                ts[i] = typeof ts[i] === 'string' ? { label: v, path: '#' } : { ...ts[i], label: v };
+                set('items', ts);
+              }} 
+              placeholder="Label (e.g. Catalog 2025)" 
+            />
+            <TextInput 
+              value={typeof item === 'string' ? '#' : item.path} 
+              onChange={v => {
+                const ts = [...data.items];
+                ts[i] = typeof ts[i] === 'string' ? { label: ts[i], path: v } : { ...ts[i], path: v };
+                set('items', ts);
+              }} 
+              placeholder="Link Path (e.g. /catalog_res.pdf or #)" 
+            />
+          </div>
+          <button onClick={() => set('items', data.items.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 transition-colors"><Trash2 size={14} /></button>
+        </div>
+      ))}
+      <button onClick={() => set('items', [...(data.items || []), { label: '', path: '#' }])}
+        className="flex items-center gap-1 text-blue-600 text-[10px] font-black uppercase tracking-widest hover:underline mt-1 bg-blue-50 px-3 py-2 rounded-lg w-full justify-center border border-blue-100"><Plus size={13} /> Add Resource link</button>
     </div>
   ),
 
@@ -449,13 +533,13 @@ const BlockForms = {
       </div>
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
         <h4 className="font-bold text-gray-800 text-sm">Strip Menu Links (comma separated)</h4>
-        <TextArea value={(data.menuStrip || []).join(', ')} onChange={v => set('menuStrip', v.split(',').map(s=>s.trim()))} rows={2} />
+        <TextArea value={(data.menuStrip || []).join(', ')} onChange={v => set('menuStrip', v.split(',').map(s => s.replace(/^,|,$/g, '')))} rows={2} />
       </div>
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
         <h4 className="font-bold text-gray-800 text-sm">Bottom Grid Section</h4>
         <Field label="Title HTML"><TextInput value={data.infoGrid?.titleHtml} onChange={v => set('infoGrid', { ...data.infoGrid, titleHtml: v })} /></Field>
         <Field label="Image URL"><TextInput value={data.infoGrid?.img} onChange={v => set('infoGrid', { ...data.infoGrid, img: v })} /></Field>
-        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',').map(s=>s.trim())})} rows={2} /></Field>
+        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',')})} rows={2} /></Field>
       </div>
     </div>
   ),
@@ -512,7 +596,7 @@ const BlockForms = {
         <h4 className="font-bold text-gray-800 text-sm">Bottom Info Grid</h4>
         <Field label="Title HTML"><TextInput value={data.infoGrid?.titleHtml} onChange={v => set('infoGrid', { ...data.infoGrid, titleHtml: v })} /></Field>
         <ImageUpload label="Grid Image" value={data.infoGrid?.img} onChange={v => set('infoGrid', { ...data.infoGrid, img: v })} />
-        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',').map(s=>s.trim())})} rows={2} /></Field>
+        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',')})} rows={2} /></Field>
       </div>
     </div>
   ),
@@ -551,26 +635,27 @@ const BlockForms = {
       </div>
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
         <h4 className="font-bold text-gray-800 text-sm">Strip Menu Links (comma separated)</h4>
-        <TextArea value={(data.menuStrip || []).join(', ')} onChange={v => set('menuStrip', v.split(',').map(s=>s.trim()))} rows={2} />
+        <TextArea value={(data.menuStrip || []).join(', ')} onChange={v => set('menuStrip', v.split(','))} rows={2} />
       </div>
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
-        <h4 className="font-bold text-gray-800 text-sm">Vertical Resources</h4>
+        <h4 className="font-bold text-gray-800 text-sm">Resource Image Grid</h4>
+        {(data.resourceList || []).map((r, i) => (
           <div key={i} className="flex flex-col gap-2 p-3 bg-white border border-gray-100 rounded-lg relative">
             <button onClick={() => set('resourceList', data.resourceList.filter((_,j) => j !== i))} className="absolute top-2 right-2 text-red-400 hover:text-red-600"><Trash2 size={13}/></button>
             <div className="flex gap-2">
               <TextInput value={r.t} onChange={v => { const ts = [...data.resourceList]; ts[i] = { ...ts[i], t: v }; set('resourceList', ts); }} placeholder="Title" />
-              <TextInput value={r.c} onChange={v => { const ts = [...data.resourceList]; ts[i] = { ...ts[i], c: v }; set('resourceList', ts); }} placeholder="Category" className="w-32" />
+              <TextInput value={r.c} onChange={v => { const ts = [...data.resourceList]; ts[i] = { ...ts[i], c: v }; set('resourceList', ts); }} placeholder="Category" />
             </div>
             <ImageUpload label="Resource Image" value={r.img} onChange={v => { const ts = [...data.resourceList]; ts[i] = { ...ts[i], img: v }; set('resourceList', ts); }} />
-            <TextInput value={r.h} onChange={v => { const ts = [...data.resourceList]; ts[i] = { ...ts[i], h: v }; set('resourceList', ts); }} placeholder="Height (e.g. h-[300px])" className="w-full" />
           </div>
+        ))}
         <button onClick={() => set('resourceList', [...(data.resourceList||[]), { t: '', c: '', img: '', h: 'h-[300px]' }])} className="text-blue-500 text-xs font-bold">+ Add Resource</button>
       </div>
       <div className="p-4 border border-gray-200 rounded-xl bg-gray-50/50 space-y-3">
         <h4 className="font-bold text-gray-800 text-sm">Bottom Grid Section</h4>
         <Field label="Title HTML"><TextInput value={data.infoGrid?.titleHtml} onChange={v => set('infoGrid', { ...data.infoGrid, titleHtml: v })} /></Field>
-        <Field label="Image URL"><TextInput value={data.infoGrid?.img} onChange={v => set('infoGrid', { ...data.infoGrid, img: v })} /></Field>
-        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',').map(s=>s.trim())})} rows={2} /></Field>
+        <ImageUpload label="Grid Image" value={data.infoGrid?.img} onChange={v => set('infoGrid', { ...data.infoGrid, img: v })} />
+        <Field label="4 Info Points (comma separated)"><TextArea value={(data.infoGrid?.points || []).join(', ')} onChange={v => set('infoGrid', { ...data.infoGrid, points: v.split(',')})} rows={2} /></Field>
       </div>
     </div>
   ),
@@ -703,10 +788,27 @@ function BlockEditor({ slug, block, onSaved }) {
 
   const setField = (key, value) => setLocalData(prev => ({ ...prev, [key]: value }));
 
+  const sanitizeData = (data) => {
+    const clean = { ...data };
+    Object.keys(clean).forEach(key => {
+      const val = clean[key];
+      if (Array.isArray(val) && val.length > 0 && typeof val[0] === 'string') {
+        // Clean up array of strings (e.g. ticker items, menu links)
+        clean[key] = val.map(s => s.trim()).filter(Boolean);
+      } else if (val && typeof val === 'object' && !Array.isArray(val)) {
+        // Deep clean nested objects (like infoGrid)
+        clean[key] = sanitizeData(val);
+      }
+    });
+    return clean;
+  };
+
   const save = async () => {
     setSaving(true);
     try {
-      await updateBlock(slug, block._id, { data: localData, isVisible: visible });
+      const sanitized = sanitizeData(localData);
+      await updateBlock(slug, block._id, { data: sanitized, isVisible: visible });
+      clearCMSCache(slug); // bust cache so website fetches fresh data
       setSaved(true);
       setTimeout(() => setSaved(false), 2000);
       onSaved();
@@ -719,6 +821,7 @@ function BlockEditor({ slug, block, onSaved }) {
 
   const remove = async () => {
     if (!confirm(`Delete the "${block.blockType}" block?`)) return;
+    clearCMSCache(slug); // bust cache on delete too
     await deleteBlock(slug, block._id);
     onSaved();
   };
@@ -771,11 +874,27 @@ function BlockEditor({ slug, block, onSaved }) {
 }
 
 // ── Page editor ───────────────────────────────────────────────────────────────
-const BLOCK_TYPE_OPTIONS = [
-  'topbar', 'navbar', 'ticker', 'hero', 'page_hero', 'inner_page_hero', 'cta_whatsapp', 'tiles', 'solutions',
-  'feature_cards', 'partners', 'sidebar_trending', 'sidebar_resources', 'sidebar_banners', 'sidebar_categories',
-  'about_hero', 'stats', 'mission_vision', 'contact_info', 'text_content', 'catalogues_page_content', 'environments_page_content', 'guides_page_content', 'contact_page_content', 'catalogues_list', 'guides_list',
-];
+
+// What block types each page slug is allowed to use (matches what the frontend actually reads)
+const PAGE_ALLOWED_BLOCKS = {
+  home:        ['hero', 'product_carousel', 'tiles', 'solutions', 'sidebar_trending', 'sidebar_resources', 'sidebar_banners', 'cta_whatsapp', 'partners', 'topbar', 'navbar', 'ticker'],
+  furniture:   ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  architecture:['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  digital:     ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  sports:      ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  libraries:   ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  labs:        ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  mathematics: ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  science:     ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  design:      ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  manufacturing:['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
+  corporate:   ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
+  environments:['environments_page_content'],
+  catalogues:  ['catalogues_page_content', 'catalogues_list'],
+  guides:      ['guides_page_content', 'guides_list'],
+  aboutus:     ['about_hero', 'stats', 'mission_vision'],
+  'contact-us':['contact_page_content', 'contact_info'],
+};
 
 function PageEditor({ slug }) {
   const [page, setPage] = useState(null);
@@ -815,19 +934,40 @@ function PageEditor({ slug }) {
   };
 
   const BLOCK_LABELS = {
-    topbar: '📋 Top Bar', navbar: '🔗 Navigation', ticker: '📢 Ticker',
-    hero: '🖼️ Hero Banner', page_hero: '🖼️ Page Hero', inner_page_hero: '🖼️ Inner Page Hero', cta_whatsapp: '💬 WhatsApp',
-    tiles: '🟦 Grids/Tiles', solutions: '🔵 Circles', feature_cards: '📦 Top Highlight Cards',
-    partners: '🤝 Partners', sidebar_trending: '🔥 Trending', sidebar_resources: '📚 Resources',
-    sidebar_banners: '🟧 Sidebar Banners', sidebar_categories: '📑 Sidebar Tabs', about_hero: '👋 About Hero', stats: '📊 Statistics',
-    mission_vision: '🎯 Mission', contact_info: '📞 Contact', text_content: '📝 Text',
-    catalogues_page_content: '📄 Catalogues Header', environments_page_content: '🌿 Environments Masonry', guides_page_content: '📚 Guides Header', contact_page_content: '✉️ Contact Detailed', catalogues_list: '📁 Catalogues List', guides_list: '📖 Guides List',
+    topbar: '📋 Top Bar',
+    navbar: '🔗 Navigation Bar',
+    ticker: '📢 News Ticker',
+    hero: '🖼️ Home Hero / Banner',
+    product_carousel: '🛒 Slidable Product Carousel',
+    inner_page_hero: '🖼️ Page Hero & Image',
+    cta_whatsapp: '💬 WhatsApp CTA',
+    tiles: '🟦 Masonry Tiles Grid',
+    solutions: '🔵 Solutions Circles',
+    partners: '🤝 Partner Schools',
+    sidebar_trending: '🔥 Sidebar – Trending',
+    sidebar_resources: '📚 Sidebar – Resources',
+    sidebar_banners: '🟧 Sidebar – Banners',
+    sidebar_categories: '📑 Sidebar – Category Tabs',
+    about_hero: '👋 About Page Hero',
+    stats: '📊 Statistics',
+    mission_vision: '🎯 Mission & Vision',
+    contact_info: '📞 Contact Info',
+    text_content: '📝 Text Content',
+    catalogues_page_content: '📄 Catalogues Page Content',
+    catalogues_list: '📁 Catalogues List',
+    environments_page_content: '🌿 Environments Page Content',
+    guides_page_content: '📖 Guides Page Content',
+    guides_list: '📋 Guides List',
+    contact_page_content: '✉️ Contact Page Content',
   };
 
   if (loading) return <div className="flex justify-center py-16"><div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full" /></div>;
   if (!page) return <div className="py-12 text-center text-red-400 bg-red-50 rounded-2xl"><p className="font-bold">Page not found in database</p><p className="text-xs mt-1">Run <code className="bg-red-100 px-1 rounded">npm run seed</code> from the backend folder</p></div>;
 
-  const sortedBlocks = [...(page.blocks || [])].sort((a, b) => a.order - b.order);
+  const allowedTypes = PAGE_ALLOWED_BLOCKS[slug] || [];
+  const sortedBlocks = [...(page.blocks || [])]
+    .filter(b => allowedTypes.includes(b.blockType))
+    .sort((a, b) => a.order - b.order);
   const activeBlock = sortedBlocks.find(b => b._id === activeBlockId) || sortedBlocks[0];
 
   return (
@@ -866,26 +1006,40 @@ function PageEditor({ slug }) {
             </div>
           </div>
 
-          {/* Add block form */}
-          <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-4 flex flex-col gap-3">
-            <select
-              value={newBlockType}
-              onChange={e => setNewBlockType(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-gray-50 focus:ring-2 focus:ring-blue-400 outline-none"
-            >
-              <option value="">+ Add Section...</option>
-              {BLOCK_TYPE_OPTIONS
-                 .filter(t => !(['furniture', 'architecture', 'digital', 'sports', 'libraries', 'labs', 'mathematics', 'science', 'design'].includes(slug) && t === 'feature_cards'))
-                 .map(t => <option key={t} value={t}>{t}</option>)}
-            </select>
-            <button
-              onClick={addNewBlock}
-              disabled={adding || !newBlockType}
-              className="w-full flex justify-center items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-black disabled:opacity-50 transition-colors"
-            >
-              <Plus size={14} /> {adding ? 'Adding...' : 'Add'}
-            </button>
-          </div>
+          {/* Add block form — only shows block types that this page's frontend actually reads */}
+          {(() => {
+            const existingTypes = new Set(sortedBlocks.map(b => b.blockType));
+            const allowed = PAGE_ALLOWED_BLOCKS[slug] || [];
+            const addable = allowed.filter(t => !existingTypes.has(t));
+            return addable.length > 0 ? (
+              <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-4 flex flex-col gap-3">
+                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Add Missing Section</p>
+                <select
+                  value={newBlockType}
+                  onChange={e => setNewBlockType(e.target.value)}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-xl text-sm bg-gray-50 focus:ring-2 focus:ring-blue-400 outline-none"
+                >
+                  <option value="">Select section...</option>
+                  {addable.map(t => (
+                    <option key={t} value={t}>
+                      {BLOCK_LABELS[t] || t}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  onClick={addNewBlock}
+                  disabled={adding || !newBlockType}
+                  className="w-full flex justify-center items-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-bold rounded-xl hover:bg-black disabled:opacity-50 transition-colors"
+                >
+                  <Plus size={14} /> {adding ? 'Adding...' : 'Add'}
+                </button>
+              </div>
+            ) : (
+              <div className="bg-gray-50 border border-dashed border-gray-200 rounded-2xl p-4 text-center">
+                <p className="text-xs text-gray-400 font-medium">✅ All sections for this page are present</p>
+              </div>
+            );
+          })()}
         </div>
 
         {/* Right Content: Active Block Editor */}

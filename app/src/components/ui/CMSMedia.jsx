@@ -1,4 +1,5 @@
 import React from 'react';
+import VideoPlayer from './VideoPlayer';
 
 const CMSMedia = ({ mediaType, mediaUrl, fallbackImg, className = "w-full h-full object-cover" }) => {
   const url = mediaUrl || fallbackImg;
@@ -7,13 +8,11 @@ const CMSMedia = ({ mediaType, mediaUrl, fallbackImg, className = "w-full h-full
 
   if (mediaType === 'video') {
     return (
-      <video
+      <VideoPlayer 
         src={url}
-        autoPlay
-        loop
-        muted
-        playsInline
         className={className}
+        autoPlay={true}
+        loop={true}
       />
     );
   }

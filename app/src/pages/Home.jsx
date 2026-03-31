@@ -12,7 +12,7 @@ const Home = () => {
         <BannerSection />
       </div>
 
-      {/* Resource Tiles with Sidebar */}
+      {/* Main Grid & Content Area (Now contains Carousel) */}
       <ResourceTiles />
 
       {/* CTA Section - Ready to Talk */}

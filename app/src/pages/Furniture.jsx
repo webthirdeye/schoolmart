@@ -92,26 +92,34 @@ const Furniture = () => {
                   {sidebarResources?.items?.length > 0 && (
                      <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
                         <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-3">
-                           {sidebarResources.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <FileText size={14} className="text-blue-600" />
-                                 <span className="text-[9px] font-black uppercase text-gray-900 leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarResources.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}
                   {sidebarTrending?.items?.length > 0 && (
                      <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
                         <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-3">
-                           {sidebarTrending.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <Stars size={14} className="text-yellow-400" />
-                                 <span className="text-[9px] font-black uppercase text-white leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarTrending.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}</aside>
@@ -129,7 +137,7 @@ const Furniture = () => {
                          className={`group cursor-pointer transition-all duration-500 rounded-[25px] overflow-hidden border border-gray-300 bg-white ${selectedItem?.name === item.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
                          onClick={() => setSelectedItem(selectedItem?.name === item.name ? null : item)}
                        >
-                          <div className="h-[220px] overflow-hidden p-2 bg-gray-50">
+                          <div className="aspect-[4/5] overflow-hidden p-2 bg-gray-50">
                               <img src={(item.image || item.images?.[0] || "")} alt={item.name} className="w-full h-full object-cover rounded-[20px] brightness-90 group-hover:brightness-100 transition-all duration-700 group-hover:scale-110" />
                           </div>
                           <div className="p-5 flex flex-col border-t border-gray-100">

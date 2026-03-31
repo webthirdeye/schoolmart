@@ -5,6 +5,15 @@ import { getPage } from '../services/api';
 
 const cache = {};
 
+// Call this after any admin save to force a fresh fetch on next page visit
+export function clearCMSCache(slug) {
+  if (slug) {
+    delete cache[slug];
+  } else {
+    Object.keys(cache).forEach(k => delete cache[k]);
+  }
+}
+
 export function useCMSPage(slug) {
   const [blocks, setBlocks] = useState(cache[slug] || null);
   const [loading, setLoading] = useState(!cache[slug]);

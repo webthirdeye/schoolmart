@@ -103,26 +103,34 @@ const SchoolDesigns = () => {
                   {sidebarResources?.items?.length > 0 && (
                      <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
                         <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-3">
-                           {sidebarResources.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <FileText size={14} className="text-blue-600" />
-                                 <span className="text-[9px] font-black uppercase text-gray-900 leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarResources.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}
                   {sidebarTrending?.items?.length > 0 && (
                      <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
                         <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-3">
-                           {sidebarTrending.items.map((item, i) => (
-                              <div key={i} className="flex items-center gap-3">
-                                 <Stars size={14} className="text-yellow-400" />
-                                 <span className="text-[9px] font-black uppercase text-white leading-tight">{item}</span>
-                              </div>
-                           ))}
+                        <div className="space-y-4">
+                           {sidebarTrending.items.map((item, i) => {
+                              const label = typeof item === 'string' ? item : item.label;
+                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                              return (
+                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
+                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
+                                 </Link>
+                              );
+                           })}
                         </div>
                      </div>
                   )}</aside>
@@ -138,7 +146,7 @@ const SchoolDesigns = () => {
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
                        <div 
-                         className={`relative overflow-hidden rounded-[30px] shadow-xl group cursor-pointer min-h-[300px] border border-gray-300 transition-all duration-500 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
+                         className={`relative overflow-hidden rounded-[30px] shadow-xl group cursor-pointer aspect-[4/5] border border-gray-300 transition-all duration-500 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
                          onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
                        >
                           <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105" />
