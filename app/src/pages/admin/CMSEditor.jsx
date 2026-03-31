@@ -250,9 +250,9 @@ const BlockForms = {
 
   product_carousel: ({ data, set }) => (
     <div className="space-y-3">
-      <SectionTitle>Category Carousel Editor (Slidable Grid Tiles)</SectionTitle>
+      <SectionTitle>Product Carousel Editor (Slidable Grid Tiles)</SectionTitle>
       <Field label="Carousel Heading">
-        <TextInput value={data.heading} onChange={v => set('heading', v)} placeholder="Explore Categories" />
+        <TextInput value={data.heading} onChange={v => set('heading', v)} placeholder="Recommended Products" />
       </Field>
       <div className="space-y-3">
         {(data.items || []).map((item, i) => (

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { useCMSBlock } from '../hooks/useCMSBlock';
 
 const DEFAULTS = {
-  heading: 'Recommended Categories',
+  heading: 'Recommended Products',
   items: [
     {
       title: 'Digital Classrooms',
