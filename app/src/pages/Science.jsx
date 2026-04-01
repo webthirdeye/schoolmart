@@ -6,15 +6,7 @@ import { Link } from 'react-router-dom';
 import { FlaskConical, Beaker, Atom, Microscope, Dna, Zap, ArrowRight, ArrowUpRight, Download, Eye, FileText, Activity, Layers, CheckCircle2, Stars } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
-
-const scienceItems = [
-  { id: 1, title: 'Modular Physics Bench', cat: 'Lab Furniture', img: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&q=80', badge: 'Safety Plus' },
-  { id: 2, title: 'The Human Anatomy V3', cat: 'Biology Models', img: 'https://images.unsplash.com/photo-1530210124550-912dc1381cb8?w=800&q=80', badge: 'High-Detail' },
-  { id: 3, title: 'Spectroscopy Kit', cat: 'Optics', img: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80', badge: 'Advanced' },
-  { id: 4, title: 'Chemical Storage Unit', cat: 'Safety', img: 'https://images.unsplash.com/photo-1581093196277-9f608109ca46?w=800&q=80', badge: 'ISO Certified' },
-  { id: 5, title: 'DNA Sequencer Card', cat: 'Biotech', img: 'https://images.unsplash.com/photo-1579154235820-22718e001804?w=800&q=80', badge: 'Modern' },
-  { id: 6, title: 'Micro-Grid Solar Kit', cat: 'Renewables', img: 'https://images.unsplash.com/photo-1509391366360-2e959784a276?w=800&q=80', badge: 'STEM Pick' },
-];
+import CatalogueCard from '../components/CatalogueCard';
 
 const Science = () => {
   const { blocks, loading } = useCMSPage('science');
@@ -90,55 +82,10 @@ const Science = () => {
                  {cats.map((cat, i) => (
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-900'}`}>{cat}</button>
                  ))}
-                 
-                 <div className="mt-12 p-6 bg-emerald-900 rounded-[25px] border border-emerald-800 text-white shadow-2xl overflow-hidden relative group">
-                    <div className="absolute -top-4 -right-4 w-12 h-12 bg-emerald-500 blur-xl opacity-40 group-hover:opacity-100 transition-opacity" />
-                    <span className="text-[8px] font-black text-emerald-400 tracking-[0.2em] uppercase mb-4 block">Safety Status</span>
-                    <div className="flex items-center gap-2 mb-4">
-                       <CheckCircle2 size={12} className="text-emerald-400" />
-                       <span className="text-[9px] font-black uppercase">OSHA Compliant</span>
-                    </div>
-                    <button className="px-4 py-2 bg-white/10 hover:bg-emerald-500 rounded-full text-[7px] font-black uppercase tracking-widest transition-all">Download SDS</button>
-                 </div>
               </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+           </aside>
 
-           {/* MAIN CONTENT GALLERY - GOOGLE IMAGES STYLE */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
                  <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">CHEMISTRY <span className="text-emerald-500 italic font-serif lowercase tracking-normal text-lg ml-2">Apparatus</span></h2>
@@ -148,22 +95,11 @@ const Science = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 aspect-[4/5] transition-all duration-500 ${selectedItem?.name === work.name ? 'ring-4 ring-emerald-500 shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                             <div className="w-10 h-10 rounded-full bg-emerald-500 shadow-xl flex items-center justify-center text-white">
-                                <ArrowUpRight size={18} />
-                             </div>
-                          </div>
-                          <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-all translate-y-3 group-hover:translate-y-0">
-                             <h3 className="text-base font-black text-white uppercase tracking-tighter font-heading">{work.name}</h3>
-                             <span className="text-[10px] text-emerald-400 font-black tracking-widest uppercase">{work.subcategory}</span>
-                          </div>
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}

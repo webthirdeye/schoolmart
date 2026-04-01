@@ -4,6 +4,7 @@ import { Layout, Sparkles, Wind, Sun, Leaf, ArrowRight, ArrowUpRight, Eye, Check
 import InlineQuickView from '../components/InlineQuickView';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
+import CatalogueCard from '../components/CatalogueCard';
 
 const DEFAULT_CONTENT = {
   hero: {
@@ -107,35 +108,32 @@ const Environments = () => {
            </div>
         </section>
 
-        {/* MASONRY DISPLAY - GOOGLE IMAGES STYLE */}
+        {/* MASONRY DISPLAY */}
         <section className="py-6 border-t border-gray-100">
            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
               {(d.masonryItems || []).map((work, i) => (
                  <React.Fragment key={i}>
-                    <div 
-                      className={`relative overflow-hidden rounded-[20px] shadow-sm group cursor-pointer aspect-[4/5] border border-gray-300 transition-all duration-500 scale-100 ${selectedItem?.t === work.t ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                      onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)}
-                    >
-                       <img src={work.img} alt={work.t} className="w-full h-full object-cover transition-all duration-700 hover:scale-110" />
-                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent transition-opacity" />
-                       <div className="absolute bottom-4 left-4 transition-all">
-                          <h3 className="text-base font-black text-white uppercase">{work.t}</h3>
-                          <span className="text-[10px] text-sm-blue font-black tracking-widest uppercase">{work.c}</span>
-                       </div>
-                    </div>
+                    <CatalogueCard 
+                      work={{ name: work.t, subcategory: work.c, image: work.img }} 
+                      isSelected={selectedItem?.t === work.t} 
+                      onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)} 
+                      themeColor="bg-sm-blue"
+                      ringColor="ring-blue-500"
+                      textColor="text-blue-400"
+                    />
 
                     {/* INLINE EXPANSION LOGIC */}
                     {/* Mobile */}
                     <div className="md:hidden col-span-full">
                        {selectedItem?.t === work.t && (
-                          <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                          <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={{ ...selectedItem, name: selectedItem.t, subcategory: selectedItem.c, image: selectedItem.img }} />
                        )}
                     </div>
                     {/* Tablet (2 cols) */}
                     {i % 2 === 1 && (
                        <div className="hidden md:block lg:hidden col-span-full">
                           {(d.masonryItems || []).slice(i-1, i+1).some(dw => dw.t === selectedItem?.t) && (
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={{ ...selectedItem, name: selectedItem.t, subcategory: selectedItem.c, image: selectedItem.img }} />
                           )}
                        </div>
                     )}
@@ -143,7 +141,7 @@ const Environments = () => {
                     {i % 3 === 2 && (
                        <div className="hidden lg:block col-span-full">
                           {(d.masonryItems || []).slice(i-2, i+1).some(dw => dw.t === selectedItem?.t) && (
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={{ ...selectedItem, name: selectedItem.t, subcategory: selectedItem.c, image: selectedItem.img }} />
                           )}
                        </div>
                     )}
@@ -152,12 +150,12 @@ const Environments = () => {
                        <>
                           <div className="hidden md:block lg:hidden col-span-full">
                              {(d.masonryItems || []).slice(Math.floor(i/2)*2).some(dw => dw.t === selectedItem?.t) && i % 2 !== 1 && (
-                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={{ ...selectedItem, name: selectedItem.t, subcategory: selectedItem.c, image: selectedItem.img }} />
                              )}
                           </div>
                           <div className="hidden lg:block col-span-full">
                              {(d.masonryItems || []).slice(Math.floor(i/3)*3).some(dw => dw.t === selectedItem?.t) && i % 3 !== 2 && (
-                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={{ ...selectedItem, name: selectedItem.t, subcategory: selectedItem.c, image: selectedItem.img }} />
                              )}
                           </div>
                        </>
@@ -169,7 +167,7 @@ const Environments = () => {
 
         {/* INFO SPLIT GRID */}
         <section className="py-12 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center border-t border-gray-100 mt-6">
-           <div className="bg-white p-12 rounded-[30px] border border-gray-300">
+           <div className="bg-white p-12 rounded-[30px] border border-gray-300 shadow-sm">
               <h2 className="text-4xl font-black text-gray-900 font-heading mb-8 leading-none uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: d.infoGrid?.titleHtml }} />
               <div className="grid grid-cols-2 gap-3">
                  {(d.infoGrid?.points || []).map((item, i) => (
@@ -180,7 +178,7 @@ const Environments = () => {
                  ))}
               </div>
            </div>
-           <div className="rounded-[30px] overflow-hidden shadow-xl h-[280px]">
+           <div className="rounded-[30px] overflow-hidden shadow-xl h-[300px]">
               <img src={d.infoGrid?.img} alt="Consultation" className="w-full h-full object-cover shadow-2xl" />
            </div>
         </section>

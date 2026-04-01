@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Sofa, GraduationCap, Library, FlaskConical, Building2, ArrowRight, Download, Filter, ChevronDown, CheckCircle2, Award, FileText, Stars } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
+import CatalogueCard from '../components/CatalogueCard';
 
 const Furniture = () => {
   const { blocks, loading } = useCMSPage('furniture');
@@ -61,7 +62,7 @@ const Furniture = () => {
            <div className="lg:col-span-5 flex flex-col gap-3">
               <div className="flex-grow bg-gray-50 rounded-[25px] p-8 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group">
                  <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90">
-                    {heroBlock.badgeIcon || <Sofa size={12} className="inline mr-2" />} {heroBlock.badge || "2025 Collection"}
+                    <Sofa size={12} className="inline mr-2" /> {heroBlock.badge || "2025 Collection"}
                  </div>
                  <h1 className="text-4xl font-black font-heading leading-tight mb-4 tracking-tighter text-gray-900 uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'School <br/> <span className="text-sm-blue italic font-serif lowercase tracking-normal">Furniture</span> <br/> Solutions.' }} />
                  <p className="text-gray-400 text-[9px] font-bold uppercase tracking-widest max-w-xs leading-loose">
@@ -81,7 +82,7 @@ const Furniture = () => {
            </div>
         </section>
 
-        {/* MAIN PRODUCT GRID - GOOGLE IMAGES STYLE */}
+        {/* MAIN PRODUCT GRID */}
         <section className="py-8 border-t border-gray-100 flex flex-col lg:flex-row gap-8">
            <aside className="lg:w-[240px] flex-shrink-0">
               <div className="sticky top-24 space-y-2">
@@ -93,42 +94,26 @@ const Furniture = () => {
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
                  ))}
               </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+            
+              {/* Dynamic Resources & Trending Blocks */}
+              {sidebarResources?.items?.length > 0 && (
+                 <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
+                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
+                    <div className="space-y-4">
+                       {sidebarResources.items.map((item, i) => {
+                          const label = typeof item === 'string' ? item : item.label;
+                          const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                          return (
+                             <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                             </Link>
+                          );
+                       })}
+                    </div>
+                 </div>
+              )}
+           </aside>
 
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
@@ -137,36 +122,21 @@ const Furniture = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-                 {filteredItems.map((item, i) => (
+                 {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`group cursor-pointer transition-all duration-500 rounded-[25px] overflow-hidden border border-gray-300 bg-white ${selectedItem?.name === item.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === item.name ? null : item)}
-                       >
-                          <div className="aspect-[4/5] overflow-hidden p-2 bg-gray-50">
-                              <img src={(item.image || item.images?.[0] || "")} alt={item.name} className="w-full h-full object-cover rounded-[20px] brightness-90 group-hover:brightness-100 transition-all duration-700 group-hover:scale-110" />
-                          </div>
-                          <div className="p-5 flex flex-col border-t border-gray-100">
-                             <div className="flex justify-between items-start mb-2">
-                                <h3 className="text-base font-black text-gray-900 uppercase tracking-tighter leading-none group-hover:text-sm-blue transition-colors">{item.name}</h3>
-                                {item.badge && <span className="text-[7px] font-black text-sm-blue bg-blue-50 px-2 py-0.5 rounded uppercase tracking-widest">{item.badge}</span>}
-                             </div>
-                             <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">{item.subcategory}</span>
-                             <span className="text-[10px] text-sm-blue font-black uppercase tracking-widest mt-4 opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-                          </div>
-                          {selectedItem?.name === item.name && (
-                             <div className="absolute inset-0 bg-sm-blue/10 flex items-center justify-center backdrop-blur-[2px] pointer-events-none">
-                                <div className="bg-white text-sm-blue px-4 py-2 rounded-full font-black text-[10px] uppercase tracking-widest shadow-2xl">
-                                   Inspecting Pro
-                                </div>
-                             </div>
-                          )}
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         themeColor="bg-sm-blue"
+                         ringColor="ring-blue-500"
+                         textColor="text-blue-400"
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}
                        <div className="md:hidden col-span-full">
-                          {selectedItem?.name === item.name && (
+                          {selectedItem?.name === work.name && (
                              <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                           )}
                        </div>
@@ -204,11 +174,24 @@ const Furniture = () => {
                     </React.Fragment>
                  ))}
                  
-                 <div className="bg-gray-900 rounded-[25px] p-8 text-white flex flex-col justify-center min-h-[350px] relative overflow-hidden group">
-                    <Building2 size={32} className="text-sm-blue mb-4" />
-                    <h4 className="text-xl font-black font-heading tracking-tighter uppercase leading-none mb-4">Space <br/> Planning Hub.</h4>
-                    <p className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-6 leading-relaxed">Free Layout Design <br/> & Mockup Services.</p>
-                    <button className="px-5 py-2.5 bg-sm-blue text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[8px] tracking-widest w-fit">Request Pitch</button>
+                 <div 
+                   style={{ backgroundColor: (blocks?.feature_card?.bgColor || '#111827') }}
+                   className="rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[350px] relative overflow-hidden group shadow-lg border border-white/5"
+                 >
+                    <Building2 size={32} style={{ color: blocks?.feature_card?.btnColor || '#3B82F6' }} className="mb-4" />
+                    <h4 className="text-xl font-black font-heading tracking-tighter uppercase leading-none mb-4">
+                       {blocks?.feature_card?.title || "Space Planning Hub."}
+                    </h4>
+                    <p className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-6 leading-relaxed">
+                       {blocks?.feature_card?.subtitle || "Free Layout Design & Mockup Services."}
+                    </p>
+                    <Link 
+                      to={blocks?.feature_card?.btnPath || '#'}
+                      style={{ backgroundColor: blocks?.feature_card?.btnColor || '#3B82F6' }}
+                      className="px-5 py-2.5 text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[8px] tracking-widest w-fit z-10"
+                    >
+                      {blocks?.feature_card?.btnLabel || "Request Pitch"}
+                    </Link>
                  </div>
               </div>
            </div>

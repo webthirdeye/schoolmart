@@ -43,6 +43,155 @@ const SectionTitle = ({ children }) => (
   <h4 className="text-[11px] font-black text-gray-400 uppercase tracking-widest mt-4 mb-2 border-b border-gray-100 pb-1">{children}</h4>
 );
 
+// ── CSV Import Logic ─────────────────────────────────────────────────────────────
+
+const parseCSV = (text) => {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return [];
+  const headers = lines[0].split(',').map(h => h.trim());
+  return lines.slice(1).map(line => {
+    const values = line.split(',').map(v => v.trim());
+    const obj = {};
+    headers.forEach((h, i) => { if (values[i] !== undefined) obj[h] = values[i]; });
+    return obj;
+  });
+};
+
+const mapCSVToBlockData = (blockType, rows) => {
+  if (!rows.length) return null;
+
+  switch (blockType) {
+    case 'topbar': {
+      const r = rows[0];
+      return {
+        email: r.email,
+        phone1: r.phone1,
+        phone2: r.phone2,
+        socials: {
+          facebook: r.facebook,
+          twitter: r.twitter,
+          instagram: r.instagram,
+          linkedin: r.linkedin
+        }
+      };
+    }
+    case 'ticker':
+      return { label: rows[0].label || 'Latest Updates', items: rows.map(r => r.item).filter(Boolean) };
+    case 'hero': {
+      const r = rows[0];
+      return {
+        badge: r.badge, headline1: r.headline1, headline2: r.headline2,
+        subline1: r.subline1, subline2: r.subline2,
+        cta1: { label: r.cta1_label, path: r.cta1_path },
+        cta2: { label: r.cta2_label, path: r.cta2_path },
+        mediaType: r.mediaType || 'slideshow'
+      };
+    }
+    case 'product_carousel':
+      return { items: rows.map(r => ({ title: r.title, price: r.price, img: r.img, path: r.path, cartLink: r.cartLink })) };
+    case 'tiles':
+      return { tiles: rows.map(r => ({ title: r.title, subtitle: r.subtitle, path: r.path, img: r.img, featured: r.featured === 'true' })) };
+    case 'solutions':
+      return { heading: rows[0].heading, viewAllPath: rows[0].viewAllPath, items: rows.map(r => ({ title: r.title, description: r.description, path: r.path, img: r.img, badge: { label: r.badge_label, color: r.badge_color } })) };
+    case 'sidebar_trending':
+    case 'sidebar_resources':
+      return { items: rows.map(r => ({ label: r.label, path: r.path })) };
+    case 'sidebar_banners':
+      return { banners: rows.map(r => ({ label: r.label, sublabel: r.sublabel, color: r.color, path: r.path })) };
+    case 'hero': {
+      const r = rows[0];
+      return { 
+        badge: r.badge, 
+        headline1: r.headline1, 
+        headline2: r.headline2, 
+        subline1: r.subline1, 
+        subline2: r.subline2, 
+        bgColor: r.bgColor,
+        mediaType: r.mediaType || 'slideshow',
+        cta1: { label: r.cta1_label, path: r.cta1_path },
+        cta2: { label: r.cta2_label, path: r.cta2_path }
+      };
+    }
+    case 'cta_whatsapp': {
+      const r = rows[0];
+      return { badge: r.badge, headline: r.headline, description: r.description, whatsappNumber: r.whatsappNumber, phone: r.phone };
+    }
+    case 'partners':
+      return { heading: rows[0].heading, subheading: rows[0].subheading, clients: rows.map(r => ({ name: r.name, icon: r.icon, color: r.color })) };
+    case 'inner_page_hero': {
+        const r = rows[0];
+        return { badge: r.badge, badgeIcon: r.badgeIcon, titleHtml: r.titleHtml, subtitle: r.subtitle, mediaType: r.mediaType || 'image', mediaUrl: r.mediaUrl };
+    }
+    case 'sidebar_categories':
+        return { categories: rows.map(r => ({ name: r.name, icon: r.icon })) };
+    case 'feature_card': 
+        return { title: rows[0].title, btnLabel: rows[0].btnLabel, bgColor: rows[0].bgColor, btnColor: rows[0].btnColor, btnPath: rows[0].btnPath };
+    default:
+      return rows[0]; // Simple flat mapping
+  }
+};
+
+const downloadCSVTemplate = (blockType) => {
+  let headers = [];
+  switch (blockType) {
+    case 'topbar': headers = ['email', 'phone1', 'phone2', 'facebook', 'twitter', 'instagram', 'linkedin']; break;
+    case 'ticker': headers = ['label', 'item']; break;
+    case 'hero': headers = ['badge', 'headline1', 'headline2', 'subline1', 'subline2', 'bgColor', 'cta1_label', 'cta1_path', 'cta2_label', 'cta2_path', 'mediaType']; break;
+    case 'product_carousel': headers = ['title', 'price', 'img', 'path', 'cartLink']; break;
+    case 'tiles': headers = ['title', 'subtitle', 'path', 'img', 'featured']; break;
+    case 'solutions': headers = ['heading', 'viewAllPath', 'title', 'description', 'path', 'img', 'badge_label', 'badge_color']; break;
+    case 'sidebar_trending':
+    case 'sidebar_resources': headers = ['label', 'path']; break;
+    case 'sidebar_banners': headers = ['label', 'sublabel', 'color', 'path']; break;
+    case 'cta_whatsapp': headers = ['badge', 'headline', 'description', 'whatsappNumber', 'phone']; break;
+    case 'partners': headers = ['heading', 'subheading', 'name', 'icon', 'color']; break;
+    case 'inner_page_hero': headers = ['badge', 'badgeIcon', 'titleHtml', 'subtitle', 'mediaType', 'mediaUrl']; break;
+    case 'sidebar_categories': headers = ['name', 'icon']; break;
+    case 'feature_card': headers = ['title', 'btnLabel', 'bgColor', 'btnColor', 'btnPath']; break;
+    default: headers = ['data'];
+  }
+  const blob = new Blob([headers.join(',')], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.setAttribute('hidden', '');
+  a.setAttribute('href', url);
+  a.setAttribute('download', `${blockType}_template.csv`);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+const CSVImporter = ({ blockType, onImport }) => {
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const rows = parseCSV(evt.target.result);
+      const data = mapCSVToBlockData(blockType, rows);
+      if (data) onImport(data);
+    };
+    reader.readAsText(file);
+  };
+
+  return (
+    <div className="flex items-center gap-2">
+      <div className="relative inline-block">
+        <input type="file" accept=".csv" onChange={handleFile} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+        <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold text-gray-500 bg-gray-100 hover:bg-gray-200 transition-colors">
+          <Upload size={14} /> Bulk Load (CSV)
+        </button>
+      </div>
+      <button 
+        onClick={() => downloadCSVTemplate(blockType)} 
+        className="text-[10px] text-blue-500 font-bold hover:underline"
+      >
+        Get Template
+      </button>
+    </div>
+  );
+};
+
 // ── Block-specific form renderers ─────────────────────────────────────────────
 const BlockForms = {
 
@@ -93,6 +242,28 @@ const BlockForms = {
             {mode}
           </button>
         ))}
+      </div>
+
+      <div className="grid grid-cols-2 gap-4 pt-4 border-t">
+        <div className="space-y-1">
+          <label className="text-[10px] font-black uppercase text-gray-400">Banner Background Color</label>
+          <div className="flex gap-2">
+            <input 
+              type="color" 
+              value={data.bgColor || '#0f172a'} 
+              onChange={e => set('bgColor', e.target.value)} 
+              className="h-10 w-20 p-1 bg-white border rounded-lg cursor-pointer"
+            />
+            <input 
+              type="text" 
+              value={data.bgColor || '#0f172a'} 
+              onChange={e => set('bgColor', e.target.value)}
+              className="flex-1 px-3 py-2 bg-gray-50 border border-gray-100 rounded-lg text-xs font-mono uppercase" 
+              placeholder="#HEX"
+            />
+          </div>
+          <p className="text-[8px] text-gray-400">This changes the main banner background color.</p>
+        </div>
       </div>
 
       {(data.mediaType === 'image' || data.mediaType === 'video') ? (
@@ -274,10 +445,7 @@ const BlockForms = {
 
   product_carousel: ({ data, set }) => (
     <div className="space-y-3">
-      <SectionTitle>Product Carousel Editor (Slidable Grid Tiles)</SectionTitle>
-      <Field label="Carousel Heading">
-        <TextInput value={data.heading} onChange={v => set('heading', v)} placeholder="Recommended Products" />
-      </Field>
+      <SectionTitle>Product Carousel Editor (Slidable Grid Cards)</SectionTitle>
       <div className="space-y-3">
         {(data.items || []).map((item, i) => (
           <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50 relative group">
@@ -391,6 +559,29 @@ const BlockForms = {
       ))}
       <button onClick={() => set('banners', [...(data.banners || []), { label: '', sublabel: '', color: '#0057A8', path: '/' }])}
         className="flex items-center gap-1 text-blue-600 text-xs font-bold hover:underline"><Plus size={13} /> Add Banner</button>
+    </div>
+  ),
+
+  feature_card: ({ data, set }) => (
+    <div className="space-y-3">
+      <SectionTitle>Feature Card Editor (Large CTA Tile)</SectionTitle>
+      <Field label="Card Title">
+        <TextInput value={data.title} onChange={v => set('title', v)} placeholder="Optimizing Flow & Acoustics." />
+      </Field>
+      <Field label="Button Label">
+        <TextInput value={data.btnLabel} onChange={v => set('btnLabel', v)} placeholder="Request Site Visit" />
+      </Field>
+      <div className="grid grid-cols-2 gap-3">
+        <Field label="Background Color">
+          <TextInput value={data.bgColor} onChange={v => set('bgColor', v)} placeholder="#1A1A1A" />
+        </Field>
+        <Field label="Button/Accent Color">
+          <TextInput value={data.btnColor} onChange={v => set('btnColor', v)} placeholder="#0066CC" />
+        </Field>
+      </div>
+      <Field label="Button Link Path">
+        <TextInput value={data.btnPath} onChange={v => set('btnPath', v)} placeholder="/contact" />
+      </Field>
     </div>
   ),
 
@@ -861,13 +1052,19 @@ function BlockEditor({ slug, block, onSaved }) {
     sidebar_banners: '🟧 Sidebar Banners', sidebar_categories: '📑 Sidebar Tabs', about_hero: '👋 About Hero', stats: '📊 Statistics',
     mission_vision: '🎯 Mission & Vision', contact_info: '📞 Contact Info', text_content: '📝 Text Content',
     catalogues_list: '📁 Catalogues List', guides_list: '📖 Guides List',
+    feature_card: '🎴 Dynamic Feature Card (Color/Text)',
   };
 
   return (
     <div className="bg-white border border-gray-200 rounded-2xl overflow-hidden shadow-sm">
       {/* Block Header */}
       <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50/60">
-        <span className="font-black text-gray-800 text-lg flex-1">{BLOCK_LABELS[block.blockType] || block.blockType}</span>
+        <div className="flex-1">
+          <span className="font-black text-gray-800 text-lg">{BLOCK_LABELS[block.blockType] || block.blockType}</span>
+          <div className="flex items-center gap-2 mt-1">
+            <CSVImporter blockType={block.blockType} onImport={setLocalData} />
+          </div>
+        </div>
         <div className="flex items-center gap-2">
           <button onClick={() => { setVisible(v => !v); }} className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-bold transition-colors ${visible ? 'text-blue-600 bg-blue-50 hover:bg-blue-100' : 'text-gray-400 bg-gray-50 hover:bg-gray-100'}`} title={visible ? 'Visible on site' : 'Hidden from site'}>
             {visible ? <><Eye size={14} /> Visible</> : <><EyeOff size={14} /> Hidden</>}
@@ -903,20 +1100,20 @@ function BlockEditor({ slug, block, onSaved }) {
 // What block types each page slug is allowed to use (matches what the frontend actually reads)
 const PAGE_ALLOWED_BLOCKS = {
   home:        ['hero', 'product_carousel', 'tiles', 'solutions', 'sidebar_trending', 'sidebar_resources', 'sidebar_banners', 'cta_whatsapp', 'partners', 'topbar', 'navbar', 'ticker'],
-  furniture:   ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  architecture:['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  digital:     ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  sports:      ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  libraries:   ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  labs:        ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  mathematics: ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  science:     ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  design:      ['inner_page_hero', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
-  manufacturing:['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
-  corporate:   ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
-  environments:['environments_page_content'],
-  catalogues:  ['catalogues_page_content', 'catalogues_list'],
-  guides:      ['guides_page_content', 'guides_list'],
+  furniture:   ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  architecture:['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  digital:     ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  sports:      ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  libraries:   ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  labs:        ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  mathematics: ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  science:     ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  design:      ['inner_page_hero', 'feature_card', 'sidebar_categories', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
+  manufacturing:['inner_page_hero', 'feature_card', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
+  corporate:   ['inner_page_hero', 'feature_card', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp', 'text_content'],
+  environments:['environments_page_content', 'feature_card'],
+  catalogues:  ['catalogues_page_content', 'catalogues_list', 'feature_card'],
+  guides:      ['guides_page_content', 'guides_list', 'feature_card'],
   aboutus:     ['about_hero', 'stats', 'mission_vision'],
   'contact-us':['contact_page_content', 'contact_info'],
 };
@@ -984,6 +1181,7 @@ function PageEditor({ slug }) {
     guides_page_content: '📖 Guides Page Content',
     guides_list: '📋 Guides List',
     contact_page_content: '✉️ Contact Page Content',
+    feature_card: '🎴 Dynamic Feature Card (Color/Text)',
   };
 
   if (loading) return <div className="flex justify-center py-16"><div className="animate-spin w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full" /></div>;

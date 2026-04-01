@@ -6,25 +6,7 @@ import { Link } from 'react-router-dom';
 import { Layout, Palette, Pencil, Ruler, Layers, Building, ArrowRight, ArrowUpRight, Download, Eye, FileText, CheckCircle2, Stars, Compass, Lightbulb } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
-
-const categories = [
-  { id: 'all', name: 'COLOR SCHEMES', icon: <Palette size={24} /> },
-  { id: 'spatial', name: 'SPATIAL PLANNING', icon: <Compass size={24} /> },
-  { id: 'graphic', name: 'WALL GRAPHICS', icon: <Pencil size={24} /> },
-  { id: 'lighting', name: 'SMART LIGHTING', icon: <Lightbulb size={24} /> },
-  { id: 'flooring', name: 'SAFE FLOORING', icon: <Layout size={24} /> },
-];
-
-const designWorks = [
-  { title: 'The Bio-Atrium', cat: 'Interior Strategy', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', height: 'h-[320px]' },
-  { title: 'Cyber-Punk STEM Lab', cat: 'Digital Experience', img: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80', height: 'h-[250px]' },
-  { title: 'Pastel Primary Wing', cat: 'Color Psychology', img: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?w=800&q=80', height: 'h-[380px]' },
-  { title: 'The Zen Library', cat: 'Adaptive Spaces', img: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80', height: 'h-[290px]' },
-  { title: 'Infinity Sports Arena', cat: 'Kinetic Design', img: 'https://images.unsplash.com/photo-1546519638-68e109498ffc?w=800&q=80', height: 'h-[340px]' },
-  { title: 'Organic Garden Lab', cat: 'Eco-Planning', img: 'https://images.unsplash.com/photo-1497366216548-37526070297c?w=800&q=80', height: 'h-[250px]' },
-  { title: 'The Glass Think-Tank', cat: 'Glassmorphism', img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=800&q=80', height: 'h-[350px]' },
-  { title: 'Futuristic Faculty Lounge', cat: 'Admin Design', img: 'https://images.unsplash.com/photo-1497366811353-6870744d04b2?w=800&q=80', height: 'h-[280px]' },
-];
+import CatalogueCard from '../components/CatalogueCard';
 
 const SchoolDesigns = () => {
   const { blocks, loading } = useCMSPage('design');
@@ -80,11 +62,11 @@ const SchoolDesigns = () => {
 
            {/* FEATURE BLOCKS - RIGHT */}
            <div className="lg:w-[450px] grid grid-cols-2 lg:grid-cols-1 gap-4">
-              <div className="bg-sm-blue rounded-[30px] p-8 text-white flex flex-col justify-between group overflow-hidden relative">
+              <div className="bg-sm-blue rounded-[30px] p-8 text-white flex flex-col justify-between group overflow-hidden relative shadow-lg">
                  <h3 className="text-[10px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed">Curated <br/> Kindergarten <br/> Design.</h3>
                  <ArrowUpRight className="self-end text-white/50 group-hover:text-white transition-colors relative z-10" size={24} />
               </div>
-              <div className="bg-yellow-400 rounded-[30px] p-8 text-gray-900 flex flex-col justify-between group overflow-hidden relative">
+              <div className="bg-yellow-400 rounded-[30px] p-8 text-gray-900 flex flex-col justify-between group overflow-hidden relative shadow-lg">
                  <h3 className="text-[10px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed">Execution <br/> Portfolio <br/> Excellence.</h3>
                  <ArrowRight className="self-end text-gray-900/30 group-hover:text-gray-900 transition-colors relative z-10" size={24} />
               </div>
@@ -104,44 +86,28 @@ const SchoolDesigns = () => {
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
                  ))}
               </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+            
+              {/* Dynamic Resources & Trending Blocks */}
+              {sidebarResources?.items?.length > 0 && (
+                 <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
+                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
+                    <div className="space-y-4">
+                       {sidebarResources.items.map((item, i) => {
+                          const label = typeof item === 'string' ? item : item.label;
+                          const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                          return (
+                             <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                             </Link>
+                          );
+                       })}
+                    </div>
+                 </div>
+              )}
+           </aside>
 
-           {/* MAIN CONTENT GRID - USING FLEX WRAP FOR GOOGLE IMAGES STYLE INLINE EXPANSION */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
                  <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">COLOR <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Psychology</span></h2>
@@ -151,63 +117,36 @@ const SchoolDesigns = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[30px] shadow-xl group cursor-pointer aspect-[4/5] border border-gray-300 transition-all duration-500 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute top-6 right-6">
-                             <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20">
-                                <ArrowRight size={18} />
-                             </div>
-                          </div>
-                          <div className="absolute bottom-6 left-6 right-6">
-                             <span className="text-sm-blue font-black text-[8px] uppercase tracking-widest block mb-1">{work.subcategory}</span>
-                             <h3 className="text-xl font-black text-white font-heading leading-tight uppercase">{work.name}</h3>
-                          </div>
-                          {selectedItem?.name === work.name && (
-                             <div className="absolute inset-0 bg-sm-blue/20 flex items-center justify-center backdrop-blur-[2px]">
-                                <div className="bg-white text-sm-blue px-4 py-2 rounded-full font-black text-[10px] uppercase tracking-widest shadow-2xl">
-                                   Active Review
-                                </div>
-                             </div>
-                          )}
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         themeColor="bg-sm-blue"
+                         ringColor="ring-blue-500"
+                         textColor="text-blue-400"
+                       />
                        
-                       {/* Mobile Inline Expansion - Always after current if selected */}
+                       {/* Mobile Inline Expansion */}
                        <div className="md:hidden col-span-full">
                           {selectedItem?.name === work.name && (
-                             <InlineQuickView 
-                               isOpen={true} 
-                               onClose={() => setSelectedItem(null)} 
-                               data={selectedItem} 
-                             />
+                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                           )}
                        </div>
 
-                       {/* Tablet Inline Expansion - After every 2 items */}
+                       {/* Tablet Inline Expansion */}
                        {i % 2 === 1 && (
                           <div className="hidden md:block lg:hidden col-span-full">
                              {filteredItems.slice(i-1, i+1).some(dw => dw.name === selectedItem?.name) && (
-                                <InlineQuickView 
-                                  isOpen={true} 
-                                  onClose={() => setSelectedItem(null)} 
-                                  data={selectedItem} 
-                                />
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                              )}
                           </div>
                        )}
 
-                       {/* Desktop Inline Expansion - After every 3 items */}
+                       {/* Desktop Inline Expansion */}
                        {i % 3 === 2 && (
                           <div className="hidden lg:block col-span-full">
                              {filteredItems.slice(i-2, i+1).some(dw => dw.name === selectedItem?.name) && (
-                                <InlineQuickView 
-                                  isOpen={true} 
-                                  onClose={() => setSelectedItem(null)} 
-                                  data={selectedItem} 
-                                />
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                              )}
                           </div>
                        )}
@@ -217,20 +156,12 @@ const SchoolDesigns = () => {
                           <>
                              <div className="hidden md:block lg:hidden col-span-full">
                                 {filteredItems.slice(Math.floor(i/2)*2).some(dw => dw.name === selectedItem?.name) && i % 2 !== 1 && (
-                                   <InlineQuickView 
-                                     isOpen={true} 
-                                     onClose={() => setSelectedItem(null)} 
-                                     data={selectedItem} 
-                                   />
+                                   <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                                 )}
                              </div>
                              <div className="hidden lg:block col-span-full">
                                 {filteredItems.slice(Math.floor(i/3)*3).some(dw => dw.name === selectedItem?.name) && i % 3 !== 2 && (
-                                   <InlineQuickView 
-                                     isOpen={true} 
-                                     onClose={() => setSelectedItem(null)} 
-                                     data={selectedItem} 
-                                   />
+                                   <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                                 )}
                              </div>
                           </>
@@ -238,17 +169,17 @@ const SchoolDesigns = () => {
                     </React.Fragment>
                  ))}
                  
-                 <div className="bg-gray-900 rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group">
+                 <div className="bg-gray-900 rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group shadow-lg">
                     <Layout size={32} className="text-sm-blue mb-6" />
-                    <h4 className="text-xl font-black font-heading mb-4 uppercase">Bespoke <br/> Space Design.</h4>
-                    <button className="px-6 py-2 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-widest w-fit">Request Pitch</button>
+                    <h4 className="text-xl font-black font-heading mb-4 uppercase leading-none tracking-tighter">Bespoke <br/> Space Design.</h4>
+                    <button className="px-6 py-2 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-widest w-fit hover:bg-white hover:text-gray-900 transition-all">Request Pitch</button>
                  </div>
               </div>
            </div>
         </section>
 
         {/* INFORMATIONAL BLOCK */}
-        <section className="py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center">
+        <section className="py-6 grid grid-cols-1 lg:grid-cols-2 gap-6 items-center border-t border-gray-100 mt-6 pt-12">
            <div className="order-2 lg:order-1 relative">
               <div className="absolute -bottom-10 -left-10 w-48 h-48 bg-sm-blue rounded-full blur-[80px] opacity-10" />
               <div className="bg-white p-10 lg:p-14 rounded-[40px] shadow-3xl border border-gray-300 relative z-10">
@@ -268,7 +199,7 @@ const SchoolDesigns = () => {
               </div>
            </div>
            <div className="order-1 lg:order-2">
-              <div className="relative rounded-[40px] overflow-hidden shadow-2xl skew-x-1 hover:skew-x-0 transition-transform duration-1000">
+              <div className="relative rounded-[40px] overflow-hidden shadow-2xl transition-transform duration-1000">
                  <img src="https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=1000&q=80" alt="Atmosphere" className="w-full h-[400px] object-cover" />
                  <div className="absolute inset-0 bg-blue-900/10 backdrop-contrast-125" />
               </div>

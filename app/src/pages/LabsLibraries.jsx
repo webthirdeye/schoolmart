@@ -6,15 +6,7 @@ import { Link } from 'react-router-dom';
 import { FlaskConical, Beaker, Atom, Microscope, Dna, Zap, ArrowRight, ArrowUpRight, Download, Eye, FileText, Activity, Layers, CheckCircle2, Stars } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
-
-const compositeItems = [
-  { id: 1, title: 'Modular Lab Bench', cat: 'Science Labs', img: 'https://images.unsplash.com/photo-1581093588401-fbb62a02f120?w=800&q=80', badge: 'Safety Plus' },
-  { id: 2, title: 'Smart Library Rack', cat: 'Modern Library', img: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80', badge: 'High-Density' },
-  { id: 3, title: 'STEM Discovery Kit', cat: 'Activity Room', img: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80', badge: 'Curated' },
-  { id: 4, title: 'Chemical Storage', cat: 'Security', img: 'https://images.unsplash.com/photo-1581093196277-9f608109ca46?w=800&q=80', badge: 'Fire-Resist' },
-  { id: 5, title: 'Library Lounge Pod', cat: 'Interiors', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', badge: 'Acoustic' },
-  { id: 6, title: 'Mobile Project Cart', cat: 'Maker Space', img: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80', badge: 'Utility' },
-];
+import CatalogueCard from '../components/CatalogueCard';
 
 const LabsLibraries = () => {
   const { blocks, loading } = useCMSPage('labs');
@@ -58,105 +50,60 @@ const LabsLibraries = () => {
                 className="absolute inset-0 w-full h-full object-cover brightness-110 opacity-10 group-hover:opacity-20 transition-all duration-1000"
               />
               <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[120px] -mr-48 -mt-48 opacity-60" />
-              <div className="px-4 py-1.5 bg-emerald-600 text-white font-black rounded-full text-[9px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
-                 <FlaskConical size={12} className="inline mr-2" /> {heroBlock.badge || "Research & Literacy 2025"}
+              <div className="px-3 py-1 bg-emerald-100 text-emerald-700 font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90 relative z-10 border border-emerald-200">
+                 <Activity size={12} className="inline mr-2 animate-pulse" /> {heroBlock.badge || "Integrated Lab Solutions"}
               </div>
-              <h1 className="text-5xl lg:text-7xl font-black font-heading leading-none mb-6 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Bento <br/> <span className=\"text-emerald-600 italic font-serif lowercase tracking-normal\">of</span> <br/> Knowledge." }} />
-              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10">
-                 {heroBlock.subtitle || "Integrated solutions for composite skill labs and futuristic digital libraries in one unified platform."}
+              <h1 className="text-5xl lg:text-7xl font-black font-heading leading-tight mb-4 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Composite <br/> <span className=\"text-emerald-500 italic font-serif lowercase tracking-normal\">Skill</span> <br/> Labs." }} />
+              <p className="text-gray-400 text-[10px] font-bold uppercase tracking-[0.3em] max-w-sm leading-loose relative z-10">
+                 {heroBlock.subtitle || "The next generation of multidisciplinary spaces where science meets future-ready architecture."}
               </p>
            </div>
         </section>
 
         {/* SIDEBAR GRID LAYOUT */}
         <section className="py-8 border-t border-gray-100 flex flex-col lg:flex-row gap-8">
-           <aside className="lg:w-[240px] flex-shrink-0">
+           <aside className="lg:w-[260px] flex-shrink-0">
               <div className="sticky top-24 space-y-2">
                  <div className="mb-6">
                     <h3 className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] mb-4">COMPOSITE CORE</h3>
-                    <div className="w-8 h-1 bg-emerald-600 rounded-full" />
+                    <div className="w-8 h-1 bg-emerald-500 rounded-full" />
                  </div>
                  {cats.map((cat, i) => (
-                    <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-emerald-600 text-white shadow-lg' : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-900'}`}>{cat}</button>
+                    <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-5 py-4 rounded-2xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-emerald-600 text-white shadow-xl shadow-emerald-600/30 -translate-y-1' : 'text-gray-500 hover:bg-emerald-50 hover:text-emerald-900'}`}>{cat}</button>
                  ))}
                  
-                 <div className="mt-12 p-6 bg-emerald-50/30 rounded-[25px] border border-emerald-100 shadow-sm transition-transform hover:scale-[1.02]">
-                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Our Compliance</span>
-                    <div className="space-y-4">
+                 <div className="mt-12 overflow-hidden rounded-[30px] border border-gray-100 bg-white p-8 relative group shadow-sm">
+                    <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-full blur-2xl -mr-12 -mt-12 group-hover:bg-emerald-100 transition-all" />
+                    <span className="text-[9px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Our Compliance</span>
+                    <div className="space-y-4 relative z-10">
                        <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-emerald-600" />
-                          <span className="text-[9px] font-black uppercase text-gray-900">NEP GUIDELINES</span>
+                          <CheckCircle2 size={14} className="text-emerald-500" />
+                          <span className="text-[9px] font-black uppercase text-gray-700">NEP Guidelines</span>
                        </div>
                        <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-emerald-600" />
-                          <span className="text-[9px] font-black uppercase text-gray-900">SEFA CERTIFIED</span>
+                          <CheckCircle2 size={14} className="text-emerald-500" />
+                          <span className="text-[9px] font-black uppercase text-gray-700">SEFA Certified</span>
                        </div>
                     </div>
                  </div>
               </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+           </aside>
 
-           {/* MAIN CONTENT GALLERY - GOOGLE IMAGES STYLE */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
-                 <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">LAB <span className="text-emerald-600 italic font-serif lowercase tracking-normal text-lg ml-2">& Library</span></h2>
+                 <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">LAB <span className="text-emerald-600 italic font-serif lowercase tracking-normal text-lg ml-2">& library</span></h2>
                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Masterpieces: 500+ Projects</span>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 aspect-[4/5] transition-all duration-500 bg-gray-50 ${selectedItem?.name === work.name ? 'ring-4 ring-emerald-600 shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                             <div className="w-10 h-10 rounded-full bg-emerald-600 shadow-xl flex items-center justify-center text-white">
-                                <ArrowUpRight size={18} />
-                             </div>
-                          </div>
-                          <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-all translate-y-3 group-hover:translate-y-0">
-                             <h3 className="text-base font-black text-white uppercase tracking-tighter font-heading leading-none mb-1">{work.name}</h3>
-                             <span className="text-[10px] text-emerald-400 font-black tracking-widest uppercase">{work.subcategory}</span>
-                          </div>
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}

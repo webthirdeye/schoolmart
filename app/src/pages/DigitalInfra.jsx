@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Laptop, Monitor, Wifi, Cpu, Globe, ArrowRight, ArrowUpRight, ShieldCheck, Zap, Download, Eye, FileText, CheckCircle2, Stars } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
+import CatalogueCard from '../components/CatalogueCard';
 
 const DigitalInfra = () => {
   const { blocks, loading } = useCMSPage('digital');
@@ -84,59 +85,29 @@ const DigitalInfra = () => {
                  {cats.map((cat, i) => (
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
                  ))}
-                 
-                 <div className="mt-12 p-6 bg-blue-50/50 rounded-[25px] border border-blue-100 shadow-sm transition-transform hover:scale-[1.02]">
-                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Process Blueprint</span>
+              </div>
+            
+              {/* Dynamic Resources & Trending Blocks */}
+              {sidebarResources?.items?.length > 0 && (
+                 <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
+                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
                     <div className="space-y-4">
-                       <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-sm-blue" />
-                          <span className="text-[9px] font-black uppercase text-gray-900">Architecture</span>
-                       </div>
-                       <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-sm-blue" />
-                          <span className="text-[9px] font-black uppercase text-gray-900">Integration</span>
-                       </div>
+                       {sidebarResources.items.map((item, i) => {
+                          const label = typeof item === 'string' ? item : item.label;
+                          const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                          return (
+                             <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                             </Link>
+                          );
+                       })}
                     </div>
                  </div>
-              </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+              )}
+           </aside>
 
-           {/* MAIN CONTENT GALLERY - GOOGLE IMAGES STYLE */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
                  <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">SMART <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Hardware</span></h2>
@@ -146,33 +117,14 @@ const DigitalInfra = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 transition-all duration-500 bg-gray-50 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <div className="aspect-[4/5] overflow-hidden p-2">
-                             <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover rounded-[20px] transition-transform duration-700 group-hover:scale-110" />
-                          </div>
-                          <div className="p-5 flex justify-between items-end border-t border-gray-100 bg-white">
-                             <div>
-                                <h3 className="text-base font-black text-gray-900 uppercase tracking-tighter leading-none group-hover:text-sm-blue transition-colors mb-2">{work.name}</h3>
-                                <span className="text-[10px] text-gray-400 font-bold uppercase tracking-widest block">{work.subcategory}</span>
-                                <span className="text-[10px] text-sm-blue font-black uppercase tracking-widest mt-2 block opacity-0 group-hover:opacity-100 transition-opacity">Details →</span>
-                             </div>
-                             {work.badge && (
-                                <div className="px-2 py-0.5 bg-gray-50 text-gray-400 font-black rounded uppercase text-[7px] tracking-widest border border-gray-100">
-                                   {work.badge}
-                                </div>
-                             )}
-                          </div>
-                          {selectedItem?.name === work.name && (
-                             <div className="absolute inset-0 bg-sm-blue/10 flex items-center justify-center backdrop-blur-[2px]">
-                                <div className="bg-white text-sm-blue px-4 py-2 rounded-full font-black text-[10px] uppercase tracking-widest shadow-2xl">
-                                   Viewing Spec
-                                </div>
-                             </div>
-                          )}
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         themeColor="bg-sm-blue"
+                         ringColor="ring-blue-500"
+                         textColor="text-blue-400"
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}
@@ -215,11 +167,24 @@ const DigitalInfra = () => {
                     </React.Fragment>
                  ))}
                  
-                 <div className="bg-gray-900 rounded-[25px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group">
-                    <Laptop size={32} className="text-sm-blue mb-6 border border-white/10 p-2 w-12 h-12 rounded-xl" />
-                    <h4 className="text-xl font-black font-heading mb-4 uppercase leading-none tracking-tighter">Campus <br/> Audit Pro.</h4>
-                    <p className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-6 leading-relaxed">Infrastructure <br/> Security & Performance.</p>
-                    <button className="px-6 py-2.5 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-widest w-fit hover:bg-white hover:text-gray-900 transition-all shadow-xl shadow-blue-500/10">Request Site Visit</button>
+                 <div 
+                   style={{ backgroundColor: (blocks?.feature_card?.bgColor || '#111827') }}
+                   className="rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group shadow-lg border border-white/5"
+                 >
+                    <Laptop size={32} style={{ color: blocks?.feature_card?.btnColor || '#3B82F6' }} className="mb-6 border border-white/10 p-2 w-12 h-12 rounded-xl" />
+                    <h4 className="text-xl font-black font-heading mb-4 uppercase leading-none tracking-tighter">
+                       {blocks?.feature_card?.title || "Campus Audit Pro."}
+                    </h4>
+                    <p className="text-white/40 text-[9px] font-bold uppercase tracking-widest mb-6 leading-relaxed">
+                       {blocks?.feature_card?.subtitle || "Infrastructure Security & Performance."}
+                    </p>
+                    <Link 
+                      to={blocks?.feature_card?.btnPath || '#'}
+                      style={{ backgroundColor: blocks?.feature_card?.btnColor || '#3B82F6' }}
+                      className="px-6 py-2.5 text-white font-black rounded-full text-[8px] uppercase tracking-widest w-fit hover:bg-white hover:text-gray-900 transition-all shadow-xl shadow-blue-500/10 z-10"
+                    >
+                      {blocks?.feature_card?.btnLabel || "Request Site Visit"}
+                    </Link>
                  </div>
               </div>
            </div>

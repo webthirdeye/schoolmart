@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import { Building2, Compass, Pencil, Lightbulb, Layout, ArrowRight, ArrowUpRight, Eye, Stars, Download, Layers, FileText, CheckCircle2 } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
+import CatalogueCard from '../components/CatalogueCard';
 
 const Architecture = () => {
   const { blocks, loading } = useCMSPage('architecture');
@@ -88,59 +89,29 @@ const Architecture = () => {
                  {cats.map((cat, i) => (
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
                  ))}
-                 
-                 <div className="mt-12 p-6 bg-gray-50 rounded-[25px] border border-gray-100 shadow-sm">
-                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Our Compliance</span>
+              </div>
+            
+              {/* Dynamic Resources & Trending Blocks */}
+              {sidebarResources?.items?.length > 0 && (
+                 <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
+                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
                     <div className="space-y-4">
-                       <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-sm-blue" />
-                          <span className="text-[9px] font-black uppercase text-gray-900 tracking-wider">NEP GUIDELINES</span>
-                       </div>
-                       <div className="flex items-center gap-3">
-                          <CheckCircle2 size={14} className="text-sm-blue" />
-                          <span className="text-[9px] font-black uppercase text-gray-900 tracking-wider">NREDA GOLD</span>
-                       </div>
+                       {sidebarResources.items.map((item, i) => {
+                          const label = typeof item === 'string' ? item : item.label;
+                          const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                          return (
+                             <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                             </Link>
+                          );
+                       })}
                     </div>
                  </div>
-              </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+              )}
+           </aside>
 
-           {/* MAIN CONTENT GALLERY - GOOGLE IMAGES STYLE */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
                  <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">PROJECT <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Showcase</span></h2>
@@ -150,29 +121,14 @@ const Architecture = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[30px] shadow-xl group cursor-pointer aspect-[4/5] border border-gray-300 transition-all duration-500 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 hover:scale-110" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute top-6 right-6">
-                             <div className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center text-white border border-white/20 opacity-0 group-hover:opacity-100 transition-opacity">
-                                <ArrowRight size={18} />
-                             </div>
-                          </div>
-                          <div className="absolute bottom-6 left-6 right-6">
-                             <span className="text-sm-blue font-black text-[8px] uppercase tracking-widest block mb-1">{work.subcategory}</span>
-                             <h3 className="text-xl font-black text-white font-heading leading-tight uppercase">{work.name}</h3>
-                          </div>
-                          {selectedItem?.name === work.name && (
-                             <div className="absolute inset-0 bg-sm-blue/20 flex items-center justify-center backdrop-blur-[2px]">
-                                <div className="bg-white text-sm-blue px-4 py-2 rounded-full font-black text-[10px] uppercase tracking-widest shadow-2xl">
-                                   Reading...
-                                </div>
-                             </div>
-                          )}
-                       </div>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         themeColor="bg-sm-blue"
+                         ringColor="ring-blue-500"
+                         textColor="text-blue-400"
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}
@@ -215,7 +171,7 @@ const Architecture = () => {
                     </React.Fragment>
                  ))}
                  
-                 <div className="bg-gray-900 rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group">
+                 <div className="bg-gray-900 rounded-[30px] p-8 text-white flex flex-col justify-center min-h-[300px] relative overflow-hidden group shadow-lg">
                     <Building2 size={32} className="text-sm-blue mb-6" />
                     <h4 className="text-xl font-black font-heading mb-4 uppercase leading-none tracking-tighter">Campus <br/> Audit Pro.</h4>
                     <button className="px-6 py-2 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-widest w-fit hover:bg-white hover:text-gray-900 transition-all shadow-xl shadow-blue-500/10">Request Site Visit</button>

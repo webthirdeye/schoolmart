@@ -1,7 +1,9 @@
 // src/pages/Guides.jsx
-import { BookOpen, Award, Shield, Layers } from 'lucide-react';
+import React, { useState } from 'react';
+import { BookOpen, Award, Shield, Layers, ArrowUpRight } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
+import CatalogueCard from '../components/CatalogueCard';
 
 const DEFAULT_CONTENT = {
   hero: {
@@ -31,42 +33,46 @@ const ICONS = { Award, BookOpen, Shield, Layers };
 
 const Guides = () => {
   const { blocks, loading } = useCMSPage('guides');
+  const [selectedItem, setSelectedItem] = useState(null);
   const d = blocks?.guides_page_content || DEFAULT_CONTENT;
 
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sm-blue"></div></div>;
 
   return (
-    <main className="min-h-screen bg-white pt-16 pb-10">
+    <main className="min-h-screen bg-white pt-24 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         
-        <section className="pt-4 pb-6 flex flex-col gap-4">
+        <section className="pt-4 pb-12 flex flex-col gap-6">
            {/* LARGE WIDE STORY BLOCK */}
-           <div className="bg-gray-50 rounded-[25px] p-10 flex flex-col items-center text-center border border-gray-100 shadow-sm relative overflow-hidden group">
+           <div className="bg-gray-50 rounded-[30px] p-12 lg:p-20 flex flex-col items-center text-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px] justify-center">
               <CMSMedia 
                 mediaType={d.hero?.mediaType} 
                 mediaUrl={d.hero?.mediaUrl} 
                 fallbackImg={null} 
                 className="absolute inset-0 w-full h-full object-cover opacity-5 group-hover:opacity-10 transition-all duration-1000"
               />
-              <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90 relative z-10">
-                 <BookOpen size={12} className="inline mr-2" /> {d.hero?.badge}
+              <div className="px-4 py-1.5 bg-sm-blue text-white font-black rounded-full text-[10px] uppercase tracking-[0.2em] mb-8 w-fit shadow-xl shadow-blue-500/20 relative z-10">
+                 <BookOpen size={14} className="inline mr-2" /> {d.hero?.badge}
               </div>
-              <h1 className="text-4xl lg:text-6xl font-black font-heading leading-tight mb-4 tracking-tighter text-gray-900 uppercase max-w-2xl relative z-10" dangerouslySetInnerHTML={{ __html: d.hero?.titleHtml }} />
-              <p className="text-gray-400 text-[10px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10">
+              <h1 className="text-4xl lg:text-7xl font-black font-heading leading-tight mb-8 tracking-tighter text-gray-900 uppercase max-w-3xl relative z-10" dangerouslySetInnerHTML={{ __html: d.hero?.titleHtml }} />
+              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest max-w-md leading-loose relative z-10">
                  {d.hero?.subtitle}
               </p>
            </div>
 
            {/* HORIZONTAL ACTION STRIP */}
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {(d.actionStrip || []).map((card, i) => {
                 const isDark = card.color === 'dark';
                 const Icon = ICONS[card.icon];
                 return (
-                  <div key={i} className={`${isDark ? 'bg-gray-900 text-white' : 'bg-white border-gray-100 group hover:border-sm-blue'} rounded-[25px] p-8 flex flex-col justify-between group overflow-hidden relative border shadow-${isDark ? '2xl' : 'sm'} transition-all hover:scale-[1.01]`}>
-                     <h3 className={`text-[10px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed ${isDark ? 'text-sm-blue mb-4' : 'text-gray-400 group-hover:text-sm-blue'}`} dangerouslySetInnerHTML={{ __html: card.titleHtml }} />
-                     {card.btnText && <button className={`px-5 py-2.5 font-black rounded-full text-[8px] uppercase tracking-widest w-fit transition-all ${isDark ? 'bg-sm-blue text-white shadow-lg shadow-blue-500/20 active:scale-95' : 'bg-gray-50 text-gray-400 group-hover:bg-sm-blue group-hover:text-white mt-4'}`}>{card.btnText}</button>}
-                     {!card.btnText && Icon && <Icon className="text-gray-200 group-hover:text-sm-blue transition-colors self-end" size={24} />}
+                  <div key={i} className={`${isDark ? 'bg-gray-900 text-white shadow-2xl' : 'bg-white border-gray-100 hover:border-sm-blue shadow-sm'} rounded-[30px] p-10 flex flex-col justify-between group overflow-hidden relative border transition-all hover:scale-[1.02] min-h-[220px]`}>
+                     <h3 className={`text-[12px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed ${isDark ? 'text-sm-blue' : 'text-gray-400 group-hover:text-sm-blue'}`} dangerouslySetInnerHTML={{ __html: card.titleHtml }} />
+                     <div className="flex items-center justify-between mt-auto pt-6">
+                        {card.btnText && <button className={`px-6 py-3 font-black rounded-full text-[9px] uppercase tracking-widest w-fit transition-all ${isDark ? 'bg-sm-blue text-white shadow-lg shadow-blue-500/20 active:scale-95' : 'bg-gray-50 text-gray-400 group-hover:bg-sm-blue group-hover:text-white'}`}>{card.btnText}</button>}
+                        {!card.btnText && Icon && <Icon className={`${isDark ? 'text-white/20 group-hover:text-sm-blue' : 'text-gray-200 group-hover:text-sm-blue'} transition-colors ml-auto`} size={32} />}
+                        {card.btnText && <ArrowUpRight className={`${isDark ? 'text-white/20 group-hover:text-sm-blue' : 'text-gray-200 group-hover:text-sm-blue'} transition-colors`} size={24} />}
+                     </div>
                   </div>
                 )
               })}
@@ -74,41 +80,45 @@ const Guides = () => {
         </section>
 
         {/* Compact Strip Menu */}
-        <section className="pb-6 px-2">
-           <div className="flex overflow-x-auto gap-12 pb-2 hide-scrollbar justify-start border-b border-gray-100">
+        <section className="pb-8 px-2 overflow-hidden">
+           <div className="flex overflow-x-auto gap-12 pb-4 hide-scrollbar justify-start border-b border-gray-100">
              {(d.menuStrip || []).map((cat, i) => (
-                <button key={i} className="flex-none text-[8px] font-black text-gray-400 hover:text-gray-900 uppercase tracking-widest transition-colors py-2 uppercase">{cat}</button>
+                <button key={i} className="flex-none text-[10px] font-black text-gray-400 hover:text-gray-900 uppercase tracking-[0.2em] transition-colors py-2 active:text-sm-blue">{cat}</button>
              ))}
            </div>
         </section>
 
         {/* RESOURCE LISTING */}
-        <section className="py-6 border-t border-gray-100">
-           <div className="columns-1 md:columns-3 gap-4 space-y-4">
+        <section className="py-12 border-t border-gray-100">
+           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {(d.resourceList || []).map((work, i) => (
-                 <div key={i} className={`break-inside-avoid relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer min-h-[300px] border border-gray-100`}>
-                    <img src={work.img} alt={work.t} className="w-full h-full object-cover transition-all duration-700" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-gray-900/40 to-transparent" />
-                    <h3 className="absolute bottom-4 left-4 text-xs font-black text-white uppercase">{work.t}</h3>
-                 </div>
+                 <CatalogueCard 
+                   key={i}
+                   work={{ name: work.t, subcategory: work.c, image: work.img }} 
+                   isSelected={selectedItem?.t === work.t}
+                   onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)}
+                   themeColor="bg-sm-blue"
+                   ringColor="ring-blue-500"
+                   textColor="text-blue-400"
+                 />
               ))}
            </div>
         </section>
 
         {/* INFO SPLIT GRID */}
-        <section className="py-6 border-t border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center mt-6">
-           <div className="bg-white p-12 rounded-[30px] border border-gray-100 shadow-sm relative overflow-hidden group">
+        <section className="py-12 border-t border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-6">
+           <div className="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm relative overflow-hidden group">
               <h2 className="text-4xl font-black text-gray-900 font-heading mb-8 leading-none uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: d.infoGrid?.titleHtml }} />
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-4">
                  {(d.infoGrid?.points || []).map((item, i) => (
-                    <div key={i} className="flex items-center gap-3 text-[9px] font-black uppercase tracking-widest bg-gray-50 p-4 rounded-xl border border-gray-100 hover:bg-sm-blue hover:text-white transition-all">
-                       <Award size={14} className="text-sm-blue group-hover:text-white" />
+                    <div key={i} className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest bg-gray-50 p-5 rounded-2xl border border-gray-50 hover:bg-sm-blue hover:text-white transition-all">
+                       <Award size={16} className="text-sm-blue group-hover:text-white" />
                        {item}
                     </div>
                  ))}
               </div>
            </div>
-           <div className="rounded-[30px] overflow-hidden shadow-2xl h-[400px]">
+           <div className="rounded-[40px] overflow-hidden shadow-2xl h-[450px]">
               <img src={d.infoGrid?.img} alt="Planning" className="w-full h-full object-cover" />
            </div>
         </section>

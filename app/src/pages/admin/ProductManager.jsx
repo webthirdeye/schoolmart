@@ -1,8 +1,165 @@
-// src/pages/admin/ProductManager.jsx — Premium redesign
 import { useState, useEffect } from 'react';
 import { getProducts, createProduct, updateProduct, deleteProduct, getAllPages } from '../../services/api';
-import { Package, Plus, Search, Filter, Edit3, Trash2, Star, Tag, Layers, ChevronDown } from 'lucide-react';
+import { Package, Plus, Search, Filter, Edit3, Trash2, Star, Tag, Layers, ChevronDown, Upload } from 'lucide-react';
 import ImageUpload from '../../components/admin/ImageUpload';
+import { formatImgUrl } from '../../utils/formatters';
+
+// ── BULK LOAD LOGIC ──────────────────────────────────────────────────────────
+
+const parseCSV = (text) => {
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+  if (lines.length < 2) return [];
+  
+  // Robust CSV splitting to handle commas inside quotes
+  const splitLine = (line) => {
+    const result = [];
+    let cur = "";
+    let inQuotes = false;
+    for (let char of line) {
+      if (char === '"') inQuotes = !inQuotes;
+      else if (char === ',' && !inQuotes) {
+        result.push(cur.trim());
+        cur = "";
+      } else cur += char;
+    }
+    result.push(cur.trim());
+    return result;
+  };
+
+  const headers = splitLine(lines[0]);
+  return lines.slice(1).map(line => {
+    const values = splitLine(line);
+    const obj = {};
+    headers.forEach((h, i) => { if (values[i] !== undefined) obj[h] = values[i]; });
+    return obj;
+  });
+};
+
+const downloadProductTemplate = () => {
+  const headers = [
+    'name', 'description', 'category', 'subcategory', 'price', 'image', 
+    'isFeatured', 'isNewProduct', 
+    'stat1_label', 'stat1_value', 'stat2_label', 'stat2_value', 'stat3_label', 'stat3_value',
+    'feature1_name', 'feature1_spec', 'feature2_name', 'feature2_spec', 'feature3_name', 'feature3_spec'
+  ];
+  const blob = new Blob([headers.join(',')], { type: 'text/csv' });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.setAttribute('hidden', '');
+  a.setAttribute('href', url);
+  a.setAttribute('download', `catalog_products_template.csv`);
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+};
+
+const CSVProductImporter = ({ fixedPage, onImport }) => {
+  const [sheetUrl, setSheetUrl] = useState('');
+  const [fetching, setFetching] = useState(false);
+
+  const handleFile = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (evt) => {
+      const rows = parseCSV(evt.target.result);
+      processRows(rows);
+    };
+    reader.readAsText(file);
+  };
+
+  const handleFetchSheets = async () => {
+    if (!sheetUrl) return alert('Please paste a Google Sheets URL first');
+    let url = sheetUrl.trim();
+    
+    // Handle "Publish to web" links
+    if (url.includes('/pubhtml')) {
+      url = url.replace('/pubhtml', '/pub?output=csv');
+    } 
+    // Handle standard "Edit" sharing links
+    else if (url.includes('/edit')) {
+      url = url.split('/edit')[0] + '/export?format=csv';
+    } 
+    // Fallback/Force CSV format
+    else if (!url.includes('output=csv') && !url.includes('format=csv')) {
+      url += (url.includes('?') ? '&' : '?') + 'output=csv';
+    }
+
+    setFetching(true);
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Failed to fetch sheet content. If it is a private sheet, use the "File > Share > Publish to web" method or make it "Anyone with link".');
+      const csvText = await res.text();
+      const rows = parseCSV(csvText);
+      processRows(rows);
+    } catch (err) {
+      alert(`Error fetching Google Sheet: ${err.message}`);
+    } finally {
+      setFetching(false);
+    }
+  };
+
+  const processRows = (rows) => {
+    const products = rows.map(r => {
+      const img = formatImgUrl(r.image || r.img || r.imageUrl || '');
+      return {
+        name: r.name || r.title || r.product || 'Unnamed Card',
+        description: r.description || r.desc || '',
+        category: fixedPage || r.category,
+        subcategory: r.subcategory || r.tab || '',
+        price: r.price ? parseFloat(String(r.price).replace(/[$,]/g, '')) : 0,
+        image: img,
+        images: [img].filter(Boolean),
+        isFeatured: String(r.isFeatured).toLowerCase() === 'true',
+        isNewProduct: String(r.isNewProduct).toLowerCase() === 'true',
+        stats: [
+          { label: r.stat1_label || r.label1, value: r.stat1_value || r.value1 },
+          { label: r.stat2_label || r.label2, value: r.stat2_value || r.value2 },
+          { label: r.stat3_label || r.label3, value: r.stat3_value || r.value3 },
+        ].filter(s => s.label || s.value),
+        resources: [
+          { name: r.feature1_name || r.spec1_name, size: r.feature1_spec || r.spec1_value },
+          { name: r.feature2_name || r.spec2_name, size: r.feature2_spec || r.spec2_value },
+          { name: r.feature3_name || r.spec3_name, size: r.feature3_spec || r.spec3_value },
+        ].filter(res => res.name)
+      };
+    });
+    if (products.length) onImport(products);
+  };
+
+  return (
+    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 bg-gray-50/50 p-3 rounded-2xl border border-gray-100">
+      <div className="flex items-center gap-2">
+        <div className="relative inline-block">
+          <input type="file" accept=".csv" onChange={handleFile} className="absolute inset-0 w-full h-full opacity-0 cursor-pointer" />
+          <button className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-gray-700 bg-white border border-gray-200 hover:bg-gray-50 transition-all shadow-sm">
+            <Upload size={14} className="text-blue-500" /> Upload CSV
+          </button>
+        </div>
+        <div className="h-6 w-px bg-gray-200 mx-1" />
+      </div>
+
+      <div className="flex-grow flex items-center gap-2 w-full sm:w-auto">
+        <input 
+          type="text" 
+          value={sheetUrl} 
+          onChange={e => setSheetUrl(e.target.value)}
+          placeholder="Paste Google Sheet URL..."
+          className="flex-grow px-4 py-2 rounded-xl text-xs border border-gray-200 outline-none focus:ring-2 focus:ring-green-500/20 focus:border-green-500 transition-all bg-white"
+        />
+        <button 
+          onClick={handleFetchSheets}
+          disabled={fetching}
+          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold text-white transition-all shadow-lg ${fetching ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700 shadow-green-500/20'}`}
+        >
+          {fetching ? 'Fetching...' : 'Sync Live'}
+        </button>
+      </div>
+
+      <button onClick={downloadProductTemplate} className="text-[10px] text-blue-500 font-bold hover:underline shrink-0 px-2">Get Template</button>
+    </div>
+  );
+};
 
 export default function ProductManager({ fixedPage, liveCategories }) {
   const [products, setProducts] = useState([]);
@@ -53,6 +210,20 @@ export default function ProductManager({ fixedPage, liveCategories }) {
     if (!confirm('Are you sure you want to delete this card?')) return;
     await deleteProduct(id);
     load();
+  };
+
+  const handleBulkImport = async (newProducts) => {
+    if (!confirm(`Import ${newProducts.length} cards from CSV?`)) return;
+    setLoading(true);
+    try {
+      await Promise.all(newProducts.map(p => createProduct(p)));
+      load();
+      alert(`Successfully imported ${newProducts.length} cards.`);
+    } catch (err) {
+      alert(`Error importing cards: ${err.message}`);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const categories = [...new Set(products.map(p => p.category).filter(Boolean))];
@@ -157,9 +328,9 @@ export default function ProductManager({ fixedPage, liveCategories }) {
           </div>
         </div>
 
-        {/* RESOURCES */}
+        {/* FEATURES */}
         <div className="space-y-2 pt-2">
-          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Downloadable Resources (Bottom Right PDF Links)</label>
+          <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Core Features & Technical Specs (Right Side Box)</label>
           <div className="space-y-2">
              {[0, 1, 2].map(i => (
                 <div key={i} className="flex flex-col md:flex-row gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200">
@@ -170,7 +341,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
                         newRes[i] = { ...newRes[i], name: e.target.value };
                         setEditing({ ...editing, resources: newRes });
                      }}
-                     className="flex-[2] px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="File Name (e.g. Technical Specs)" 
+                     className="flex-[2] px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Feature Name (e.g. Ergonomic Design)" 
                    />
                    <input 
                      value={editing.resources?.[i]?.size || ''} 
@@ -179,16 +350,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
                         newRes[i] = { ...newRes[i], size: e.target.value };
                         setEditing({ ...editing, resources: newRes });
                      }}
-                     className="flex-1 px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Size (e.g. 2.4 MB)" 
-                   />
-                   <input 
-                     value={editing.resources?.[i]?.url || ''} 
-                     onChange={e => {
-                        const newRes = [...(editing.resources || [{},{},{}])];
-                        newRes[i] = { ...newRes[i], url: e.target.value };
-                        setEditing({ ...editing, resources: newRes });
-                     }}
-                     className="flex-[2] px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="URL (e.g. /files/spec.pdf)" 
+                     className="flex-1 px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Spec / Badge (e.g. Premium)" 
                    />
                 </div>
              ))}
@@ -234,7 +396,9 @@ export default function ProductManager({ fixedPage, liveCategories }) {
           />
         </div>
         
-        <div className="flex gap-3">
+        <div className="flex items-center gap-3">
+          <CSVProductImporter fixedPage={fixedPage} onImport={handleBulkImport} />
+          
           <div className="relative">
             <select value={filterCat} onChange={e => setFilterCat(e.target.value)}
               className="appearance-none pl-10 pr-10 py-2.5 bg-white border border-gray-100 shadow-sm rounded-2xl text-sm font-bold text-gray-700 outline-none cursor-pointer"
@@ -266,7 +430,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
               {/* Image Area */}
               <div className="aspect-square bg-gray-50 p-6 relative flex items-center justify-center">
                 {p.images?.[0] ? (
-                  <img src={p.images[0]} alt={p.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" onError={e => e.target.src='https://via.placeholder.com/300?text=No+Image'} />
+                  <img src={p.images[0]} alt={p.name} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" onError={e => e.target.src='https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800'} />
                 ) : (
                   <Package size={40} className="text-gray-200" />
                 )}

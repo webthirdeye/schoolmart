@@ -216,13 +216,11 @@ const ResourceTiles = () => {
               ))}
             </div>
 
-            {/* Explore Our Solutions — Circular Grid Layout */}
             <div className="mt-6 mb-4">
               <div className="flex items-center justify-between mb-4 border-b border-gray-100 pb-2">
                 <h2 className="text-gray-900 text-xl font-black font-heading uppercase tracking-tight">
                   {blocks?.solutions?.heading || 'Explore Our Solutions'}
                 </h2>
-                <Link to={blocks?.solutions?.viewAllPath || '/catalogues'} className="text-sm-blue text-[10px] font-bold hover:underline uppercase">View All →</Link>
               </div>
               
               <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">

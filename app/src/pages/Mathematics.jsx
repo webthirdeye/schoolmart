@@ -6,15 +6,7 @@ import { Link } from 'react-router-dom';
 import { Compass, Box, Layers, Calculator, Square, PieChart, ArrowRight, ArrowUpRight, Download, Eye, FileText, CheckCircle2, Stars, Hash, Circle, Triangle, Ruler } from 'lucide-react';
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
-
-const mathItems = [
-  { id: 1, title: 'Geometric Shapes Kit', cat: 'Lab Equipment', img: 'https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=800&q=80', badge: 'Must Have' },
-  { id: 2, title: 'Calculus Visualization Board', cat: 'Digital Tools', img: 'https://images.unsplash.com/photo-1509228468518-180dd4864904?w=800&q=80', badge: 'Top Rated' },
-  { id: 3, title: 'The Abacus Classic', cat: 'Primary Tools', img: 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80', badge: 'Traditional' },
-  { id: 4, title: 'Algebra Logic Cubes', cat: 'Puzzles', img: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80', badge: 'Interactive' },
-  { id: 5, title: '3D Geometry Modeler', cat: 'Software', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80', badge: 'New Entry' },
-  { id: 6, title: 'Number Line System', cat: 'Visual Aids', img: 'https://images.unsplash.com/photo-1516534775068-ba3e84529db1?w=800&q=80', badge: 'Essential' },
-];
+import CatalogueCard from '../components/CatalogueCard';
 
 const Mathematics = () => {
   const { blocks, loading } = useCMSPage('mathematics');
@@ -79,55 +71,29 @@ const Mathematics = () => {
                  {cats.map((cat, i) => (
                     <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
                  ))}
-                 
-                 <div className="mt-12 p-6 bg-blue-50/30 rounded-[25px] border border-blue-100 shadow-sm relative group overflow-hidden">
-                    <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-sm-blue/20 blur-xl rounded-full" />
-                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Our Standard</span>
-                    <div className="flex items-center gap-2 mb-4">
-                       <CheckCircle2 size={12} className="text-sm-blue" />
-                       <span className="text-[9px] font-black uppercase text-gray-900">NEP Compliant Labs</span>
-                    </div>
-                    <button className="w-full py-2 bg-sm-blue text-white rounded-full text-[7px] font-black uppercase tracking-widest transition-all shadow-lg active:scale-95">Lab Setup Guide</button>
-                 </div>
               </div>
-           
-                  {/* Dynamic Resources & Trending Blocks */}
-                  {sidebarResources?.items?.length > 0 && (
-                     <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
-                        <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
-                        <div className="space-y-4">
-                           {sidebarResources.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}
-                  {sidebarTrending?.items?.length > 0 && (
-                     <div className="mt-4 p-6 bg-gray-900 rounded-[25px] border border-gray-800 shadow-xl">
-                        <span className="text-[8px] font-black text-blue-400 tracking-[0.2em] uppercase mb-4 block">Trending Now</span>
-                        <div className="space-y-4">
-                           {sidebarTrending.items.map((item, i) => {
-                              const label = typeof item === 'string' ? item : item.label;
-                              const path = typeof item === 'string' || !item.path ? '#' : item.path;
-                              return (
-                                 <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
-                                    <Stars size={14} className="text-yellow-400 flex-shrink-0 mt-0.5" />
-                                    <span className="text-[9px] font-black uppercase text-white leading-tight group-hover/link:text-blue-400 transition-colors">{label}</span>
-                                 </Link>
-                              );
-                           })}
-                        </div>
-                     </div>
-                  )}</aside>
+            
+              {/* Dynamic Resources & Trending Blocks */}
+              {sidebarResources?.items?.length > 0 && (
+                 <div className="mt-8 p-6 bg-white rounded-[25px] border border-gray-200 shadow-sm">
+                    <span className="text-[8px] font-black text-gray-400 tracking-[0.2em] uppercase mb-4 block">Resources</span>
+                    <div className="space-y-4">
+                       {sidebarResources.items.map((item, i) => {
+                          const label = typeof item === 'string' ? item : item.label;
+                          const path = typeof item === 'string' || !item.path ? '#' : item.path;
+                          return (
+                             <Link key={i} to={path} className="flex items-start gap-3 hover:translate-x-1 transition-transform group/link">
+                                <FileText size={14} className="text-blue-600 flex-shrink-0 mt-0.5" />
+                                <span className="text-[9px] font-black uppercase text-gray-900 leading-tight group-hover/link:text-sm-blue transition-colors">{label}</span>
+                             </Link>
+                          );
+                       })}
+                    </div>
+                 </div>
+              )}
+           </aside>
 
-           {/* MAIN CONTENT GALLERY - GOOGLE IMAGES STYLE */}
+           {/* MAIN CONTENT GALLERY */}
            <div className="flex-grow">
               <div className="flex justify-between items-end mb-8 px-2">
                  <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">THE <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Lab-Kit</span></h2>
@@ -135,24 +101,16 @@ const Mathematics = () => {
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
-                  {filteredItems.map((work, i) => (
-                     <React.Fragment key={i}>
-                       <div 
-                         className={`relative overflow-hidden rounded-[25px] shadow-sm group cursor-pointer border border-gray-300 aspect-[4/5] transition-all duration-500 bg-gray-50 ${selectedItem?.name === work.name ? 'ring-4 ring-sm-blue shadow-2xl scale-[1.02]' : 'hover:scale-[1.01]'}`}
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)}
-                       >
-                          <img src={(work.image || work.images?.[0] || "")} alt={work.name} className="w-full h-full object-cover transition-all duration-700 group-hover:scale-105" />
-                          <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                          <div className="absolute top-6 right-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                             <div className="w-10 h-10 rounded-full bg-sm-blue shadow-xl flex items-center justify-center text-white">
-                                <ArrowUpRight size={18} />
-                             </div>
-                          </div>
-                          <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-all translate-y-3 group-hover:translate-y-0">
-                             <h3 className="text-base font-black text-white uppercase tracking-tighter font-heading leading-none mb-1">{work.name}</h3>
-                             <span className="text-[10px] text-sm-blue font-black tracking-widest uppercase">{work.subcategory}</span>
-                          </div>
-                       </div>
+                 {filteredItems.map((work, i) => (
+                    <React.Fragment key={i}>
+                       <CatalogueCard 
+                         work={work} 
+                         isSelected={selectedItem?.name === work.name} 
+                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         themeColor="bg-sm-blue"
+                         ringColor="ring-blue-500"
+                         textColor="text-blue-400"
+                       />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}
@@ -164,33 +122,33 @@ const Mathematics = () => {
                        {/* Tablet (2 cols) */}
                        {i % 2 === 1 && (
                           <div className="hidden md:block lg:hidden col-span-full">
-                              {filteredItems.slice(i-1, i+1).some(dw => dw.name === selectedItem?.name) && (
-                                 <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                              )}
+                             {filteredItems.slice(i-1, i+1).some(dw => dw.name === selectedItem?.name) && (
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                             )}
                           </div>
                        )}
                        {/* Desktop (3 cols) */}
                        {i % 3 === 2 && (
                           <div className="hidden lg:block col-span-full">
-                              {filteredItems.slice(i-2, i+1).some(dw => dw.name === selectedItem?.name) && (
-                                 <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                              )}
+                             {filteredItems.slice(i-2, i+1).some(dw => dw.name === selectedItem?.name) && (
+                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                             )}
                           </div>
                        )}
                        {/* Handle End of List */}
-                        {i === filteredItems.length - 1 && (
-                           <>
-                              <div className="hidden md:block lg:hidden col-span-full">
-                                 {filteredItems.slice(Math.floor(i/2)*2).some(dw => dw.name === selectedItem?.name) && i % 2 !== 1 && (
-                                    <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                                 )}
-                              </div>
-                              <div className="hidden lg:block col-span-full">
-                                 {filteredItems.slice(Math.floor(i/3)*3).some(dw => dw.name === selectedItem?.name) && i % 3 !== 2 && (
-                                    <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                                 )}
-                              </div>
-                           </>
+                       {i === filteredItems.length - 1 && (
+                          <>
+                             <div className="hidden md:block lg:hidden col-span-full">
+                                {filteredItems.slice(Math.floor(i/2)*2).some(dw => dw.name === selectedItem?.name) && i % 2 !== 1 && (
+                                   <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                                )}
+                             </div>
+                             <div className="hidden lg:block col-span-full">
+                                {filteredItems.slice(Math.floor(i/3)*3).some(dw => dw.name === selectedItem?.name) && i % 3 !== 2 && (
+                                   <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
+                                )}
+                             </div>
+                          </>
                        )}
                     </React.Fragment>
                  ))}

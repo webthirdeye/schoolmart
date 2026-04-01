@@ -74,53 +74,55 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
                 </p>
              </div>
 
-             {/* RESOURCES & DOWNLOADS */}
+             {/* KEY FEATURES & SPECS */}
              <div className="bg-gray-900 rounded-[25px] p-8 text-white relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/20 blur-[60px] rounded-full translate-x-10 -translate-y-10" />
                 <h3 className="text-xs font-black uppercase tracking-[0.25em] mb-6 text-sm-blue flex items-center gap-2">
-                  <FileText size={14} /> Available Resources
+                  <CheckCircle2 size={14} /> Key Features & Technical Specs
                 </h3>
                 <div className="space-y-3">
-                   {(data.resources?.length > 0 && data.resources.some(r => r.name)) ? data.resources.filter(r => r.name).map((file, idx) => (
-                     <div key={idx} onClick={() => file.url && window.open(file.url, '_blank')} className="flex items-center justify-between p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group/file">
-                        <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-sm-blue group-hover/file:text-white transition-colors">
-                              <Download size={14} />
-                           </div>
-                           <div>
-                              <p className="text-[11px] font-bold text-white uppercase tracking-tight">{file.name}</p>
-                              <p className="text-[9px] text-white/30 uppercase font-black">{file.size}</p>
-                           </div>
+                   {(data.resources?.length > 0 && data.resources.some(r => r.name)) ? data.resources.filter(r => r.name).map((feat, idx) => (
+                     <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl">
+                        <div className="w-8 h-8 rounded-lg bg-sm-blue/10 flex items-center justify-center text-sm-blue">
+                           <CheckCircle2 size={14} />
                         </div>
-                        <ExternalLink size={14} className="text-white/20 group-hover/file:text-white" />
+                        <div>
+                           <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
+                           {feat.size && <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>}
+                        </div>
                      </div>
                    )) : [
-                     { name: 'Technical Specifications (PDF)', size: '2.4 MB' },
-                     { name: 'Institutional Layout Guide', size: '4.8 MB' },
-                     { name: 'Warranty & Support Policy', size: '1.2 MB' }
-                   ].map((file, idx) => (
-                     <div key={idx} className="flex items-center justify-between p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group/file">
-                        <div className="flex items-center gap-3">
-                           <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center text-sm-blue group-hover/file:text-white transition-colors">
-                              <Download size={14} />
-                           </div>
-                           <div>
-                              <p className="text-[11px] font-bold text-white uppercase tracking-tight">{file.name}</p>
-                              <p className="text-[9px] text-white/30 uppercase font-black">{file.size}</p>
-                           </div>
+                     { name: 'Ergonomic High-Density Support', size: 'Premium Build' },
+                     { name: '100% NEP 2020 Compliant', size: 'Standardized' },
+                     { name: 'Anti-Microbial Surface Coating', size: 'Safe & Hygienic' }
+                   ].map((feat, idx) => (
+                     <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group/feat">
+                        <div className="w-8 h-8 rounded-lg bg-sm-blue/20 flex items-center justify-center text-sm-blue group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all">
+                           <CheckCircle2 size={14} />
                         </div>
-                        <ExternalLink size={14} className="text-white/20 group-hover/file:text-white" />
+                        <div>
+                           <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
+                           <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>
+                        </div>
                      </div>
                    ))}
                 </div>
                 
                 <div className="mt-8 flex gap-3">
-                  <button className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-900/40 active:scale-95 transition-all">
+                  <a 
+                    href={`https://wa.me/919966109191?text=Hi, I am interested in ${data.name || data.title}. Please provide more details and a quote.`}
+                    target="_blank"
+                    className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] text-center uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-900/40 active:scale-95 transition-all"
+                  >
                     Request Quote
-                  </button>
-                  <button className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2">
+                  </a>
+                  <a 
+                    href="https://wa.me/919966109191"
+                    target="_blank"
+                    className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2"
+                  >
                     <MessageSquare size={14} /> Chat
-                  </button>
+                  </a>
                 </div>
              </div>
           </div>
