@@ -3,7 +3,7 @@ import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
 
 const AboutUs = () => {
-  const { blocks, loading } = useCMSPage('about');
+  const { blocks, loading } = useCMSPage('aboutus');
   const heroBlock = blocks?.about_hero || {};
 
   if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading About Us...</div>;
@@ -47,41 +47,43 @@ const AboutUs = () => {
             </div>
         </section>
 
-         {/* Compact Strip Menu — Standardized */}
-         <section className="pb-6 px-2">
-            <div className="flex overflow-x-auto gap-12 pb-2 hide-scrollbar justify-start border-b border-gray-100">
-              {(blocks?.about_hero?.menuStrip || ['OUR VISION', 'TEAM LEADERSHIP', 'HISTORY', 'IMPACT', 'CERTIFICATIONS']).map((cat, i) => (
-                 <button key={i} className="flex-none text-[8px] font-black text-gray-400 hover:text-gray-900 uppercase tracking-widest transition-colors py-2 uppercase">{cat}</button>
-              ))}
-            </div>
-         </section>
 
         {/* BENTO STORYTELLING - CLOSELY PACKED */}
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-4 py-6">
             {/* PHILOSOPHY */}
             <div className="lg:col-span-2 bg-white rounded-[25px] p-10 flex flex-col justify-center border border-gray-100 shadow-sm group hover:shadow-xl transition-all">
                <div className="w-12 h-1 bg-sm-blue mb-6 rounded-full" />
-               <h3 className="text-2xl font-black text-gray-900 font-heading mb-4 uppercase tracking-tighter">Our <span className="text-sm-blue">Philosophy.</span></h3>
+               <h3 className="text-2xl font-black text-gray-900 font-heading mb-4 uppercase tracking-tighter">
+                 {blocks?.about_philosophy?.title?.split('.').map((word, i, arr) => (
+                   <span key={i} className={i === arr.length - 1 ? "text-sm-blue" : ""}>
+                     {word}{i < arr.length - 1 ? '.' : ''}
+                   </span>
+                 )) || <>Our <span className="text-sm-blue">Philosophy.</span></>}
+               </h3>
                <p className="text-gray-500 text-[10px] leading-relaxed max-w-sm font-bold uppercase tracking-widest">
-                  {blocks?.mission_vision?.mission || "We don't just supply furniture; we engineer productivity, safety, and curiosity into every square inch."}
+                  {blocks?.about_philosophy?.statement || blocks?.mission_vision?.mission || "We don't just supply furniture; we engineer productivity, safety, and curiosity into every square inch."}
                </p>
             </div>
 
            {/* TEAM PHOTO */}
            <div className="lg:col-span-2 rounded-[25px] overflow-hidden shadow-2xl group min-h-[300px]">
-              <img src="https://images.unsplash.com/photo-1522071823907-b712ec46597a?w=1000&q=80" alt="Team" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
+              <img 
+                src={blocks?.about_philosophy?.teamImg || "https://images.unsplash.com/photo-1522071823907-b712ec46597a?w=1000&q=80"} 
+                alt="Team" 
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" 
+              />
            </div>
         </div>
 
         {/* JOURNEY TIMELINE - PACKED */}
         <div className="mt-8 relative text-center pb-12">
-           <h2 className="text-3xl lg:text-5xl font-black text-gray-900 font-heading mb-10 uppercase tracking-tighter">A Decade <span className="text-sm-blue italic font-serif lowercase">of</span> Excellence.</h2>
+           <h2 className="text-3xl lg:text-5xl font-black text-gray-900 font-heading mb-10 uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: blocks?.journey?.title || 'A Decade <span className="text-sm-blue italic font-serif lowercase">of</span> Excellence.' }} />
            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              {[
+              {(blocks?.journey?.steps || [
                 { y: '2012', t: 'FOUNDATION', d: 'Started in Maharashtra' },
                 { y: '2017', t: 'DIGITAL ERA', d: 'Smart Classroom Launch' },
                 { y: '2025', t: 'NATIONAL LEADER', d: 'Institutional Excellence' },
-              ].map((step, i) => (
+              ]).map((step, i) => (
                  <div key={i} className="bg-white p-8 rounded-[25px] border border-gray-100 shadow-sm relative group hover:-translate-y-2 transition-all">
                     <span className="text-3xl font-black font-heading text-sm-blue/20 group-hover:text-sm-blue transition-colors mb-2 block tracking-tighter">{step.y}</span>
                     <h4 className="text-sm font-black text-gray-900 uppercase tracking-widest mb-2">{step.t}</h4>

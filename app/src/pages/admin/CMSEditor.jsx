@@ -605,8 +605,8 @@ const BlockForms = {
 
   about_hero: ({ data, set }) => (
     <div className="space-y-4">
-      <Field label="Title"><TextInput value={data.title} onChange={v => set('title', v)} /></Field>
-      <Field label="Subtitle"><TextInput value={data.subtitle} onChange={v => set('subtitle', v)} /></Field>
+      <Field label="Hero Title (supports <br/> and span)"><TextArea value={data.title} onChange={v => set('title', v)} rows={3} /></Field>
+      <Field label="Hero Subtitle"><TextInput value={data.subtitle} onChange={v => set('subtitle', v)} /></Field>
       <Field label="Description"><TextArea value={data.description} onChange={v => set('description', v)} rows={4} /></Field>
       <div className="flex gap-2 mb-2">
         {['image', 'video'].map(mode => (
@@ -614,6 +614,35 @@ const BlockForms = {
         ))}
       </div>
       <MediaUpload label="Hero Media" value={data.mediaUrl || data.img} onChange={v => set('mediaUrl', v)} />
+    </div>
+  ),
+
+  about_philosophy: ({ data, set }) => (
+    <div className="space-y-4">
+      <Field label="Title"><TextInput value={data.title} onChange={v => set('title', v)} placeholder="Our Philosophy." /></Field>
+      <Field label="Statement"><TextArea value={data.statement} onChange={v => set('statement', v)} rows={4} /></Field>
+      <SectionTitle>Team Image</SectionTitle>
+      <ImageUpload label="Team Image" value={data.teamImg} onChange={v => set('teamImg', v)} />
+    </div>
+  ),
+
+  journey: ({ data, set }) => (
+    <div className="space-y-4">
+      <Field label="Section Title"><TextInput value={data.title} onChange={v => set('title', v)} placeholder="A Decade of Excellence." /></Field>
+      <SectionTitle>Timeline Steps</SectionTitle>
+      {(data.steps || []).map((step, i) => (
+        <div key={i} className="border border-gray-200 rounded-xl p-3 space-y-2 bg-gray-50/50">
+          <div className="flex items-center justify-between">
+            <span className="text-xs font-bold text-gray-500">Year {step.y || i + 1}</span>
+            <button onClick={() => set('steps', data.steps.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600"><Trash2 size={13}/></button>
+          </div>
+          <TextInput value={step.y} onChange={v => { const s = [...data.steps]; s[i] = { ...s[i], y: v }; set('steps', s); }} placeholder="Year (e.g. 2012)" />
+          <TextInput value={step.t} onChange={v => { const s = [...data.steps]; s[i] = { ...s[i], t: v }; set('steps', s); }} placeholder="Title" />
+          <TextInput value={step.d} onChange={v => { const s = [...data.steps]; s[i] = { ...s[i], d: v }; set('steps', s); }} placeholder="Short description" />
+        </div>
+      ))}
+      <button onClick={() => set('steps', [...(data.steps || []), { y: '', t: '', d: '' }])}
+        className="flex items-center gap-1 text-blue-600 text-xs font-bold hover:underline mt-1"><Plus size={13} /> Add Step</button>
     </div>
   ),
 
@@ -1050,7 +1079,8 @@ function BlockEditor({ slug, block, onSaved }) {
     tiles: '🟦 Masonry Tiles', solutions: '🔵 Solutions / Circles', feature_cards: '📦 Top Highlight Cards (Static)',
     partners: '🤝 School Partners', sidebar_trending: '🔥 Trending Sidebar', sidebar_resources: '📚 Resources Sidebar',
     sidebar_banners: '🟧 Sidebar Banners', sidebar_categories: '📑 Sidebar Tabs', about_hero: '👋 About Hero', stats: '📊 Statistics',
-    mission_vision: '🎯 Mission & Vision', contact_info: '📞 Contact Info', text_content: '📝 Text Content',
+    mission_vision: '🎯 Mission & Vision (OLD)', about_philosophy: '🧠 Philosophy & Team Photo', journey: '⏳ Journey Timeline',
+    contact_info: '📞 Contact Info', text_content: '📝 Text Content',
     catalogues_list: '📁 Catalogues List', guides_list: '📖 Guides List',
     feature_card: '🎴 Dynamic Feature Card (Color/Text)',
   };
@@ -1114,7 +1144,7 @@ const PAGE_ALLOWED_BLOCKS = {
   environments:['environments_page_content', 'feature_card'],
   catalogues:  ['catalogues_page_content', 'catalogues_list', 'feature_card'],
   guides:      ['guides_page_content', 'guides_list', 'feature_card'],
-  aboutus:     ['about_hero', 'stats', 'mission_vision'],
+  aboutus:     ['about_hero', 'stats', 'about_philosophy', 'journey'],
   'contact-us':['contact_page_content', 'contact_info'],
 };
 
@@ -1172,7 +1202,9 @@ function PageEditor({ slug }) {
     sidebar_categories: '📑 Sidebar – Category Tabs',
     about_hero: '👋 About Page Hero',
     stats: '📊 Statistics',
-    mission_vision: '🎯 Mission & Vision',
+    mission_vision: '🎯 Mission & Vision (OLD)',
+    about_philosophy: '🧠 About – Philosophy & Team Photo',
+    journey: '⏳ About – Journey Timeline',
     contact_info: '📞 Contact Info',
     text_content: '📝 Text Content',
     catalogues_page_content: '📄 Catalogues Page Content',
