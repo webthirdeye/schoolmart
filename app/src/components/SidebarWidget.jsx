@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FileText, TrendingUp, ChevronRight } from 'lucide-react';
+import { useCMSBlock } from '../hooks/useCMSBlock';
 
 const PATH_MAP = {
   'SCHOOLS FOR SALE / LEASE': '/school-sale',
@@ -18,10 +19,16 @@ const PATH_MAP = {
   'JOIN AS INFLUENCERS': '/contact-us',
 };
 
-const SidebarWidget = ({ title, items = [], type = 'resources' }) => {
+const SidebarWidget = ({ title, items: itemsProp = [], type = 'resources' }) => {
+  const isTrending = type === 'trending';
+  const blockSlug = isTrending ? 'sidebar_trending' : 'sidebar_resources';
+  const { data: globalData } = useCMSBlock('home', blockSlug);
+  
+  // Use passed items if not empty, else use home blocks
+  const items = (itemsProp && itemsProp.length > 0) ? itemsProp : (globalData?.items || []);
+
   if (!items || items.length === 0) return null;
   
-  const isTrending = type === 'trending';
   const Icon = isTrending ? TrendingUp : FileText;
   const headerBg = 'bg-sm-blue'; // Consistent with SchoolMart turquoise
 
