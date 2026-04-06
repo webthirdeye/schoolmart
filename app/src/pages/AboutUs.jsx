@@ -33,10 +33,11 @@ const AboutUs = () => {
             {/* STAT STACK (SPAN 4) - PACKED */}
             <div className="lg:col-span-4 flex flex-col gap-3">
                {(blocks?.stats?.stats || [
-                 { value: '1500+', label: 'Schools Equipped Pan-India' },
-                 { value: '22+', label: 'States & UT Presence' }
+                 { value: '7+', label: 'Years Experience', icon: 'Clock' },
+                 { value: '1200+', label: 'Products', icon: 'LayoutGrid' },
+                 { value: '16+', label: 'Panel Architects', icon: 'Users' }
                ]).map((s, i) => (
-                  <div key={i} className={`flex-1 ${i % 2 === 0 ? 'bg-sm-blue' : 'bg-gray-900'} rounded-[25px] p-8 text-white flex flex-col justify-between group overflow-hidden relative border ${i % 2 === 0 ? 'border-blue-400 shadow-xl' : 'border-gray-800 shadow-2xl'} transition-all hover:scale-[1.02]`}>
+                  <div key={i} className={`flex-1 ${i % 2 !== 0 ? 'bg-sm-blue' : 'bg-gray-900'} rounded-[25px] p-8 text-white flex flex-col justify-between group overflow-hidden relative border ${i % 2 !== 0 ? 'border-blue-400 shadow-xl' : 'border-gray-800 shadow-2xl'} transition-all hover:scale-[1.02]`}>
                      <div className="flex justify-between items-start text-white">
                         <h3 className="text-[28px] font-black font-heading leading-none uppercase">{s.value}</h3>
                         <Users size={32} className="text-white/30 group-hover:text-white transition-colors" />
@@ -54,11 +55,14 @@ const AboutUs = () => {
             <div className="lg:col-span-2 bg-white rounded-[25px] p-10 flex flex-col justify-center border border-gray-100 shadow-sm group hover:shadow-xl transition-all">
                <div className="w-12 h-1 bg-sm-blue mb-6 rounded-full" />
                <h3 className="text-2xl font-black text-gray-900 font-heading mb-4 uppercase tracking-tighter">
-                 {blocks?.about_philosophy?.title?.split('.').map((word, i, arr) => (
-                   <span key={i} className={i === arr.length - 1 ? "text-sm-blue" : ""}>
-                     {word}{i < arr.length - 1 ? '.' : ''}
-                   </span>
-                 )) || <>Our <span className="text-sm-blue">Philosophy.</span></>}
+                 {blocks?.about_philosophy?.title?.includes(' ') ? (
+                   <>
+                     {blocks.about_philosophy.title.split(' ').slice(0, -1).join(' ')}{' '}
+                     <span className="text-sm-blue">{blocks.about_philosophy.title.split(' ').slice(-1)}</span>
+                   </>
+                 ) : (
+                   blocks?.about_philosophy?.title || <>Our <span className="text-sm-blue">Philosophy.</span></>
+                 )}
                </h3>
                <p className="text-gray-500 text-[10px] leading-relaxed max-w-sm font-bold uppercase tracking-widest">
                   {blocks?.about_philosophy?.statement || blocks?.mission_vision?.mission || "We don't just supply furniture; we engineer productivity, safety, and curiosity into every square inch."}
@@ -77,7 +81,7 @@ const AboutUs = () => {
 
         {/* JOURNEY TIMELINE - PACKED */}
         <div className="mt-8 relative text-center pb-12">
-           <h2 className="text-3xl lg:text-5xl font-black text-gray-900 font-heading mb-10 uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: blocks?.journey?.title || 'A Decade <span className="text-sm-blue italic font-serif lowercase">of</span> Excellence.' }} />
+           <h2 className="text-3xl lg:text-5xl font-black text-gray-900 font-heading mb-10 uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: blocks?.journey?.title || 'A DECADE OF EXCELLENCE.' }} />
            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {(blocks?.journey?.steps || [
                 { y: '2012', t: 'FOUNDATION', d: 'Started in Maharashtra' },

@@ -649,13 +649,14 @@ const BlockForms = {
   stats: ({ data, set }) => (
     <div className="space-y-2">
       {(data.stats || []).map((s, i) => (
-        <div key={i} className="flex gap-2 items-center">
-          <TextInput value={s.value} onChange={v => { const t = [...data.stats]; t[i] = { ...t[i], value: v }; set('stats', t); }} placeholder="4000+" />
-          <TextInput value={s.label} onChange={v => { const t = [...data.stats]; t[i] = { ...t[i], label: v }; set('stats', t); }} placeholder="Partner Schools" />
+        <div key={i} className="flex gap-2 items-center bg-gray-50 p-2 rounded-xl">
+          <TextInput value={s.value} onChange={v => { const t = [...data.stats]; t[i] = { ...t[i], value: v }; set('stats', t); }} placeholder="1200+" className="w-24" />
+          <TextInput value={s.label} onChange={v => { const t = [...data.stats]; t[i] = { ...t[i], label: v }; set('stats', t); }} placeholder="Products" />
+          <TextInput value={s.icon} onChange={v => { const t = [...data.stats]; t[i] = { ...s[i], icon: v }; set('stats', t); }} placeholder="Icon (Clock/Users)" className="w-32" />
           <button onClick={() => set('stats', data.stats.filter((_, j) => j !== i))} className="text-red-400 hover:text-red-600 shrink-0"><Trash2 size={14} /></button>
         </div>
       ))}
-      <button onClick={() => set('stats', [...(data.stats || []), { value: '', label: '' }])}
+      <button onClick={() => set('stats', [...(data.stats || []), { value: '', label: '', icon: 'Users' }])}
         className="flex items-center gap-1 text-blue-600 text-xs font-bold hover:underline"><Plus size={13} /> Add Stat</button>
     </div>
   ),
