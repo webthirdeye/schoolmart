@@ -63,7 +63,7 @@ const ContactUs = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sm-blue"></div></div>;
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-16 pb-12 overflow-hidden relative">
+    <main className="min-h-screen bg-gray-50 pt-10 pb-12 overflow-hidden relative">
       {/* Decorative Blobs */}
       <div className="absolute top-0 right-0 w-[50%] h-[50%] bg-blue-100 rounded-full blur-3xl opacity-10 -mr-32 -mt-32" />
       <div className="absolute bottom-0 left-0 w-[40%] h-[40%] bg-orange-100 rounded-full blur-3xl opacity-10 -ml-32 -mb-32" />

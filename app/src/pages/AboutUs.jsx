@@ -9,10 +9,10 @@ const AboutUs = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading About Us...</div>;
 
   return (
-    <main className="min-h-screen bg-white pt-24 pb-10">
+    <main className="min-h-screen bg-white pt-8 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         
-        <section className="pt-8 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch min-h-[450px]">
+        <section className="pt-2 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch min-h-[450px]">
            <div className="lg:col-span-8 bg-gray-50 rounded-[25px] p-10 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group">
               <CMSMedia 
                 mediaType={heroBlock.mediaType} 

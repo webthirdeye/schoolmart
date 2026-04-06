@@ -47,11 +47,11 @@ const Environments = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sm-blue"></div></div>;
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-16 pb-4">
+    <main className="min-h-screen bg-gray-50 pt-8 pb-4">
       <div className="max-w-7xl mx-auto px-4">
         
         {/* BENTO HIGH-DENSITY HERO */}
-        <section className="pt-4 pb-6 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-4 gap-3 items-stretch h-auto">
+        <section className="pt-2 pb-6 grid grid-cols-1 md:grid-cols-6 lg:grid-cols-4 gap-3 items-stretch h-auto">
            {/* BIG TEXT BLOCK */}
            <div className="md:col-span-3 lg:col-span-2 bg-white rounded-[20px] p-8 flex flex-col justify-center border border-gray-300 shadow-sm relative overflow-hidden group min-h-[220px]">
               <CMSMedia 

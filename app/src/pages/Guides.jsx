@@ -39,10 +39,10 @@ const Guides = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sm-blue"></div></div>;
 
   return (
-    <main className="min-h-screen bg-white pt-24 pb-10">
+    <main className="min-h-screen bg-white pt-10 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         
-        <section className="pt-4 pb-12 flex flex-col gap-6">
+        <section className="pt-2 pb-12 flex flex-col gap-6">
            {/* LARGE WIDE STORY BLOCK */}
            <div className="bg-gray-50 rounded-[30px] p-12 lg:p-20 flex flex-col items-center text-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px] justify-center">
               <CMSMedia 

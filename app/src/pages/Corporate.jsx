@@ -17,9 +17,9 @@ const Corporate = () => {
   if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Corporate...</div>;
 
   return (
-    <main className="min-h-screen bg-white pt-24 pb-20 overflow-hidden relative">
+    <main className="min-h-screen bg-white pt-10 pb-20 overflow-hidden relative">
       {/* PROFESSIONAL BENTO HERO (Unique for Corporate) */}
-      <section className="px-4 py-12 max-w-7xl mx-auto">
+      <section className="px-4 py-8 max-w-7xl mx-auto">
          <div className="grid grid-cols-1 lg:grid-cols-12 lg:grid-rows-6 gap-6 min-h-[900px]">
             
             {/* Main Statement Bento (Screenshot 2 Inspired) */}

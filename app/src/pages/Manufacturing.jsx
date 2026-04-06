@@ -28,11 +28,11 @@ const Manufacturing = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-20 pb-10">
+    <main className="min-h-screen bg-gray-50 pt-10 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         
         {/* TECHNICAL STRIP HERO - HORIZONTAL HIGH DENSITY */}
-        <section className="pt-4 pb-12 flex flex-col gap-3">
+        <section className="pt-2 pb-12 flex flex-col gap-3">
            {/* STRIP 1 - THE STORY & STATS */}
            <div className="flex flex-col lg:flex-row gap-8 items-stretch mb-8">
             <div className="flex-1 bg-[#1A1A1A] rounded-[30px] p-12 text-white relative overflow-hidden group border border-gray-800 shadow-2xl min-h-[400px] flex flex-col justify-center">

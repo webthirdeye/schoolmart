@@ -40,10 +40,10 @@ const Catalogues = () => {
   const catalogues = blocks?.catalogues_list?.catalogues || DEFAULT_CATALOGUES;
 
   return (
-    <main className="min-h-screen bg-white pt-24 pb-10">
+    <main className="min-h-screen bg-white pt-10 pb-10">
       <div className="max-w-7xl mx-auto px-4">
         
-        <section className="pt-4 pb-12 grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
+        <section className="pt-2 pb-12 grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">
            <div className="md:col-span-4 bg-gray-50 rounded-[30px] p-12 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px]">
               <CMSMedia 
                 mediaType={d.libraryHero?.mediaType} 
