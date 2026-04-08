@@ -1294,7 +1294,24 @@ const PAGE_ALLOWED_BLOCKS = {
   guides:      ['guides_page_content', 'guides_list', 'sidebar_resources', 'sidebar_trending', 'cta_whatsapp'],
   aboutus:     ['about_hero', 'stats', 'about_philosophy', 'journey', 'sidebar_resources', 'sidebar_trending'],
   'contact-us':['contact_page_content', 'contact_info', 'sidebar_resources', 'sidebar_trending'],
+  'school-sale': ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'listings', 'cta_whatsapp'],
+  partnerships:['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'categories', 'cta_whatsapp'],
+  'setup-guide': ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'benefits', 'cta_whatsapp'],
+  workshops:   ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'upcoming_events', 'cta_whatsapp'],
+  fundraising: ['inner_page_hero', 'sidebar_resources', 'sidebar_trending', 'categories', 'cta_whatsapp'],
+  'digitization-guide': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'catalogue-2025': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'skill-lab-guide': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'play-furniture-lookbook': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'math-resources': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'completed-projects': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'design-ideas': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'library-trends': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'job-openings': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
+  'influencer-program': ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'],
 };
+
+const DEFAULT_ALLOWED_BLOCKS = ['inner_page_hero', 'text_content', 'sidebar_categories', 'cta_whatsapp'];
 
 function PageEditor({ slug }) {
   const [page, setPage] = useState(null);
@@ -1412,7 +1429,7 @@ function PageEditor({ slug }) {
           {/* Add block form — only shows block types that this page's frontend actually reads */}
           {(() => {
             const existingTypes = new Set(sortedBlocks.map(b => b.blockType));
-            const allowed = PAGE_ALLOWED_BLOCKS[slug] || [];
+            const allowed = PAGE_ALLOWED_BLOCKS[slug] || DEFAULT_ALLOWED_BLOCKS;
             const addable = allowed.filter(t => !existingTypes.has(t));
             return addable.length > 0 ? (
               <div className="bg-white border border-dashed border-gray-300 rounded-2xl p-4 flex flex-col gap-3">
@@ -1494,6 +1511,11 @@ const PAGE_ICONS = {
   libraries: '📚', environments: '🌿', aboutus: 'ℹ️', 'contact-us': '📞',
   mathematics: '📐', science: '🔬', labs: '🧪', design: '🎨',
   manufacturing: '🏭', corporate: '🏢', catalogues: '📁', guides: '📖',
+  'school-sale': '🏫', partnerships: '🤝', 'setup-guide': '📘', workshops: '🎟️', fundraising: '💰',
+  'digitization-guide': '📱', 'catalogue-2025': '📖', 'skill-lab-guide': '🧪',
+  'play-furniture-lookbook': '🪑', 'math-resources': '🧮', 'completed-projects': '🏗️',
+  'design-ideas': '💡', 'library-trends': '🏛️', 'job-openings': '💼',
+  'influencer-program': '📣',
 };
 
 export default function CMSEditor() {

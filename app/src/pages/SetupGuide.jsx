@@ -1,82 +1,140 @@
 import React from 'react';
-import { useCMSPage } from '../hooks/useCMSBlock';
-import { Rocket, CheckCircle2, ArrowRight, ShieldCheck, Zap, Globe, MessageSquare } from 'lucide-react';
-import CMSMedia from '../components/ui/CMSMedia';
+import { CheckCircle2, ArrowRight, Download, Phone, Shield, Target, Construction, Zap, Info, MapPin } from 'lucide-react';
+
+const ROADMAP = [
+  {
+    num: '01',
+    title: 'Initial Preparation',
+    sub: 'Legal & Strategy Foundation',
+    desc: 'The groundwork for your new institution begins with legal compliance and strategic financial modelling.',
+    icon: <Shield size={20} className="text-blue-500" />,
+    color: 'blue',
+    steps: [
+      'Society / Trust Registration certificates',
+      'Affiliation Roadmap development',
+      'Site Visit & Geotagging reports',
+    ],
+  },
+  {
+    num: '02',
+    title: 'Infrastructure Build',
+    sub: 'Designing Inspiring Spaces',
+    desc: 'Transforming land into learning environments that meet NEP standards.',
+    icon: <Construction size={20} className="text-emerald-500" />,
+    color: 'emerald',
+    steps: [
+      'NEP-ready campus master planning',
+      'Specialized STEM & Composite Labs',
+      'Library & Modern Learning Hubs',
+    ],
+  },
+  {
+    num: '03',
+    title: 'Digital Core Setup',
+    sub: 'AI & Connectivity Readiness',
+    desc: 'Future-proofing your campus with campus-wide high-speed connectivity.',
+    icon: <Zap size={20} className="text-amber-500" />,
+    color: 'amber',
+    steps: [
+      'Campus-wide Ultra-fast Wi-Fi',
+      'Smart Classroom Panels & Panels',
+      'AI-enabled learning tools setup',
+    ],
+  },
+  {
+    num: '04',
+    title: 'Compliance & Application',
+    sub: 'Board Affiliation Process',
+    desc: 'Navigating the complex bureaucratic landscape of board applications.',
+    icon: <Target size={20} className="text-rose-500" />,
+    color: 'rose',
+    steps: [
+      'Online Board Application (CBSE/IB/ICSE)',
+      'Fee payments & form submission',
+      'Board Inspection Coordination',
+    ],
+  },
+];
 
 const SetupGuide = () => {
-  const { blocks, loading } = useCMSPage('setup-guide');
-
-  const heroBlock = blocks?.inner_page_hero || {};
-  
-  const benefits = blocks?.benefits?.items || [
-    { title: 'Regulatory Compliance', desc: 'Navigating state and national education board requirements.', icon: ShieldCheck },
-    { title: 'Infrastructure Design', desc: 'Expert architects specialized in modern K-12 campus planning.', icon: Globe },
-    { title: 'Operational Setup', desc: 'From HR guidelines to safety protocols and ERP selection.', icon: Zap },
-  ];
-
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Setup Guide...</div>;
-
   return (
-    <main className="min-h-screen bg-white pt-8 pb-10">
-      <div className="max-w-5xl mx-auto px-4">
-        {/* Main Content Area */}
-        <div className="min-w-0">
-          {/* HERO */}
-          <div className="bg-gray-900 rounded-[45px] p-12 lg:p-24 text-white flex flex-col items-center text-center relative overflow-hidden mb-16 select-none shadow-2xl">
-             <div className="absolute top-0 right-0 w-96 h-96 bg-sm-blue/20 rounded-full blur-[120px] -mr-48 -mt-48" />
-             <div className="absolute bottom-0 left-0 w-96 h-96 bg-purple-500/10 rounded-full blur-[120px] -ml-48 -mb-48" />
-             
-             <CMSMedia 
-                mediaType={heroBlock.mediaType} 
-                mediaUrl={heroBlock.mediaUrl} 
-                fallbackImg={heroBlock.img} 
-                className="absolute inset-0 w-full h-full object-cover opacity-10 grayscale"
-             />
-
-             <div className="relative z-10 max-w-3xl">
-                <div className="mx-auto w-fit px-5 py-2 bg-sm-blue text-white font-black rounded-full text-[10px] uppercase tracking-[0.3em] mb-10 shadow-lg">
-                   Launchpad 2025
-                </div>
-                <h1 className="text-5xl lg:text-8xl font-black font-heading leading-none mb-10 tracking-tighter uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'Setting Up <br/> <span className="text-sm-blue italic font-serif lowercase tracking-normal">a</span> <br/> School in India.' }} />
-                <p className="text-white/40 text-[13px] font-black uppercase tracking-widest leading-loose max-w-xl mx-auto mb-12">
-                   {heroBlock.subtitle || "A comprehensive consultancy framework designed to bridge the gap between vision and operational reality for new institutions."}
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                   <button className="px-10 py-5 bg-white text-gray-900 font-black rounded-full text-[10px] uppercase tracking-widest flex items-center justify-center gap-3 hover:bg-sm-blue hover:text-white transition-all shadow-xl">
-                      Request Consultation <ArrowRight size={18} />
-                   </button>
-                </div>
-             </div>
+    <main className="min-h-screen bg-gray-50 text-gray-900">
+      {/* COMPACT HERO */}
+      <section className="bg-white py-12 px-6 border-b border-gray-100 text-center">
+        <div className="max-w-4xl mx-auto">
+          <div className="inline-flex items-center gap-2 px-3 py-1.5 bg-emerald-50 text-emerald-600 border border-emerald-100 rounded-full mb-6">
+            <Shield size={12} />
+            <span className="text-[9px] font-black uppercase tracking-[0.3em]">Institutional Roadmap</span>
           </div>
-
-          {/* BENEFITS GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
-             {benefits.map((b, i) => (
-                <div key={i} className="bg-gray-50 p-10 rounded-[40px] border border-gray-100 group hover:border-sm-blue transition-all">
-                   <h3 className="text-lg font-black text-gray-900 uppercase tracking-tighter mb-4">{b.title}</h3>
-                   <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed mb-8">{b.desc}</p>
-                   <div className="w-12 h-12 rounded-2xl bg-white flex items-center justify-center text-sm-blue shadow-sm group-hover:scale-110 transition-transform">
-                      <Rocket size={24} />
-                   </div>
-                </div>
-             ))}
-          </div>
-
-          {/* ADVISORY SECTION */}
-          <div className="bg-sm-blue rounded-[45px] p-16 text-white text-center relative overflow-hidden group">
-             <div className="absolute inset-0 bg-[radial-gradient(circle_at_bottom_left,rgba(255,255,255,0.1),transparent)]" />
-             <div className="relative z-10 max-w-2xl mx-auto">
-                <h2 className="text-4xl font-black uppercase tracking-tighter mb-6">Expert Advisory Board.</h2>
-                <p className="text-white/60 text-[11px] font-black uppercase tracking-[0.2em] mb-12 leading-loose">
-                   Gain access to our panel of educationists, architects, and legal consultants who have helped establish 50+ successful schools across the subcontinent.
-                </p>
-                <button className="px-12 py-5 bg-white text-sm-blue font-black rounded-full text-[10px] uppercase tracking-widest hover:scale-105 transition-all flex items-center justify-center gap-3 mx-auto shadow-2xl">
-                   <MessageSquare size={18} /> Connect with Leads
-                </button>
-             </div>
-          </div>
+          <h1 className="text-4xl lg:text-5xl font-black uppercase tracking-tighter text-gray-900 mb-4">
+            Phase-Wise <span className="text-sm-blue italic font-serif lowercase tracking-normal">Setup Guide.</span>
+          </h1>
+          <p className="text-gray-500 text-[12px] font-bold uppercase tracking-widest leading-relaxed max-w-xl mx-auto">
+            From registration to board affiliation, our step-by-step roadmap ensures your new school project stays on track and compliant.
+          </p>
         </div>
-      </div>
+      </section>
+
+      {/* COMPACT STAIRCASE: High Density Grid */}
+      <section className="py-16 px-6">
+         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {ROADMAP.map((phase, i) => (
+               <div key={i} className="bg-white p-8 rounded-[35px] border border-gray-100 shadow-xl shadow-gray-200/50 hover:shadow-2xl hover:-translate-y-1 transition-all group flex flex-col h-full relative overflow-hidden">
+                  <div className={`w-12 h-12 rounded-2xl flex items-center justify-center bg-gray-50 text-gray-900 mb-6 group-hover:bg-gray-900 group-hover:text-white transition-all`}>
+                     {phase.icon}
+                  </div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 mb-1">Phase {phase.num}</span>
+                  <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight mb-4 min-h-[3rem] line-clamp-2">{phase.title}</h3>
+                  <p className="text-gray-500 text-[12px] leading-relaxed mb-8 flex-grow">{phase.desc}</p>
+                  
+                  <div className="space-y-3 pt-6 border-t border-gray-50">
+                     {phase.steps.map((step, j) => (
+                        <div key={j} className="flex gap-3 items-center group/step">
+                           <CheckCircle2 size={14} className="text-emerald-500 shrink-0 opacity-40 group-hover/step:opacity-100" />
+                           <span className="text-[11px] font-bold text-gray-600 uppercase tracking-tight line-clamp-1">{step}</span>
+                        </div>
+                     ))}
+                  </div>
+               </div>
+            ))}
+         </div>
+      </section>
+
+      {/* CHECKLIST BANNER: compact Horizontal Layout */}
+      <section className="py-16 px-6 bg-gray-900 text-white">
+         <div className="max-w-7xl mx-auto p-12 rounded-[50px] border border-white/10 flex flex-col md:flex-row items-center justify-between gap-12 group">
+            <div className="md:w-2/3">
+               <h3 className="text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-4 leading-tight">Download the <br /> 48-Point Affiliation <span className="italic font-serif text-emerald-500">Roadmap.</span></h3>
+               <p className="text-white/40 text-[11px] font-black uppercase tracking-widest leading-loose mb-10">
+                  Comprehensive compliance guide for land documents, structural safety, and board norms.
+               </p>
+               <button className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-500 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white hover:text-emerald-600 transition-all shadow-xl shadow-emerald-500/10 active:scale-95 duration-500 group">
+                  Get The Checklist <Download size={14} className="group-hover:translate-y-0.5 transition-transform" />
+               </button>
+            </div>
+            <div className="md:w-1/3 flex justify-center">
+               <div className="w-48 h-64 bg-white rounded-3xl p-6 flex flex-col justify-end text-gray-950 relative overflow-hidden group-hover:scale-105 transition-transform">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-50 rounded-full -mr-12 -mt-12" />
+                  <Shield size={40} className="text-emerald-500 mb-6" />
+                  <span className="text-[9px] font-black uppercase tracking-widest mb-1 opacity-50">Score</span>
+                  <div className="w-full h-1.5 bg-emerald-50 rounded-full mb-3">
+                     <div className="w-3/4 h-full bg-emerald-500" />
+                  </div>
+                  <span className="text-xl font-black">75% SECURE</span>
+               </div>
+            </div>
+         </div>
+      </section>
+
+      {/* FINAL ADVISORY: compact centered */}
+      <section className="py-16 px-6 text-center">
+         <div className="max-w-2xl mx-auto">
+            <h4 className="text-2xl font-black text-gray-900 uppercase tracking-tight mb-8">Consult Our Experts.</h4>
+            <a href="tel:+919966109191" className="inline-flex items-center gap-4 px-10 py-5 bg-gray-900 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-sm-blue transition-all shadow-xl shadow-blue-500/10 h-16 w-full md:w-auto flex justify-center">
+               <Phone size={16} /> Schedule Strategy Call
+            </a>
+         </div>
+      </section>
     </main>
   );
 };

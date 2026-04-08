@@ -7,7 +7,6 @@ import { Sofa, GraduationCap, Library, FlaskConical, Building2, ArrowRight, Down
 import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
-import SidebarWidget from '../components/SidebarWidget';
 
 const Furniture = () => {
   const { blocks, loading } = useCMSPage('furniture');
@@ -23,8 +22,6 @@ const Furniture = () => {
 
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
-  const sidebarResources = blocks?.sidebar_resources || {};
-  const sidebarTrending = blocks?.sidebar_trending || {};
   
   const cats = sidebarCategories.categories || [];
   const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
@@ -35,7 +32,7 @@ const Furniture = () => {
     }
   }, [loading, cats, selectedCat]);
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Furniture...</div>;
+  if (loading) return null;
 
 
   return (
@@ -83,32 +80,36 @@ const Furniture = () => {
            </div>
         </section>
 
-        {/* MAIN PRODUCT GRID */}
-        <section className="py-8 border-t border-gray-100 flex flex-col lg:flex-row gap-8">
-           <aside className="lg:w-[240px] flex-shrink-0">
-              <div className="sticky top-24 space-y-2">
-                 <div className="mb-6 px-4">
-                    <h3 className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em] mb-4">SHOP</h3>
-                    <div className="w-8 h-1 bg-sm-blue rounded-full" />
-                 </div>
-                 {cats.map((cat, i) => (
-                    <button key={i} onClick={() => setSelectedCat(cat)} className={`w-full text-left px-4 py-3 rounded-xl text-[11px] font-black uppercase tracking-widest transition-all ${selectedCat === cat ? 'bg-gray-900 text-white shadow-lg' : 'text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}>{cat}</button>
-                 ))}
-
-                 <div className="pt-6">
-                    <SidebarWidget title="TRENDING" items={sidebarTrending?.items} type="trending" />
-                    <SidebarWidget title="RESOURCES" items={sidebarResources?.items} type="resources" />
-                 </div>
+        {/* CATEGORY NAV & MAIN PRODUCT GRID */}
+        <section className="py-8 flex flex-col md:flex-row gap-8 items-start">
+           {/* LEFT CATEGORY NAV */}
+           <div className="w-full md:w-64 shrink-0 space-y-2 sticky top-24">
+              <div className="flex items-center gap-3 mb-6 px-4">
+                 <h3 className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em]">COLLECTIONS</h3>
+                 <div className="h-0.5 flex-grow bg-gray-100 rounded-full" />
               </div>
-           </aside>
+              {cats.map((cat, i) => (
+                 <button 
+                   key={i} 
+                   onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                 >
+                   {cat}
+                   <ChevronDown size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />
+                 </button>
+              ))}
+           </div>
 
-           <div className="flex-grow">
+           {/* MAIN PRODUCT GRID */}
+           <div className="flex-1 min-w-0">
               <div className="flex justify-between items-end mb-8 px-2">
-                 <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">CLASSROOM <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Collection</span></h2>
-                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Showing 1-6 of 120 Products</span>
+                 <h2 className="text-2xl font-black text-gray-900 uppercase tracking-tighter">
+                   {selectedCat || 'CLASSROOM'} <span className="text-sm-blue italic font-serif lowercase tracking-normal text-lg ml-2">Collection</span>
+                 </h2>
+                 <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Showing {filteredItems.length} Products</span>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start">
+              <div id="product-grid" className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
                        <CatalogueCard 
@@ -127,18 +128,10 @@ const Furniture = () => {
                              <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                           )}
                        </div>
-                       {/* Tablet (2 cols) */}
+                       {/* PC (2 cols) */}
                        {i % 2 === 1 && (
-                          <div className="hidden md:block lg:hidden col-span-full">
+                          <div className="hidden md:block col-span-full">
                              {filteredItems.slice(i-1, i+1).some(dw => dw.name === selectedItem?.name) && (
-                                <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                             )}
-                          </div>
-                       )}
-                       {/* Desktop (3 cols) */}
-                       {i % 3 === 2 && (
-                          <div className="hidden lg:block col-span-full">
-                             {filteredItems.slice(i-2, i+1).some(dw => dw.name === selectedItem?.name) && (
                                 <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                              )}
                           </div>
@@ -146,13 +139,8 @@ const Furniture = () => {
                        {/* Handle End of List */}
                        {i === filteredItems.length - 1 && (
                           <>
-                             <div className="hidden md:block lg:hidden col-span-full">
+                             <div className="hidden md:block col-span-full">
                                 {filteredItems.slice(Math.floor(i/2)*2).some(dw => dw.name === selectedItem?.name) && i % 2 !== 1 && (
-                                   <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                                )}
-                             </div>
-                             <div className="hidden lg:block col-span-full">
-                                {filteredItems.slice(Math.floor(i/3)*3).some(dw => dw.name === selectedItem?.name) && i % 3 !== 2 && (
                                    <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
                                 )}
                              </div>

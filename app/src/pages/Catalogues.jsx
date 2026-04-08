@@ -4,7 +4,6 @@ import { BookOpen, Download, ArrowUpRight, Layers } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
-import SidebarWidget from '../components/SidebarWidget';
 
 const DEFAULT_CONTENT = {
   libraryHero: {
@@ -36,8 +35,6 @@ const DEFAULT_CATALOGUES = [
 
 const Catalogues = () => {
     const { blocks, loading } = useCMSPage('catalogues');
-  const sidebarResources = blocks?.sidebar_resources || {};
-  const sidebarTrending = blocks?.sidebar_trending || {};
   const [selectedItem, setSelectedItem] = useState(null);
   const d = blocks?.catalogues_page_content || DEFAULT_CONTENT;
   const catalogues = blocks?.catalogues_list?.catalogues || DEFAULT_CATALOGUES;
@@ -47,15 +44,7 @@ const Catalogues = () => {
   return (
     <main className="min-h-screen bg-white pt-10 pb-10">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8">
-           {/* Sidebar Widget Sync */}
-           <aside className="lg:w-[240px] flex-shrink-0">
-              <div className="sticky top-24 space-y-6">
-                 <SidebarWidget title="TRENDING" items={sidebarTrending?.items} type="trending" />
-                 <SidebarWidget title="RESOURCES" items={sidebarResources?.items} type="resources" />
-              </div>
-           </aside>
-
+        <div className="flex flex-col gap-8">
            {/* Main Content Area */}
            <div className="flex-grow min-w-0">
              <section className="pt-2 pb-12 grid grid-cols-1 md:grid-cols-12 gap-6 items-stretch">

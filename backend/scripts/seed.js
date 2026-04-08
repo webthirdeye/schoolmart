@@ -935,6 +935,174 @@ async function seed() {
         },
       ],
     },
+
+    // ───────────────── INSTITUTIONAL PAGES ─────────────────
+    {
+      pageSlug: 'school-sale',
+      pageTitle: 'Buy/Sell/Lease Schools',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Institutional <br/> Exchange Hub.', subtitle: 'Direct marketplace for leasing, selling or acquisition of premium school properties across India.', theme: 'School Property' }, order: 0 },
+        { blockType: 'listings', data: { items: [
+          { 
+            title: "Acquire a well-established Karnataka syllabus school with higher secondary capacity", 
+            location: "Bengaluru, India", 
+            type: "Sale", 
+            price: "INR 10 Cr", 
+            rating: "8.5", 
+            img: "https://images.unsplash.com/photo-1541829070764-84a7d30dee62?w=600&q=80",
+            description: "Company operates a middle and higher primary school in Bengaluru specifically following the State Board curriculum. Strong residential catchment area with 800+ students.",
+            runRate: "INR 64 Lakh",
+            margin: "20 - 25 %",
+            stake: "100%"
+          },
+          { 
+            title: "Investment opportunity for a CBSE-affiliated school and degree college operating in Agra", 
+            location: "Agra, India", 
+            type: "Equity", 
+            price: "INR 37 Cr", 
+            rating: "7.2", 
+            img: "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80",
+            description: "Established professional institution with 2500+ student enrollment track record. Full campus assets included in mandated valuation. Excellent infrastructure with modern labs.",
+            runRate: "INR 8.4 Cr",
+            margin: "15 - 18 %",
+            stake: "40.0%"
+          },
+          { 
+            title: "For Sale: IGCSE education centre offering structured academic programs for K-12", 
+            location: "Kuala Lumpur, MY", 
+            type: "Sale", 
+            price: "INR 18.4 Cr", 
+            rating: "7.8", 
+            img: "https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=600&q=80",
+            description: "Education centre focused on IGCSE curriculum for students across primary to secondary levels. Premium facility in luxury residential hub with state-of-the-art tech labs.",
+            runRate: "INR 10.5 Cr",
+            margin: "10 - 20 %",
+            stake: "100%"
+          },
+          { 
+            title: "Established Maharashtra-based K-10 school for sale with strong enrollment density", 
+            location: "Wai, India", 
+            type: "Sale", 
+            price: "INR 50 L", 
+            rating: "8.1", 
+            img: "https://images.unsplash.com/photo-1544640808-32ca72ac7f37?w=600&q=80",
+            description: "Maharashtra based institution following CBSE norms, serving 800+ students with state-of-the-art laboratory and sports infrastructure. Turnkey operational handover.",
+            runRate: "INR 66 Lakh",
+            margin: "12 - 15 %",
+            stake: "100%"
+          }
+        ]}, order: 1 },
+        { blockType: 'cta_whatsapp', data: { headline: 'speak with a property specialist', whatsappNumber: '919966109191', badge: 'Confidential Mandate' }, order: 2 },
+      ],
+    },
+    {
+      pageSlug: 'partnerships',
+      pageTitle: 'Partnerships',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Strategic <br/> Institutional <span class="text-sm-blue italic font-serif leading-none lowercase">Alliances.</span>', subtitle: 'Building the future of education through high-impact corporate and academic collaborations.', theme: 'Collaboration' }, order: 0 },
+        { blockType: 'categories', data: { items: [
+          { title: 'Channel Partners', icon: 'Award', color: 'bg-blue-50 text-blue-600', items: ['Exclusive Zonal Distribution Rights', 'Joint Marketing & Lead Generation', 'Pre-qualified Institutional Leads', 'Complete Product Training & Support'] },
+          { title: 'Vendor Network', icon: 'Zap', color: 'bg-orange-50 text-orange-600', items: ['Direct Bulk Procurement Access', 'Unified Digital Invoicing System', 'Supply Chain Priority Fulfillment', 'Multi-year Institutional Mandates'] },
+        ]}, order: 1 },
+        { blockType: 'cta_whatsapp', data: { headline: 'speak with our alliance head', whatsappNumber: '919966109191' }, order: 2 },
+      ],
+    },
+    {
+      pageSlug: 'fundraising',
+      pageTitle: 'Fundraising',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Institutional <br/> Capital <span class="text-sm-blue italic font-serif leading-none lowercase">Solutions.</span>', subtitle: 'Optimizing institutional growth through strategic capital raising and financial advisory.', theme: 'Finance' }, order: 0 },
+        { blockType: 'categories', data: { items: [
+          { title: 'Equity & Debt Funding', icon: 'Award', color: 'bg-emerald-50 text-emerald-600', items: ['Greenfield Project Soft Loans', 'Expansion Capital for School Chains', 'Strategic Equity Partnerships', 'Institutional Bridge Loans'] },
+          { title: 'Donation & Grants', icon: 'Zap', color: 'bg-purple-50 text-purple-600', items: ['CSR Project Alignment & Funding', 'Endowment Fund Creation', 'Govt Grant Application Support', 'Institutional Philanthropy Hub'] },
+        ]}, order: 1 },
+        { blockType: 'cta_whatsapp', data: { headline: 'Consult with our Financial Strategist', whatsappNumber: '919966109191' }, order: 2 },
+      ],
+    },
+    {
+      pageSlug: 'workshops',
+      pageTitle: 'Workshops',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Professional <br/> Leadership <span class="text-sm-blue italic font-serif leading-none lowercase">Academy.</span>', subtitle: 'High-impact capacity building modules for institutional heads, educators and owners.', theme: 'Academy' }, order: 0 },
+        { blockType: 'upcoming_events', data: { items: [
+          { title: 'NEP 2025: Institutional Digitization Stratagem', date: '15 May 2026', location: 'Hotel Taj, Mumbai (Hybrid)', speakers: ['Dr. A. Sharma', 'Ritesh V.'], type: 'Executive Workshop', status: 'Book Seat' },
+          { title: 'Design Thinking for School Infrastructure', date: '22 June 2025', location: 'Virtual Global Webinar', speakers: ['Ar. Emily Watson', 'Sarah M.'], type: 'Webinar', status: 'Free Access' },
+          { title: 'Teacher Skill Lab Certification (Level-1)', date: '10 July 2025', location: 'SchoolMart HQ, Hyderabad', speakers: ['Institutional Team'], type: 'Certification', status: 'Limited Seats' },
+        ]}, order: 1 },
+        { blockType: 'cta_whatsapp', data: { headline: 'Request Custom Workshop for your School', whatsappNumber: '919966109191' }, order: 2 },
+      ],
+    },
+    {
+      pageSlug: 'digitization-guide',
+      pageTitle: 'Guide to Digitization',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Complete <br/> Guide <span class="text-sm-blue italic">to</span> <br/> Digitization.', subtitle: 'A comprehensive roadmap for the digital transformation of your institution.', theme: 'Tech' }, order: 0 },
+        { blockType: 'text_content', data: { body: '<p>Standardizing digital infrastructure is the first step towards a future-ready campus. Our guide covers everything from server deployment to AI integration.</p>' }, order: 1 },
+      ],
+    },
+    {
+      pageSlug: 'catalogue-2025',
+      pageTitle: 'Product Catalog 2025',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Master <br/> Catalogue <span class="text-sm-blue italic">2025.</span>', subtitle: 'Explore over 5000+ premium school products and infrastructure solutions.', theme: 'Gallery' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'skill-lab-guide',
+      pageTitle: 'How to Setup Composite Skill Lab',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Composite <br/> Skill <span class="text-sm-blue italic">Lab</span> Setup.', subtitle: 'Comprehensive design and equipment guide for modern skill-based learning.', theme: 'Lab' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'play-furniture-lookbook',
+      pageTitle: 'Lookbook - Play Furniture',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Play <br/> Furniture <span class="text-sm-blue italic">Lookbook.</span>', subtitle: 'Vibrant and ergonomic furniture designs for joyful early learning.', theme: 'Play' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'math-resources',
+      pageTitle: 'Gamified Math Resources',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Gamified <br/> Math <span class="text-sm-blue italic">Resources.</span>', subtitle: 'Engaging tools and frameworks for conceptual mathematics mastery.', theme: 'Math' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'completed-projects',
+      pageTitle: 'Completed Projects',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Our <br/> Execution <span class="text-sm-blue italic">Legacy.</span>', subtitle: 'Browse through 1000+ successfully completed institutional projects.', theme: 'Projects' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'design-ideas',
+      pageTitle: '20 Stunning School Design Ideas',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: '20 <br/> Stunning <span class="text-sm-blue italic">Design</span> Ideas.', subtitle: 'Inspiration for modern, functional, and aesthetically pleasing school interiors.', theme: 'Inspiration' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'library-trends',
+      pageTitle: 'Library Trends',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Future <br/> of <span class="text-sm-blue italic">Libraries.</span>', subtitle: 'Exploring modern library concepts and furniture trends for the NEP era.', theme: 'Library' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'job-openings',
+      pageTitle: 'Job Openings',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Join <br/> the <span class="text-sm-blue italic">Team.</span>', subtitle: 'Help us build the institutions of tomorrow. Explore careers at SchoolMart.', theme: 'Careers' }, order: 0 },
+      ],
+    },
+    {
+      pageSlug: 'influencer-program',
+      pageTitle: 'Join as Influencers',
+      blocks: [
+        { blockType: 'inner_page_hero', data: { titleHtml: 'Influencer <br/> & <span class="text-sm-blue italic">Affiliate</span> Partner.', subtitle: 'Partner with India\'s leading school solution provider and grow your influence.', theme: 'Affiliate' }, order: 0 },
+      ],
+    },
   ];
 
   const sidebarData = {
@@ -946,7 +1114,22 @@ async function seed() {
     'mathematics': ['MANIPULATIVES', 'DIGITAL GAMES', 'MATH LAB KITS', 'PUZZLES', 'CHARTS'],
     'science': ['PHYSICS LAB', 'CHEMISTRY LAB', 'BIOLOGY LAB', 'GENERAL SCIENCE', 'SAFETY GEAR'],
     'labs': ['CODING & ROBOTICS', 'ART & CRAFT', 'VOCATIONAL', 'MAKER SPACE', 'ASTRONOMY'],
-    'design': ['NEW CAMPUS', 'RENOVATION', 'NEP COMPLIANCE', 'FURNITURE LAYOUT', 'LANDSCAPE']
+    'design': ['NEW CAMPUS', 'RENOVATION', 'NEP COMPLIANCE', 'FURNITURE LAYOUT', 'LANDSCAPE'],
+    'school-sale': ['Premium Campuses', 'Lease Opportunities', 'Operational Schools', 'Greenfield Projects'],
+    'partnerships': ['Academic Alliances', 'Financial Partnerships', 'EdTech Collaborations', 'Sports Academies'],
+    'workshops': ['Masterclasses', 'Webinars', 'Leadership Summits', 'Teacher Training'],
+    'setup-guide': ['Compliance & Legal', 'Infrastructure Planning', 'Curriculum Design', 'Resource Audits'],
+    'fundraising': ['Seed Capital', 'Expansion Funds', 'Grants', 'Investor Pitch'],
+    'digitization-guide': ['Hardware Setup', 'Software Solutions', 'ERP Integration', 'Teacher Training'],
+    'catalogue-2025': ['Furniture', 'Digital', 'Learning', 'Lab Spaces'],
+    'skill-lab-guide': ['Robotics', 'Coding Stations', 'IoT Prototyping', 'Design Thinking'],
+    'play-furniture-lookbook': ['Kindergarten', 'Soft Play', 'Montessori', 'Outdoor'],
+    'math-resources': ['Primary Kits', 'Middle School', 'High School Models', 'Digital Resources'],
+    'completed-projects': ['North Zone', 'South Zone', 'East Zone', 'West Zone'],
+    'design-ideas': ['Classrooms', 'Corridors', 'Cafeterias', 'Staff Rooms'],
+    'library-trends': ['E-Libraries', 'Reading Nooks', 'Shelving', 'Acoustics'],
+    'job-openings': ['Sales', 'Design', 'Installation', 'Management'],
+    'influencer-program': ['Educators', 'Architects', 'EdTech Affiliates', 'Event Promoters']
   };
 
   pages.forEach(p => {
@@ -972,19 +1155,34 @@ async function seed() {
   // ──────────────────────────────────────────
   // 3. Sample products
   // ──────────────────────────────────────────
-  const existingProducts = await Product.countDocuments();
-  if (existingProducts === 0) {
-    const CAT_NAMES = {
-      'furniture': 'Furniture',
-      'architecture': 'School Architecture',
-      'digital': 'Digital Infrastructure',
-      'sports': 'Sports Infrastructure',
-      'libraries': 'Libraries',
-      'mathematics': 'Gamified Math Labs',
-      'science': 'Science Is Fun',
-      'labs': 'Composite Skill Labs',
-      'design': 'School Designs'
-    };
+  await Product.deleteMany({}); // Wipe products to re-seed cleanly
+  
+  const CAT_NAMES = {
+    'furniture': 'Furniture',
+    'architecture': 'School Architecture',
+    'digital': 'Digital Infrastructure',
+    'sports': 'Sports Infrastructure',
+    'libraries': 'Libraries',
+    'mathematics': 'Gamified Math Labs',
+    'science': 'Science Is Fun',
+    'labs': 'Composite Skill Labs',
+    'design': 'School Designs',
+    'school-sale': 'Buy/Sell/Lease Schools',
+    'partnerships': 'Partnerships',
+    'workshops': 'Workshops',
+    'setup-guide': 'School Setup Guide',
+    'fundraising': 'Fundraising',
+    'digitization-guide': 'Guide to Digitization',
+    'catalogue-2025': 'Product Catalog 2025',
+    'skill-lab-guide': 'How to Setup Composite Skill Lab',
+    'play-furniture-lookbook': 'Lookbook - Play Furniture',
+    'math-resources': 'Gamified Math Resources',
+    'completed-projects': 'Completed Projects',
+    'design-ideas': '20 Stunning School Design Ideas',
+    'library-trends': 'Library Trends',
+    'job-openings': 'Job Openings',
+    'influencer-program': 'Join as Influencers'
+  };
 
     const dummyImgs = [
       'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=800&q=80',
@@ -1050,7 +1248,6 @@ async function seed() {
 
     await Product.insertMany(sampleProducts);
     console.log(`✅ Seeded ${sampleProducts.length} dynamic products across all categories.`);
-  }
 
   console.log('\nðŸŽ‰ Database seeded successfully!');
   console.log('   Admin login: admin@schoolmart.in / Admin@123');

@@ -1,144 +1,110 @@
 // src/pages/Guides.jsx
 import React, { useState } from 'react';
-import { BookOpen, Award, Shield, Layers, ArrowUpRight } from 'lucide-react';
+import { BookOpen, Award, Download, FileText } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
-import CMSMedia from '../components/ui/CMSMedia';
-import CatalogueCard from '../components/CatalogueCard';
-import SidebarWidget from '../components/SidebarWidget';
 
 const DEFAULT_CONTENT = {
   hero: {
     badge: 'Knowledge Base 2025',
-    titleHtml: 'Strategy. <br/> <span class="text-sm-blue italic font-serif lowercase tracking-normal">for</span> <br/> Compliance.',
+    titleHtml: 'Policy. Strategy. <span class="text-sm-blue italic font-serif lowercase tracking-normal">for</span> Compliance.',
     subtitle: 'Deep-dive into our institutional strategy handbooks and regulatory frameworks.',
   },
   actionStrip: [
     { titleHtml: 'NEP 2024 <br/> Implementation Kit.', btnText: 'Download PDF', color: 'dark' },
-    { titleHtml: 'Certification <br/> & <br/> Standards BIFMA.', color: 'light', icon: 'Award' },
-    { titleHtml: 'Custom <br/> Institutional Portfolio.', btnText: 'Request Curation', color: 'light' },
+    { titleHtml: 'Certification <br/> & Standards BIFMA.', color: 'light' },
+    { titleHtml: 'Custom Institutional Portfolio.', btnText: 'Request Curation', color: 'light' },
   ],
-  menuStrip: ['NEP 2020', 'SAFETY PROTOCOL', 'TECH SPECS', 'CERTIFICATIONS', 'SITE PLANNING'],
   resourceList: [
-    { t: 'Safety Master-Guide', c: 'Logistics', img: 'https://images.unsplash.com/photo-1544640808-32ca72ac7f37?w=600&q=80', h: 'h-[300px]' },
-    { t: 'Spatial Planning', c: 'Design', img: 'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80', h: 'h-[400px]' },
-    { t: 'Color Psychology', c: 'Interiors', img: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80', h: 'h-[350px]' },
+    { t: 'Safety Master-Guide', c: 'Logistics' },
+    { t: 'Spatial Planning', c: 'Design' },
+    { t: 'Color Psychology', c: 'Interiors' },
+    { t: 'NEP 2020 Implementation Roadmap', c: 'Policy' },
+    { t: 'CBSE Affiliation Checklist', c: 'Compliance' },
+    { t: 'Smart Campus Technology Blueprint', c: 'Technology' },
   ],
-  infoGrid: {
-    titleHtml: 'Regulatory <span class="text-sm-blue">Frameworks.</span>',
-    points: ['NEA Guidelines', 'Site Surveys', 'Compliance Audit', 'Future Ready'],
-    img: 'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1000&q=80'
-  }
 };
 
-const ICONS = { Award, BookOpen, Shield, Layers };
-
 const Guides = () => {
-    const { blocks, loading } = useCMSPage('guides');
-  const sidebarResources = blocks?.sidebar_resources || {};
-  const sidebarTrending = blocks?.sidebar_trending || {};
-  const [selectedItem, setSelectedItem] = useState(null);
+  const { blocks, loading } = useCMSPage('guides');
   const d = blocks?.guides_page_content || DEFAULT_CONTENT;
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sm-blue"></div></div>;
-
-    if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Guides...</div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Guides...</div>
+  );
 
   return (
-    <main className="min-h-screen bg-white pt-10 pb-10">
-      <div className="max-w-7xl mx-auto px-4">
-        <div className="flex flex-col lg:flex-row gap-8">
-           {/* Sidebar Widget Sync */}
-           <aside className="lg:w-[240px] flex-shrink-0">
-              <div className="sticky top-24 space-y-6">
-                 <SidebarWidget title="TRENDING" items={sidebarTrending?.items} type="trending" />
-                 <SidebarWidget title="RESOURCES" items={sidebarResources?.items} type="resources" />
-              </div>
-           </aside>
+    <main className="min-h-screen bg-white pb-12">
+      <div className="max-w-7xl mx-auto px-6">
 
-           {/* Main Content Area */}
-           <div className="flex-grow min-w-0">
-             <section className="pt-2 pb-12 flex flex-col gap-6">
-                {/* LARGE WIDE STORY BLOCK */}
-                <div className="bg-gray-50 rounded-[30px] p-12 lg:p-20 flex flex-col items-center text-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px] justify-center">
-                   <CMSMedia 
-                     mediaType={d.hero?.mediaType} 
-                     mediaUrl={d.hero?.mediaUrl} 
-                     fallbackImg={null} 
-                     className="absolute inset-0 w-full h-full object-cover opacity-5 group-hover:opacity-10 transition-all duration-1000"
-                   />
-                   <div className="px-4 py-1.5 bg-sm-blue text-white font-black rounded-full text-[10px] uppercase tracking-[0.2em] mb-8 w-fit shadow-xl shadow-blue-500/20 relative z-10">
-                      <BookOpen size={14} className="inline mr-2" /> {d.hero?.badge}
-                   </div>
-                   <h1 className="text-4xl lg:text-7xl font-black font-heading leading-tight mb-8 tracking-tighter text-gray-900 uppercase max-w-3xl relative z-10" dangerouslySetInnerHTML={{ __html: d.hero?.titleHtml }} />
-                   <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest max-w-md leading-loose relative z-10">
-                      {d.hero?.subtitle}
-                   </p>
-                </div>
+        {/* HERO STRIP */}
+        <section className="bg-gray-900 rounded-b-[40px] px-8 py-12 flex flex-col md:flex-row items-center justify-between gap-8 mb-12 shadow-2xl relative overflow-hidden text-white">
+          <div className="absolute top-0 right-0 w-1/4 h-full bg-sm-blue/5 skew-x-12 -mr-20 pointer-events-none" />
+          <div className="max-w-2xl relative z-10">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-px bg-sm-blue" />
+              <span className="text-sm-blue text-[10px] font-black uppercase tracking-[0.3em]">{d.hero?.badge}</span>
+            </div>
+            <h1
+              className="text-3xl lg:text-4xl font-black uppercase tracking-tighter mb-3 leading-tight"
+              dangerouslySetInnerHTML={{ __html: d.hero?.titleHtml }}
+            />
+            <p className="text-white/40 text-[11px] font-black uppercase tracking-widest leading-loose max-w-lg">
+              {d.hero?.subtitle}
+            </p>
+          </div>
+          <button className="px-8 py-3.5 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-all shadow-xl relative z-10">
+            Browse Library
+          </button>
+        </section>
 
-                {/* HORIZONTAL ACTION STRIP */}
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                   {(d.actionStrip || []).map((card, i) => {
-                     const isDark = card.color === 'dark';
-                     const Icon = ICONS[card.icon];
-                     return (
-                       <div key={i} className={`${isDark ? 'bg-gray-900 text-white shadow-2xl' : 'bg-white border-gray-100 hover:border-sm-blue shadow-sm'} rounded-[30px] p-10 flex flex-col justify-between group overflow-hidden relative border transition-all hover:scale-[1.02] min-h-[220px]`}>
-                          <h3 className={`text-[12px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed ${isDark ? 'text-sm-blue' : 'text-gray-400 group-hover:text-sm-blue'}`} dangerouslySetInnerHTML={{ __html: card.titleHtml }} />
-                          <div className="flex items-center justify-between mt-auto pt-6">
-                             {card.btnText && <button className={`px-6 py-3 font-black rounded-full text-[9px] uppercase tracking-widest w-fit transition-all ${isDark ? 'bg-sm-blue text-white shadow-lg shadow-blue-500/20 active:scale-95' : 'bg-gray-50 text-gray-400 group-hover:bg-sm-blue group-hover:text-white'}`}>{card.btnText}</button>}
-                             {!card.btnText && Icon && <Icon className={`${isDark ? 'text-white/20 group-hover:text-sm-blue' : 'text-gray-200 group-hover:text-sm-blue'} transition-colors ml-auto`} size={32} />}
-                             {card.btnText && <ArrowUpRight className={`${isDark ? 'text-white/20 group-hover:text-sm-blue' : 'text-gray-200 group-hover:text-sm-blue'} transition-colors`} size={24} />}
-                          </div>
-                       </div>
-                     )
-                   })}
-                </div>
-             </section>
-
-             {/* Compact Strip Menu */}
-             <section className="pb-8 px-2 overflow-hidden">
-                <div className="flex overflow-x-auto gap-12 pb-4 hide-scrollbar justify-start border-b border-gray-100">
-                  {(d.menuStrip || []).map((cat, i) => (
-                     <button key={i} className="flex-none text-[10px] font-black text-gray-400 hover:text-gray-900 uppercase tracking-[0.2em] transition-colors py-2 active:text-sm-blue">{cat}</button>
-                  ))}
-                </div>
-             </section>
-
-             {/* RESOURCE LISTING */}
-             <section className="py-12 border-t border-gray-100">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                   {(d.resourceList || []).map((work, i) => (
-                      <CatalogueCard 
-                        key={i}
-                        work={{ name: work.t, subcategory: work.c, image: work.img }} 
-                        isSelected={selectedItem?.t === work.t}
-                        onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)}
-                        themeColor="bg-sm-blue"
-                        ringColor="ring-blue-500"
-                        textColor="text-blue-400"
-                      />
-                   ))}
-                </div>
-             </section>
-
-             {/* INFO SPLIT GRID */}
-             <section className="py-12 border-t border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mt-6">
-                <div className="bg-white p-12 rounded-[40px] border border-gray-100 shadow-sm relative overflow-hidden group">
-                   <h2 className="text-4xl font-black text-gray-900 font-heading mb-8 leading-none uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: d.infoGrid?.titleHtml }} />
-                   <div className="grid grid-cols-2 gap-4">
-                      {(d.infoGrid?.points || []).map((item, i) => (
-                         <div key={i} className="flex items-center gap-4 text-[10px] font-black uppercase tracking-widest bg-gray-50 p-5 rounded-2xl border border-gray-50 hover:bg-sm-blue hover:text-white transition-all">
-                            <Layers size={16} className="text-sm-blue group-hover:text-white" />
-                            {item}
-                         </div>
-                      ))}
-                   </div>
-                </div>
-                <div className="rounded-[40px] overflow-hidden shadow-2xl h-[450px]">
-                   <img src={d.infoGrid?.img} alt="Planning" className="w-full h-full object-cover" />
-                </div>
-             </section>
-           </div>
+        {/* ACTION CARDS */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-12">
+          {(d.actionStrip || []).map((card, i) => (
+            <div
+              key={i}
+              className={`p-8 rounded-[35px] border flex flex-col justify-between group hover:shadow-xl transition-all min-h-[150px]
+                ${card.color === 'dark' ? 'bg-gray-900 text-white border-gray-800' : 'bg-white border-gray-100'}`}
+            >
+              <h3
+                className={`text-[11px] font-black uppercase tracking-widest leading-relaxed mb-6 ${card.color === 'dark' ? 'text-sm-blue' : 'text-gray-400 group-hover:text-sm-blue'}`}
+                dangerouslySetInnerHTML={{ __html: card.titleHtml }}
+              />
+              <button
+                className={`w-full py-3 font-black rounded-xl text-[9px] uppercase tracking-widest transition-all
+                  ${card.color === 'dark' ? 'bg-sm-blue text-white' : 'bg-gray-50 text-gray-900 group-hover:bg-sm-blue group-hover:text-white'}`}
+              >
+                {card.btnText || 'Read More'}
+              </button>
+            </div>
+          ))}
         </div>
+
+        {/* SECTION HEADER */}
+        <div className="flex justify-between items-end mb-6 border-b border-gray-100 pb-4">
+          <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">
+            Institutional <span className="text-sm-blue italic font-serif lowercase tracking-normal text-md ml-2">Knowledge Base</span>
+          </h2>
+          <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{d.resourceList?.length} Manuals</span>
+        </div>
+
+        {/* RESOURCE GRID */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {(d.resourceList || []).map((work, i) => (
+            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col group hover:shadow-xl transition-all">
+              <span className="text-sm-blue text-[9px] font-black uppercase tracking-widest mb-2">{work.c}</span>
+              <h3 className="text-[14px] font-black text-gray-900 uppercase tracking-tight mb-4 group-hover:text-sm-blue transition-colors line-clamp-2 min-h-[2.5rem]">
+                {work.t}
+              </h3>
+              <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
+                <button className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-sm-blue flex items-center gap-2">
+                  Download PDF <Download size={12} />
+                </button>
+                <span className="text-[10px] font-black text-gray-900 uppercase">2025 v1</span>
+              </div>
+            </div>
+          ))}
+        </div>
+
       </div>
     </main>
   );

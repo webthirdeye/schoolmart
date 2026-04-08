@@ -1,96 +1,166 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { useCMSPage } from '../hooks/useCMSBlock';
-import { MessageSquare, ArrowRight, Zap, Shield, Globe, Award } from 'lucide-react';
-import CMSMedia from '../components/ui/CMSMedia';
+import { ArrowRight, Zap, Shield, Award, ChevronRight, CheckCircle2 } from 'lucide-react';
+import { getProducts } from '../services/api';
 
-const GenericInnerPage = () => {
-  const { slug } = useParams();
+const GenericInnerPage = ({ explicitSlug }) => {
+  const params = useParams();
+  const slug = explicitSlug || params.slug;
   const { blocks, loading } = useCMSPage(slug);
+  const [items, setItems] = useState([]);
+  const [selectedCat, setSelectedCat] = useState('');
 
   const heroBlock = blocks?.inner_page_hero || {};
   const textContent = blocks?.text_content || { title: '', body: '' };
+  const benefitsBlock = blocks?.benefits || null;
+  const listCategoriesBlock = blocks?.categories || null;
+  const upcomingEventsBlock = blocks?.upcoming_events || null;
 
-  const pageTitle = slug.replace(/-/g, ' ').toUpperCase();
+  const pageTitle = (slug || '').replace(/-/g, ' ').toUpperCase();
 
-  if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-white">
-      <div className="space-y-4 text-center">
-         <div className="w-12 h-12 border-4 border-sm-blue border-t-transparent rounded-full animate-spin mx-auto" />
-         <p className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-300">Synchronizing {slug}</p>
-      </div>
-    </div>
-  );
+  const FALLBACK_CATEGORIES = {
+    'school-sale': ['Premium Campuses', 'Lease Opportunities', 'Operational Schools', 'Greenfield Projects'],
+    'partnerships': ['Academic Alliances', 'Financial Partnerships', 'EdTech Collaborations', 'Sports Academies'],
+    'workshops': ['Masterclasses', 'Webinars', 'Leadership Summits', 'Teacher Training'],
+    'setup-guide': ['Compliance & Legal', 'Infrastructure Planning', 'Curriculum Design', 'Resource Audits'],
+    'fundraising': ['Seed Capital', 'Expansion Funds', 'Grants', 'Investor Pitch'],
+    'digitization-guide': ['Hardware Deployment', 'Learning Management', 'Teacher Training', 'Campus ERP'],
+    'setup-school-india': ['Registration', 'Infrastructure', 'Board Norms', 'Finance'],
+    'skill-lab-guide': ['STEM Infrastructure', 'Robotics Kits', 'ATL Labs', 'Curriculum Kits'],
+    'play-furniture-lookbook': ['Pre-Primary', 'Outdoor Play', 'Soft Play Area', 'Classroom Modular'],
+    'gamified-math-resources': ['Math Labs', 'Board Games', 'Digital Platforms', 'Kit Training'],
+    'completed-projects': ['K-12 Schools', 'Preschools', 'Institutional Hubs'],
+    'school-design-ideas': ['Façade Design', 'Corridor Utilization', 'Smart Classrooms', 'Library Layouts'],
+    'library-trends': ['Digital Catalogs', 'Reading Zones', 'Furniture Selection', 'Resource Digitization'],
+    'job-openings': ['Academic roles', 'Operational roles', 'Sales & Marketing', 'Technical Support'],
+    'influencers': ['Education Content', 'Brand Collaborations', 'Event Partnerships', 'Advocacy'],
+  };
+
+  const cats = FALLBACK_CATEGORIES[slug] || ['Overview', 'Resources', 'Case Studies', 'News'];
+
+  useEffect(() => {
+    getProducts({}).then(res => setItems(res || []));
+    window.scrollTo(0, 0);
+  }, [slug]);
+
+  const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
+
+  useEffect(() => {
+    if (!loading && cats.length > 0 && !selectedCat) {
+      setSelectedCat(cats[0]);
+    }
+  }, [loading, cats, selectedCat]);
+
+  if (loading) return null;
 
   return (
-    <main className="min-h-screen bg-white pt-8 pb-20">
-      <div className="max-w-5xl mx-auto px-4">
-        {/* Institutional Content Stream */}
-        <div className="min-w-0">
-          {/* Template Hero - Premium Bento Style */}
-          <div className="bg-gray-50 rounded-[45px] p-12 lg:p-20 mb-12 border border-gray-100 shadow-sm relative overflow-hidden group min-h-[450px] flex flex-col justify-center text-center items-center">
-             <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-50/50 rounded-l-[100px] blur-[120px] pointer-events-none" />
-             <CMSMedia 
-               mediaType={heroBlock.mediaType} 
-               mediaUrl={heroBlock.mediaUrl} 
-               fallbackImg={heroBlock.img} 
-               className="absolute inset-0 w-full h-full object-cover opacity-[0.03] group-hover:opacity-[0.07] transition-all duration-1000 grayscale"
-             />
-             
-             <div className="relative z-10">
-                <div className="px-5 py-2 bg-white border border-gray-100 text-sm-blue font-black rounded-full text-[9px] uppercase tracking-[0.3em] mb-10 mx-auto w-fit shadow-sm">
-                   <Award size={14} className="inline mr-2" /> Institutional Insight
-                </div>
-                <h1 className="text-5xl lg:text-8xl font-black font-heading leading-none mb-10 tracking-tighter text-gray-900 uppercase" 
-                    dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || heroBlock.title || textContent.title || pageTitle }} />
-                <p className="text-gray-400 text-[13px] font-bold uppercase tracking-widest max-w-xl mx-auto leading-relaxed">
-                   {heroBlock.subtitle || `Accelerating ${pageTitle.toLowerCase()} strategies through modern infrastructure and expert consultation models.`}
-                </p>
-                
-                <div className="flex gap-4 mt-12 justify-center">
-                   <button className="px-10 py-5 bg-gray-900 text-white font-black rounded-full text-[10px] uppercase tracking-widest flex items-center gap-3 hover:bg-sm-blue transition-all shadow-2xl active:scale-95">
-                      Reserve Consultation <ArrowRight size={18} />
-                   </button>
-                </div>
-             </div>
+    <main className="min-h-screen bg-white pb-12">
+      <div className="max-w-7xl mx-auto px-6">
+        {/* COMPACT HERO STRIP */}
+        <section className="bg-gray-50 border-x border-b border-gray-100 rounded-b-[40px] px-8 py-10 flex flex-col md:flex-row items-center justify-between gap-8 mb-12 shadow-sm">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-px bg-sm-blue" />
+              <span className="text-sm-blue text-[10px] font-black uppercase tracking-[0.3em]">Resource Hub</span>
+            </div>
+            <h1
+              className="text-3xl lg:text-4xl font-black uppercase tracking-tighter text-gray-900 mb-2 leading-none"
+              dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || heroBlock.title || textContent.title || pageTitle }}
+            />
+            <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest leading-loose max-w-lg">
+              {heroBlock.subtitle || `Accelerating ${pageTitle.toLowerCase()} strategies through modern infrastructure and expert models.`}
+            </p>
           </div>
+          <button className="px-6 py-3 bg-gray-900 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-sm-blue transition-all">Download Guide</button>
+        </section>
 
-          {/* Content Body with fallback layout blocks */}
-          <div className="space-y-16">
-             {textContent.body ? (
-                <div className="prose prose-slate prose-lg max-w-none px-6">
-                   <div className="text-gray-600 leading-relaxed font-medium space-y-8" dangerouslySetInnerHTML={{ __html: textContent.body }} />
-                </div>
-             ) : (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
-                   {[
-                      { title: 'Strategic Planning', desc: 'Custom roadmaps for long-term growth and success.', icon: Globe },
-                      { title: 'Resource Audit', desc: 'Deep-dive analysis of your current institutional assets.', icon: Shield },
-                      { title: 'Implementation', desc: 'Seamless execution models for rapid deployment.', icon: Zap }
-                   ].map((item, i) => (
-                      <div key={i} className="bg-gray-50 border border-gray-100 p-10 rounded-[35px] group hover:border-sm-blue transition-all">
-                         <item.icon size={28} className="text-sm-blue mb-6 group-hover:scale-110 transition-transform" />
-                         <h3 className="text-lg font-black uppercase tracking-tighter mb-4 text-gray-900">{item.title}</h3>
-                         <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest leading-relaxed">{item.desc}</p>
-                      </div>
-                   ))}
-                </div>
-             )}
-
-             {/* Standardized Bottom Panel */}
-             <div className="bg-sm-blue rounded-[45px] p-16 text-white text-center relative overflow-hidden group">
-                <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.1),transparent)]" />
-                <h2 className="text-4xl font-black uppercase tracking-tighter mb-6 relative z-10">Start your Journey in {pageTitle}.</h2>
-                <p className="text-white/60 text-[10px] font-black uppercase tracking-widest mb-12 max-w-md mx-auto relative z-10 leading-loose">
-                   Our domain experts are ready to provide a detailed briefing and implementation strategy tailored to your school's unique ecosystem.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 justify-center relative z-10">
-                   <button className="px-12 py-5 bg-white text-sm-blue font-black rounded-full text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl">Contact Experts</button>
-                   <Link to="/contact-us" className="px-12 py-5 bg-gray-900/20 backdrop-blur-xl border border-white/20 text-white font-black rounded-full text-[10px] uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-all flex items-center justify-center">Visit Office</Link>
-                </div>
-             </div>
-          </div>
+        {/* CATEGORY CHIP NAV */}
+        <div className="flex gap-2 overflow-x-auto pb-4 mb-8 hide-scrollbar">
+          {cats.map((cat, i) => (
+            <button
+              key={i}
+              onClick={() => setSelectedCat(cat)}
+              className={`px-4 py-2 rounded-lg text-[9px] font-black uppercase tracking-widest whitespace-nowrap transition-all ${selectedCat === cat ? 'bg-sm-blue text-white shadow-lg shadow-blue-500/20' : 'bg-gray-50 text-gray-400 hover:bg-gray-100'}`}
+            >
+              {cat}
+            </button>
+          ))}
         </div>
+
+        {/* CONTENT GRID */}
+        {!loading && (
+          <div className="space-y-6">
+            {benefitsBlock && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(benefitsBlock.items || []).map((b, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-3xl p-8 flex flex-col hover:border-sm-blue transition-all group">
+                    <div className="w-10 h-10 bg-emerald-50 rounded-xl flex items-center justify-center text-emerald-500 mb-6 group-hover:bg-emerald-500 group-hover:text-white transition-all">
+                      <Award size={20} />
+                    </div>
+                    <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">{b.title}</h3>
+                    <p className="text-gray-500 text-[10px] font-bold uppercase tracking-widest leading-loose">{b.description}</p>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {listCategoriesBlock && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                {(listCategoriesBlock.items || []).map((cat, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-[35px] p-8 flex flex-col items-start shadow-sm hover:shadow-xl transition-all">
+                    <div className={`w-10 h-10 ${cat.color || 'bg-blue-50 text-blue-600'} rounded-xl flex items-center justify-center mb-6`}>
+                      <Shield size={20} />
+                    </div>
+                    <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight leading-none mb-4">{cat.title}</h3>
+                    <ul className="space-y-2.5 w-full">
+                      {(cat.items || []).map((li, j) => (
+                        <li key={j} className="flex items-center gap-2 text-gray-400 text-[10px] font-black uppercase tracking-widest">
+                          <CheckCircle2 size={12} className="text-sm-blue" />
+                          {li}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {filteredItems.length > 0 && (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                {filteredItems.map((work, i) => (
+                  <div key={i} className="bg-white border border-gray-100 rounded-2xl p-6 flex flex-col group hover:shadow-xl transition-all">
+                    <span className="text-sm-blue text-[9px] font-black uppercase tracking-widest mb-2">{work.subcategory || 'RESOURCE'}</span>
+                    <h3 className="text-[14px] font-black text-gray-900 uppercase tracking-tight mb-4 group-hover:text-sm-blue transition-colors line-clamp-2 min-h-[2.5rem]">{work.name}</h3>
+                    <div className="mt-auto flex items-center justify-between pt-4 border-t border-gray-50">
+                      <button className="text-[10px] font-black uppercase tracking-widest text-gray-400 group-hover:text-sm-blue flex items-center gap-2">Read Guide <ArrowRight size={12} /></button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {!benefitsBlock && !listCategoriesBlock && !upcomingEventsBlock && filteredItems.length === 0 && (
+              <div className="bg-gray-50 rounded-[30px] border border-gray-100 p-10 text-center min-h-[400px] flex items-center justify-center">
+                {textContent.body ? (
+                  <div className="text-left w-full prose-sm max-w-none">
+                    <div className="text-gray-600 leading-loose" dangerouslySetInnerHTML={{ __html: textContent.body }} />
+                  </div>
+                ) : (
+                  <div className="max-w-xs text-center">
+                    <Zap size={32} className="mx-auto mb-6 text-sm-blue/20" />
+                    <p className="text-[10px] font-black uppercase tracking-widest text-gray-400">
+                      Detailed insights for {pageTitle} are being curated for the 2025 Institutional Handbook.
+                    </p>
+                    <Link to="/contact-us">
+                      <button className="mt-6 px-8 py-3 bg-gray-900 text-white font-black rounded-xl text-[9px] uppercase tracking-widest">Inquire for Early Access</button>
+                    </Link>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </main>
   );

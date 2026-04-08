@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import TopBar from './components/TopBar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
+import ScrollToTop from './components/ScrollToTop';
 
 // Pages
 import Home from './pages/Home';
@@ -29,7 +30,19 @@ import SchoolSale from './pages/SchoolSale';
 import Partnerships from './pages/Partnerships';
 import SetupGuide from './pages/SetupGuide';
 import Workshops from './pages/Workshops';
+import Fundraising from './pages/Fundraising';
 import GenericInnerPage from './pages/GenericInnerPage';
+import DigitizationGuide from './pages/DigitizationGuide';
+import SetupSchoolIndia from './pages/SetupSchoolIndia';
+import ProductCatalog2025 from './pages/ProductCatalog2025';
+import SkillLabGuide from './pages/SkillLabGuide';
+import PlayFurnitureLookbook from './pages/PlayFurnitureLookbook';
+import MathResources from './pages/MathResources';
+import CompletedProjects from './pages/CompletedProjects';
+import SchoolDesignIdeas from './pages/SchoolDesignIdeas';
+import LibraryTrends from './pages/LibraryTrends';
+import JobOpenings from './pages/JobOpenings';
+import Influencers from './pages/Influencers';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -55,6 +68,7 @@ function App() {
   return (
     <AuthProvider>
       <Router>
+        <ScrollToTop />
         <Routes>
           {/* Main Application Layout */}
           <Route element={<MainLayout />}>
@@ -81,7 +95,19 @@ function App() {
             <Route path="/partnerships" element={<Partnerships />} />
             <Route path="/setup-guide" element={<SetupGuide />} />
             <Route path="/workshops" element={<Workshops />} />
-            <Route path="/fundraising" element={<Partnerships />} />
+            <Route path="/fundraising" element={<Fundraising />} />
+            {/* Resource Hub Routes */}
+            <Route path="/p/digitization-guide" element={<DigitizationGuide />} />
+            <Route path="/p/setup-school-india" element={<SetupSchoolIndia />} />
+            <Route path="/p/product-catalog-2025" element={<ProductCatalog2025 />} />
+            <Route path="/p/skill-lab-guide" element={<SkillLabGuide />} />
+            <Route path="/p/play-furniture-lookbook" element={<PlayFurnitureLookbook />} />
+            <Route path="/p/gamified-math-resources" element={<MathResources />} />
+            <Route path="/p/completed-projects" element={<CompletedProjects />} />
+            <Route path="/p/school-design-ideas" element={<SchoolDesignIdeas />} />
+            <Route path="/p/library-trends" element={<LibraryTrends />} />
+            <Route path="/p/job-openings" element={<JobOpenings />} />
+            <Route path="/p/influencers" element={<Influencers />} />
             <Route path="/p/:slug" element={<GenericInnerPage />} />
           </Route>
 

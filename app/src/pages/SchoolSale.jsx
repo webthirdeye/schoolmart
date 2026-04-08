@@ -1,122 +1,214 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
-import { Building2, MapPin, ArrowUpRight, Download, FileText, Search, Filter } from 'lucide-react';
-import CMSMedia from '../components/ui/CMSMedia';
+import { Link } from 'react-router-dom';
+import { Mail, Phone, Facebook, Linkedin, Star, MapPin, ChevronRight, Info, Award, Download, FileText, Send, Share2, Bookmark, CheckCircle2, History, Users, Scale, MessageSquare, Globe, ArrowRight, Zap, Target, Search, ChevronDown } from 'lucide-react';
+
+const PropertyListingCard = ({ item }) => {
+  // Convert description to bullets if it's a block of text, otherwise use dummy bullets for visual consistency
+  const descriptionPoints = (item.description || "Established middle and higher primary school with a stable revenue model. Following the State Board curriculum specifically designed for holistic growth. Operates in a prime location with high enrollment potential.")
+    .split('.')
+    .filter(p => p.trim().length > 0)
+    .slice(0, 3);
+
+  return (
+    <div className="bg-white border border-gray-100 rounded-2xl shadow-sm overflow-hidden flex flex-col group hover:shadow-xl transition-all h-full relative">
+      {/* PREMIUM Ribbon */}
+      <div className="absolute top-0 right-0 w-32 h-32 overflow-hidden pointer-events-none">
+        <div className="absolute top-6 right-[-32px] w-[140px] bg-[#10b981] text-white text-[10px] font-black uppercase py-1 text-center rotate-45 shadow-lg tracking-widest z-20">
+          PREMIUM
+        </div>
+      </div>
+
+      <div className="p-8 flex flex-col flex-grow">
+        {/* Header */}
+        <div className="flex items-center gap-2 mb-4">
+          <div className="w-2.5 h-2.5 rounded-full bg-emerald-500" />
+          <span className="text-[11px] font-black text-sky-600 uppercase tracking-widest">
+            {item.type === 'Sale' ? 'School for Sale' : 'Institutional Investment'} in {item.location}
+          </span>
+        </div>
+
+        {/* Title */}
+        <h3 className="text-xl font-black text-gray-900 leading-tight mb-4 group-hover:text-sm-blue transition-colors h-[3.5rem] overflow-hidden">
+          {item.title}
+        </h3>
+
+        {/* Social Icons */}
+        <div className="flex gap-4 mb-6 opacity-30">
+           <Mail size={16} />
+           <Phone size={16} />
+           <Facebook size={16} />
+           <Linkedin size={16} />
+        </div>
+
+        {/* Description as Bullet Points */}
+        <div className="mb-6 flex-grow">
+           <ul className="space-y-3">
+              {descriptionPoints.map((point, i) => (
+                 <li key={i} className="flex items-start gap-2 text-gray-500 text-[12px] leading-relaxed">
+                    <span className="text-sm-blue mt-1.5 flex-shrink-0 w-1.5 h-1.5 rounded-full bg-sm-blue/30" />
+                    {point.trim()}...
+                 </li>
+              ))}
+           </ul>
+        </div>
+
+        {/* Rating & Location */}
+        <div className="flex items-center gap-6 mb-8 pt-4 border-t border-gray-50">
+           <div className="flex items-center gap-2">
+              <Star size={16} className="fill-amber-400 text-amber-400" />
+              <span className="text-sm font-black text-gray-900">{item.rating || '8.5'}</span>
+           </div>
+           <div className="flex items-center gap-2">
+              <MapPin size={16} className="text-red-500" />
+              <span className="text-sm font-black text-gray-500">{item.location.split(',')[0]}</span>
+           </div>
+        </div>
+
+        {/* Stat strips */}
+        <div className="space-y-2 mb-8 bg-gray-50/50 rounded-2xl p-5 border border-gray-100">
+           <div className="flex justify-between items-center">
+              <span className="text-[11px] font-black text-gray-400 uppercase tracking-widest">Run Rate Sales</span>
+              <span className="text-[12px] font-black text-gray-700">{item.runRate || "INR 3.6 - 64 lakh"}</span>
+           </div>
+           <div className="flex justify-between items-center py-2 border-t border-gray-100/50">
+              <span className="text-[11px] font-black text-gray-400 uppercase tracking-widest">EBITDA Margin</span>
+              <span className="text-[12px] font-black text-gray-700">{item.margin || "20 - 30 %"}</span>
+           </div>
+        </div>
+
+        {/* Footer */}
+        <div className="mt-auto flex items-center justify-between gap-4">
+           <div className="flex flex-col">
+              <span className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1">
+                {item.type === 'Sale' ? 'Business For Sale' : 'Investment Value'}
+              </span>
+              <span className="text-2xl font-black text-sky-700 tracking-tighter">
+                {item.price}
+              </span>
+           </div>
+           <Link to="/contact-us" className="px-6 py-4 bg-[#FFDB00] text-gray-900 font-black rounded-xl text-[10px] uppercase tracking-widest shadow-xl shadow-amber-500/10 hover:shadow-amber-500/20 hover:-translate-y-0.5 transition-all">
+              Contact Business
+           </Link>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+const CITIES = ['All Cities', 'Bengaluru', 'Hyderabad', 'Mumbai', 'Chennai', 'Pune', 'Delhi NCR', 'Kolkata'];
 
 const SchoolSale = () => {
   const { blocks, loading } = useCMSPage('school-sale');
+  const [selectedCity, setSelectedCity] = useState('All Cities');
   const [searchTerm, setSearchTerm] = useState('');
 
-  const heroBlock = blocks?.inner_page_hero || {};
-  
-  const listings = blocks?.listings?.items || [
-    { title: 'BTS lease in Kukatpally, Hyderabad', location: 'Hyderabad, Telangana', type: 'Lease', size: '2 Acre', price: 'Contact for Price' },
-    { title: 'K-12 School for Sale in Pune', location: 'Pune, Maharashtra', type: 'Sale', size: '3.5 Acre', price: '₹ 45 Cr' },
-    { title: 'Preschool Franchise Opportunity', location: 'Bangalore, Karnataka', type: 'Franchise', size: '5000 Sq.Ft', price: '₹ 50 Lakh' },
-    { title: 'Operational School for Lease', location: 'Chennai, Tamil Nadu', type: 'Lease', size: '1.2 Acre', price: '₹ 8 Lakh/month' },
-  ];
+  const listings = blocks?.listings?.items || [];
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center text-sm-blue font-bold tracking-widest uppercase">Loading Opportunities...</div>;
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  if (loading) return null;
+
+  const filteredListings = listings.filter(l => {
+    const matchesSearch = l.location.toLowerCase().includes(searchTerm.toLowerCase()) || 
+                         l.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesCity = selectedCity === 'All Cities' || l.location.includes(selectedCity);
+    return matchesSearch && matchesCity;
+  });
 
   return (
-    <main className="min-h-screen bg-gray-50 pt-8 pb-10">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Main Content Area */}
-        <div className="min-w-0 flex flex-col gap-8">
-          {/* Inline Filter Search (Moved from sidebar) */}
-          <div className="bg-white p-8 rounded-[35px] border border-gray-100 shadow-sm flex flex-col md:flex-row gap-6 items-center">
-             <div className="flex-grow w-full relative">
-                <Search className="absolute left-6 top-1/2 -translate-y-1/2 text-gray-400 font-black" size={20} />
+    <main className="min-h-screen bg-white">
+       {/* Small Hero Strip (Smergers Style) */}
+       <section className="bg-gray-50/50 py-12 border-b border-gray-100">
+          <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-6">
+             <div>
+                <div className="flex items-center gap-2 mb-3">
+                   <div className="w-8 h-0.5 bg-sm-blue rounded-full" />
+                   <span className="text-[10px] font-black text-sm-blue uppercase tracking-[0.3em]">Institutional M&A</span>
+                </div>
+                <h1 className="text-4xl font-black text-gray-900 uppercase tracking-tighter">
+                  Schools for <span className="text-sm-blue italic font-serif lowercase tracking-normal">Sale & Lease.</span>
+                </h1>
+             </div>
+             <div className="relative w-full md:w-80">
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={16} />
                 <input 
                   type="text" 
-                  placeholder="SEARCH INSTITUTIONAL REAL ESTATE..." 
-                  className="w-full pl-16 pr-8 py-5 bg-gray-50 border-none rounded-2xl text-[12px] font-black tracking-widest focus:ring-2 focus:ring-sm-blue outline-none uppercase"
+                  placeholder="SEARCH BY CITY OR KEYWORD..." 
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-12 pr-4 py-3.5 bg-white border border-gray-200 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none focus:border-sm-blue shadow-sm transition-all"
                 />
              </div>
-             <button className="flex-shrink-0 px-10 py-5 bg-gray-900 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl hover:bg-sm-blue transition-all flex items-center justify-center gap-3 shadow-xl">
-                <Filter size={18} /> Apply Advanced Filters
-             </button>
           </div>
+       </section>
 
-          {/* HERO */}
-          <div className="bg-white rounded-[30px] p-10 lg:p-16 border border-gray-100 shadow-sm relative overflow-hidden group">
-            <CMSMedia 
-              mediaType={heroBlock.mediaType} 
-              mediaUrl={heroBlock.mediaUrl} 
-              fallbackImg={heroBlock.img} 
-              className="absolute inset-0 w-full h-full object-cover opacity-5 group-hover:opacity-10 transition-all duration-1000"
-            />
-            <div className="relative z-10 max-w-2xl text-left">
-              <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-6 w-fit">
-                Institutional Real Estate
-              </div>
-              <h1 className="text-4xl lg:text-6xl font-black font-heading leading-tight mb-6 tracking-tighter text-gray-900 uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'Schools <br/> <span className="text-sm-blue italic font-serif lowercase tracking-normal">for</span> <br/> Sale & Lease.' }} />
-              <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest leading-loose">
-                {heroBlock.subtitle || "A curated repository of verified institutional opportunities across India. Connect with us for confidential mandates."}
-              </p>
-              
-              <div className="flex gap-4 mt-8">
-                <button className="px-8 py-4 bg-gray-900 text-white font-black rounded-full text-[10px] uppercase tracking-widest flex items-center gap-2 hover:bg-sm-blue transition-all">
-                  <Download size={14} /> Download NDA
-                </button>
-                <button className="px-8 py-4 bg-white border border-gray-100 text-gray-900 font-black rounded-full text-[10px] uppercase tracking-widest flex items-center gap-2 hover:border-sm-blue transition-all">
-                  <FileText size={14} /> Submit Mandate
-                </button>
-              </div>
-            </div>
-          </div>
-
-          {/* LISTINGS GRID */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {listings.filter(l => l.location.toLowerCase().includes(searchTerm.toLowerCase())).map((item, i) => (
-              <div key={i} className="bg-white rounded-[30px] p-8 border border-gray-100 shadow-sm hover:shadow-xl transition-all group cursor-pointer relative overflow-hidden">
-                <div className="absolute top-0 right-0 p-6 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpRight className="text-sm-blue" size={24} />
+       <div className="max-w-7xl mx-auto px-6 py-12">
+          <div className="flex flex-col lg:flex-row gap-12 items-start">
+             
+             {/* LEFT SIDEBAR: CITIES */}
+             <aside className="w-full lg:w-72 shrink-0 space-y-6 sticky top-24">
+                <div className="flex items-center gap-3 mb-6">
+                   <h3 className="text-[10px] font-black uppercase text-gray-400 tracking-[0.3em]">HOT LOCATIONS</h3>
+                   <div className="h-0.5 flex-grow bg-gray-100 rounded-full" />
                 </div>
                 
-                <div className="flex items-start gap-4 mb-6">
-                  <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-sm-blue">
-                    <Building2 size={24} />
-                  </div>
-                  <div>
-                    <span className={`text-[8px] font-black px-2 py-0.5 rounded-full uppercase tracking-widest ${item.type === 'Sale' ? 'bg-orange-50 text-orange-600' : 'bg-emerald-50 text-emerald-600'}`}>
-                      {item.type}
-                    </span>
-                    <h3 className="text-lg font-black text-gray-900 mt-1 leading-tight group-hover:text-sm-blue transition-colors">
-                      {item.title}
-                    </h3>
-                  </div>
+                <div className="space-y-2">
+                   {CITIES.map((city, i) => (
+                      <button 
+                        key={i} 
+                        onClick={() => { setSelectedCity(city); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
+                        className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCity === city ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-gray-900'}`}
+                      >
+                         {city}
+                         <ChevronRight size={14} className={`transition-transform ${selectedCity === city ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100'}`} />
+                      </button>
+                   ))}
                 </div>
 
-                <div className="grid grid-cols-2 gap-4 border-t border-gray-50 pt-6">
-                  <div className="flex items-center gap-2 text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                    <MapPin size={12} className="text-sm-blue" /> {item.location}
-                  </div>
-                  <div className="flex items-center gap-2 text-[9px] font-black text-gray-400 uppercase tracking-widest">
-                    <div className="w-1.5 h-1.5 rounded-full bg-sm-blue" /> {item.size}
-                  </div>
+                {/* Sidebar Call to Action */}
+                <div className="p-8 bg-sm-blue rounded-[35px] text-white mt-12 relative overflow-hidden group shadow-2xl shadow-blue-500/20">
+                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
+                      <Zap size={80} />
+                   </div>
+                   <h4 className="text-sm font-black uppercase tracking-tight mb-2 relative z-10">Institutional <br /> Advisory?</h4>
+                   <p className="text-[10px] text-white/60 font-bold uppercase tracking-widest leading-loose mb-6 relative z-10">
+                      We help you find the right mandate for your school growth.
+                   </p>
+                   <Link to="/contact-us" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-sm-blue font-black rounded-full text-[9px] uppercase tracking-widest hover:scale-105 transition-all relative z-10">
+                      Contact Us <ArrowRight size={14} />
+                   </Link>
                 </div>
-                
-                <div className="mt-4 text-[14px] font-black text-gray-900 uppercase">
-                  {item.price}
-                </div>
-              </div>
-            ))}
-          </div>
+             </aside>
 
-          {/* CTA BLOCK */}
-          <div className="mt-12 bg-sm-blue rounded-[30px] p-10 text-center text-white relative overflow-hidden">
-             <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
-             <h2 className="text-3xl font-black font-heading mb-4 uppercase tracking-tighter">Looking for a confidential deal?</h2>
-             <p className="text-white/80 text-[10px] font-black uppercase tracking-[0.2em] mb-8">We handle high-ticket institutional mandates with complete privacy.</p>
-             <button className="px-10 py-4 bg-white text-sm-blue font-black rounded-full text-[10px] uppercase tracking-widest hover:scale-105 transition-all shadow-xl">
-               Speak with Specialist
-             </button>
+             {/* MAIN GRID */}
+             <div className="flex-grow">
+                <div className="flex items-center justify-between mb-8 pb-4 border-b border-gray-100">
+                   <div className="flex flex-col">
+                      <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">{selectedCity}</span>
+                      <h2 className="text-xl font-black text-gray-900 uppercase tracking-tight">{filteredListings.length} ACTIVE MANDATES</h2>
+                   </div>
+                </div>
+
+                {filteredListings.length > 0 ? (
+                   <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                      {filteredListings.map((item, i) => (
+                         <PropertyListingCard key={i} item={item} />
+                      ))}
+                   </div>
+                ) : (
+                   <div className="py-32 text-center bg-gray-50 rounded-[40px] border-2 border-dashed border-gray-200">
+                      <Search size={48} className="mx-auto text-gray-300 mb-4" />
+                      <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight text-gray-400">No results found</h3>
+                      <button onClick={() => { setSearchTerm(''); setSelectedCity('All Cities'); }} className="mt-8 px-8 py-3 bg-gray-900 text-white font-black rounded-full text-[10px] uppercase tracking-widest">Clear Filters</button>
+                   </div>
+                )}
+             </div>
+
           </div>
-        </div>
-      </div>
+       </div>
     </main>
   );
 };
