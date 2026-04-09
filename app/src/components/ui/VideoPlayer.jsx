@@ -67,7 +67,7 @@ const VideoPlayer = ({ src, className, autoPlay = true, loop = true }) => {
       )}
 
       {/* Control Bar - Bottom */}
-      <div className="absolute bottom-0 left-0 right-0 p-4 pb-3 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover/video:opacity-100 transition-opacity flex items-center justify-between z-20">
+      <div className="absolute bottom-0 left-0 right-0 p-4 pb-3 bg-gradient-to-t from-black/0 to-transparent opacity-0 group-hover/video:opacity-100 transition-opacity flex items-center justify-between z-20">
         <div className="flex items-center gap-3">
           <button 
             onClick={togglePlay}

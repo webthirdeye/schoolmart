@@ -97,7 +97,7 @@ const Fundraising = () => {
                {CASE_STUDIES.map((cs, i) => (
                   <div key={i} className="flex-shrink-0 w-80 md:w-full bg-gray-50 p-8 rounded-[35px] border border-gray-100 group hover:border-sm-blue transition-colors relative overflow-hidden">
                      <div className="flex justify-between items-start mb-6">
-                        <span className="text-[8px] font-black bg-gray-950 text-white px-3 py-1.5 rounded-full uppercase tracking-widest">{cs.focus}</span>
+                        <span className="text-[8px] font-black bg-gray-50 text-white px-3 py-1.5 rounded-full uppercase tracking-widest">{cs.focus}</span>
                         <Award size={20} className="text-emerald-500" />
                      </div>
                      <h4 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-2 leading-none">{cs.title}</h4>

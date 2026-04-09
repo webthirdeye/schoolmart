@@ -92,16 +92,16 @@ const Guides = () => {
                  </div>
               </div>
 
-              <div className="bg-[#004a8e] rounded-[40px] p-8 text-white flex flex-col justify-between shadow-lg group relative overflow-hidden min-h-[200px]">
-                 <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-16 -mt-16 blur-2xl" />
+              <div className="bg-white rounded-[40px] p-8 text-gray-900 flex flex-col justify-between shadow-sm border border-gray-100 group relative overflow-hidden min-h-[200px]">
+                 <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/5 rounded-full -mr-16 -mt-16 blur-2xl" />
                  <div className="flex items-center justify-between relative z-10">
-                    <span className="text-[10px] font-black uppercase tracking-[0.3em] opacity-60">Strategic Partner Service</span>
-                    <ArrowUpRight className="text-white/40 group-hover:text-white transition-colors" size={24} />
+                    <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Strategic Partner Service</span>
+                    <ArrowUpRight className="text-gray-400 group-hover:text-sm-blue transition-colors" size={24} />
                  </div>
-                 <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight mt-10 mb-8 relative z-10" dangerouslySetInnerHTML={{ __html: d.actionCard?.titleHtml || 'Request <br/> Strategy Audit.' }} />
+                 <h3 className="text-2xl font-black uppercase tracking-tighter leading-tight mt-10 mb-8 relative z-10 text-gray-900" dangerouslySetInnerHTML={{ __html: d.actionCard?.titleHtml || 'Request <br/> Strategy Audit.' }} />
                  <button 
                    onClick={() => navigate('/registration')}
-                   className="w-full py-4 bg-white text-[#004a8e] font-black rounded-full text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-xl hover:bg-sm-blue hover:text-white relative z-10"
+                   className="w-full py-4 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest active:scale-95 transition-all shadow-lg shadow-blue-500/20 hover:bg-gray-900 relative z-10"
                  >
                     {d.actionCard?.btnText || 'Join Network'}
                  </button>

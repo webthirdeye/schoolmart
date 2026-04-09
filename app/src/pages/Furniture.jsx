@@ -47,7 +47,7 @@ const Furniture = () => {
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=80"} 
                 className="w-full h-full object-cover transition-all duration-1000"
               />
-              <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end backdrop-blur-md bg-white/10 p-6 rounded-[30px] border border-white/20">
+              <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end bg-white/95 p-6 rounded-[30px] border border-white/20">
                  <div>
                     <span className="text-[8px] font-black text-white/60 uppercase tracking-widest block mb-2">{heroBlock.badge || "Featured Series"}</span>
                     <h2 className="text-2xl font-black text-white uppercase leading-none font-heading" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Modular <br/> Classroom Pro." }} />
