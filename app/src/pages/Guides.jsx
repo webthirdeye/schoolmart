@@ -85,10 +85,10 @@ const Guides = () => {
                     fallbackImg={d.heroImage} 
                     className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
                  />
-                 <div className="absolute inset-0 bg-gradient-to-t from-gray-900/60 to-transparent" />
-                 <div className="absolute bottom-6 left-6 text-white">
-                    <span className="text-[9px] font-black uppercase tracking-widest opacity-60">Cover Story</span>
-                    <h3 className="text-xl font-black uppercase tracking-tight">Institutional <br/> Excellence.</h3>
+                 <div className="absolute inset-0 bg-gradient-to-t from-white/0 to-transparent" />
+                 <div className="absolute bottom-0 left-0 right-0 bg-white px-6 py-4">
+                    <span className="text-[9px] font-black uppercase tracking-widest text-gray-400">Cover Story</span>
+                    <h3 className="text-base font-black uppercase tracking-tight text-gray-900">Institutional Excellence.</h3>
                  </div>
               </div>
 

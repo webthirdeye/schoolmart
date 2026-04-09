@@ -141,23 +141,23 @@ const Partnerships = () => {
       </section>
 
       {/* REWARDS: Wide Compact Strip */}
-      <section className="bg-gray-900 text-white py-12 px-6">
+      <section className="bg-gray-50 text-gray-900 py-12 px-6 border-t border-gray-100">
          <div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-12">
             <div className="lg:w-1/3">
                <h3 className="text-2xl font-black uppercase tracking-tighter mb-2">{rewards.title}</h3>
-               <p className="text-white/40 text-[11px] font-black uppercase tracking-widest">{rewards.subtitle}</p>
+               <p className="text-gray-400 text-[11px] font-black uppercase tracking-widest">{rewards.subtitle}</p>
             </div>
             <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
                {rewards.rewards?.map((r, i) => {
                   const RewardIcon = getIcon(r.icon);
                   return (
-                    <div key={i} className="p-6 bg-white/5 border border-white/10 rounded-2xl flex items-start gap-4">
+                    <div key={i} className="p-6 bg-white border border-gray-100 rounded-2xl flex items-start gap-4 shadow-sm hover:shadow-md transition-all">
                        <div className="w-8 h-8 shrink-0 bg-sm-blue rounded-lg flex items-center justify-center text-white">
                           <RewardIcon size={16} />
                        </div>
                        <div>
-                          <h4 className="text-[12px] font-black uppercase tracking-tight mb-1">{r.title}</h4>
-                          <p className="text-white/30 text-[10px] leading-relaxed">{r.desc}</p>
+                          <h4 className="text-[12px] font-black uppercase tracking-tight mb-1 text-gray-900">{r.title}</h4>
+                          <p className="text-gray-400 text-[10px] leading-relaxed">{r.desc}</p>
                        </div>
                     </div>
                   );

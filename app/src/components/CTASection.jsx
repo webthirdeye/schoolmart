@@ -17,7 +17,14 @@ const CTASection = () => {
   return (
     <section className="py-12 px-4 relative overflow-hidden bg-white">
       <div className="max-w-7xl mx-auto">
-        <div className="relative bg-gray-50/50 rounded-[50px] p-8 md:p-20 border border-gray-100 shadow-sm overflow-hidden group transition-all duration-700 hover:shadow-2xl hover:bg-white">
+        <div
+          className="relative rounded-[50px] p-8 md:p-20 border border-gray-100 shadow-sm overflow-hidden group transition-all duration-700 hover:shadow-2xl"
+          style={{ backgroundColor: d.bgColor || undefined }}
+        >
+          {/* If no custom bgColor, show the default soft gradient */}
+          {!d.bgColor && (
+            <div className="absolute inset-0 bg-gray-50/50 rounded-[50px]" />
+          )}
           {/* Premium Background Accents */}
           <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64 group-hover:bg-sm-blue/10 transition-all duration-1000" />
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-orange-500/5 rounded-full blur-[100px] -ml-48 -mb-48 opacity-40" />

@@ -293,9 +293,9 @@ const ResourceTiles = () => {
                
                <div className="relative rounded-2xl overflow-hidden shadow-sm h-40">
                   <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80" alt="Consultation" className="absolute inset-0 w-full h-full object-cover" />
-                  <div className="absolute inset-0 bg-teal-700/80 p-5 flex flex-col items-center justify-center text-white text-center">
-                     <h2 className="text-2xl font-black mb-0 uppercase tracking-tighter">FREE</h2>
-                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4">CONSULTATION</h3>
+                  <div className="absolute inset-0 bg-white/90 p-5 flex flex-col items-center justify-center text-gray-900 text-center">
+                     <h2 className="text-2xl font-black mb-0 uppercase tracking-tighter text-teal-700">FREE</h2>
+                     <h3 className="text-[10px] font-black uppercase tracking-[0.2em] mb-4 text-teal-700">CONSULTATION</h3>
                      <Link to="/contact-us" className="px-6 py-2.5 bg-white text-teal-700 font-bold rounded-xl text-[9px] uppercase tracking-widest hover:bg-gray-100 transition-colors">Book Now</Link>
                   </div>
                </div>

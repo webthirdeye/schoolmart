@@ -1411,6 +1411,55 @@ const BlockForms = {
     </div>
   ),
 
+  cta_whatsapp: ({ data, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Global CTA Section (VTA)</SectionTitle>
+      <div className="bg-white border border-gray-200 rounded-[30px] p-6 space-y-6 shadow-sm">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <Field label="Background Style">
+              <div className="flex items-center gap-4 p-2 bg-gray-50 rounded-xl border border-gray-100">
+                 <input 
+                   type="color" 
+                   value={data.bgColor || '#FFFFFF'} 
+                   onChange={e => set('bgColor', e.target.value)} 
+                   className="w-12 h-12 rounded-lg border-2 border-white shadow-sm cursor-pointer"
+                 />
+                 <div className="flex-1">
+                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Color HEX</p>
+                    <TextInput 
+                      value={data.bgColor || '#FFFFFF'} 
+                      onChange={v => set('bgColor', v)} 
+                      placeholder="#FFFFFF" 
+                      className="font-mono"
+                    />
+                 </div>
+              </div>
+           </Field>
+           <Field label="Badge Text">
+              <TextInput value={data.badge} onChange={v => set('badge', v)} placeholder="DIRECT CONSULTATION" />
+           </Field>
+        </div>
+
+        <Field label="Headline">
+           <TextInput value={data.headline} onChange={v => set('headline', v)} placeholder="READY TO SCALE YOUR SCHOOL?" />
+        </Field>
+
+        <Field label="Description Text">
+           <TextArea value={data.description} onChange={v => set('description', v)} rows={3} placeholder="At SchoolMart, we offer end-to-end solutions..." />
+        </Field>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+           <Field label="WhatsApp Number (No +)">
+              <TextInput value={data.whatsappNumber} onChange={v => set('whatsappNumber', v)} placeholder="919966109191" />
+           </Field>
+           <Field label="Phone / Support Number">
+              <TextInput value={data.phone} onChange={v => set('phone', v)} placeholder="+91 9966109191" />
+           </Field>
+        </div>
+      </div>
+    </div>
+  ),
+
   registration_hero: ({ data, set }) => (
     <div className="space-y-4">
       <SectionTitle>Registration Page — Hero Sidebar</SectionTitle>

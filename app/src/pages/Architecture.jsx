@@ -70,9 +70,9 @@ const Architecture = () => {
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=80"}
                 className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 z-0"
               />
-              <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end backdrop-blur-md bg-white/10 p-4 rounded-2xl border border-white/20">
-                 <span className="text-[9px] font-black text-white uppercase tracking-widest">Master Planning Case Studies</span>
-                 <ArrowUpRight className="text-white" size={24} />
+              <div className="absolute bottom-0 left-0 right-0 flex justify-between items-center bg-white px-6 py-4 z-10">
+                 <span className="text-[9px] font-black text-gray-900 uppercase tracking-widest">Master Planning Case Studies</span>
+                 <ArrowUpRight className="text-gray-900" size={16} />
               </div>
            </div>
         </section>
