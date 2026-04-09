@@ -95,7 +95,6 @@ const PropertyListingCard = ({ item }) => {
   );
 };
 
-const CITIES = ['All Cities', 'Bengaluru', 'Hyderabad', 'Mumbai', 'Chennai', 'Pune', 'Delhi NCR', 'Kolkata'];
 
 const SchoolSale = () => {
   const { blocks, loading } = useCMSPage('school-sale');
@@ -103,6 +102,8 @@ const SchoolSale = () => {
   const [searchTerm, setSearchTerm] = useState('');
 
   const listings = blocks?.listings?.items || [];
+  const dynamicCities = blocks?.sidebar_categories?.data?.categories?.map(c => c.name) || [];
+  const CITIES = ['All Cities', ...dynamicCities];
 
   useEffect(() => {
     window.scrollTo(0, 0);

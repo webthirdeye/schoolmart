@@ -1489,7 +1489,10 @@ const BlockForms = {
     </div>
   ),
 
-  listings: ({ data, set }) => (
+  listings: ({ data, set, allBlocks }) => {
+    const locations = allBlocks?.find(b => b.blockType === 'sidebar_categories')?.data?.categories?.map(c => c.name) || [];
+    
+    return (
     <div className="space-y-6">
       <SectionTitle>Property & Business Listings ({(data.items || []).length})</SectionTitle>
       {(data.items || []).map((item, i) => (
@@ -1518,7 +1521,19 @@ const BlockForms = {
                       <option value="Sale">Direct Sale Mandate</option>
                    </select>
                 </Field>
-                <Field label="Location (e.g. Hyderabad, TS)"><TextInput value={item.location} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], location: v }; set('items', ts); }} placeholder="Hyderabad, TS" /></Field>
+                <Field label="Location (Dynamic from Sidebar Tabs)">
+                   <div className="relative">
+                      <select 
+                        value={item.location || ''} 
+                        onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], location: v.target.value }; set('items', ts); }}
+                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white appearance-none"
+                      >
+                         <option value="">Select Location...</option>
+                         {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
+                      </select>
+                      <ChevronDown size={14} className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
+                   </div>
+                </Field>
                 <Field label="Deal Title"><TextInput value={item.title} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], title: v }; set('items', ts); }} placeholder="K-12 SCHOOL FOR LEASE" /></Field>
              </div>
              <div className="space-y-3">
@@ -1552,7 +1567,7 @@ const BlockForms = {
         <Plus size={16} /> Add New Mandate Card
       </button>
     </div>
-  ),
+  )},
 };
 
 // Fallback: generic key-value editor for unknown block types
@@ -1572,7 +1587,7 @@ const GenericForm = ({ data, set }) => (
 );
 
 // ── Single block editor ────────────────────────────────────────────────────────
-function BlockEditor({ slug, block, onSaved }) {
+function BlockEditor({ slug, block, allBlocks, onSaved }) {
   const [localData, setLocalData] = useState(block.data || {});
   const [visible, setVisible] = useState(block.isVisible !== false);
   const [saving, setSaving] = useState(false);
@@ -1671,7 +1686,7 @@ function BlockEditor({ slug, block, onSaved }) {
       {/* Block Body */}
       <div className="p-6">
         {FormComponent
-          ? <FormComponent data={localData} set={setField} />
+          ? <FormComponent data={localData} set={setField} allBlocks={allBlocks} />
           : <GenericForm data={localData} set={setField} />
         }
 
@@ -1893,7 +1908,7 @@ function PageEditor({ slug }) {
         {/* Right Content: Active Block Editor */}
         <div className="flex-1 min-w-0 w-full">
           {activeBlock ? (
-            <BlockEditor key={activeBlock._id} slug={slug} block={activeBlock} onSaved={load} />
+            <BlockEditor key={activeBlock._id} slug={slug} block={activeBlock} allBlocks={page.blocks} onSaved={load} />
           ) : (
             <div className="text-center py-20 bg-gray-50 rounded-2xl border border-dashed border-gray-200">
               <p className="text-4xl mb-2">👈</p>
