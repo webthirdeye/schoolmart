@@ -83,9 +83,12 @@ const PropertyListingCard = ({ item }) => {
                 {item.price}
               </span>
            </div>
-           <Link to="/contact-us" className="w-full sm:w-auto text-center px-8 py-4 bg-[#FFDB00] text-gray-900 font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-xl shadow-amber-500/10 hover:bg-gray-900 hover:text-white transition-all transform group-hover:scale-105 active:scale-95">
-              Contact Business
-           </Link>
+            <Link 
+              to={item.ctaLink || "/contact-us"} 
+              className="w-full sm:w-auto text-center px-8 py-4 bg-[#FFDB00] text-gray-900 font-black rounded-2xl text-[10px] uppercase tracking-widest shadow-xl shadow-amber-500/10 hover:bg-gray-900 hover:text-white transition-all transform group-hover:scale-105 active:scale-95"
+            >
+               {item.ctaLabel || "Contact Business"}
+            </Link>
         </div>
       </div>
     </div>

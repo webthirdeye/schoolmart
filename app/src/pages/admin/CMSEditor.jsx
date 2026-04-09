@@ -142,6 +142,8 @@ const mapCSVToBlockData = (blockType, rows) => {
         return { cards: rows.map(r => ({ title: r.title, subtitle: r.subtitle, icon: r.icon, link: r.link, bgColor: r.bgColor })) };
     case 'feature_blocks':
         return { blocks: rows.map(r => ({ title: r.title, subtitle: r.subtitle, icon: r.icon, bgColor: r.bgColor, textColor: r.textColor })) };
+    case 'listings':
+      return { items: rows.map(r => ({ type: r.type, location: r.location, title: r.title, rating: r.rating, description: r.description, price: r.price, runRate: r.runRate, margin: r.margin })) };
     default:
       return rows[0]; // Simple flat mapping
   }
@@ -169,6 +171,7 @@ const downloadCSVTemplate = (blockType) => {
     case 'info_split_grid': headers = ['titleHtml', 'description', 'point', 'btnLabel', 'btnPath', 'img']; break;
     case 'action_stack': headers = ['title', 'subtitle', 'icon', 'link', 'bgColor']; break;
     case 'feature_blocks': headers = ['title', 'subtitle', 'icon', 'bgColor', 'textColor']; break;
+    case 'listings': headers = ['type', 'location', 'title', 'rating', 'description', 'price', 'runRate', 'margin']; break;
     default: headers = ['data'];
   }
   const blob = new Blob([headers.join(',')], { type: 'text/csv' });
@@ -1485,6 +1488,71 @@ const BlockForms = {
       </div>
     </div>
   ),
+
+  listings: ({ data, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Property & Business Listings ({(data.items || []).length})</SectionTitle>
+      {(data.items || []).map((item, i) => (
+        <div key={i} className="border border-gray-200 rounded-[25px] p-6 space-y-4 bg-gray-50/50 shadow-sm relative group">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+               <span className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-[10px] font-black">
+                 {i + 1}
+               </span>
+               <span className="text-xs font-black uppercase tracking-widest text-gray-500">Mandate Editor</span>
+            </div>
+            <button onClick={() => set('items', (data.items || []).filter((_, j) => j !== i))} className="p-2 text-red-400 hover:text-red-600 transition-colors">
+              <Trash2 size={16} />
+            </button>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+             <div className="space-y-3">
+                <Field label="Mandate Type">
+                   <select 
+                     value={item.type || 'Investment'} 
+                     onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], type: v.target.value }; set('items', ts); }}
+                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white"
+                   >
+                      <option value="Investment">Investment Opportunity</option>
+                      <option value="Sale">Direct Sale Mandate</option>
+                   </select>
+                </Field>
+                <Field label="Location (e.g. Hyderabad, TS)"><TextInput value={item.location} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], location: v }; set('items', ts); }} placeholder="Hyderabad, TS" /></Field>
+                <Field label="Deal Title"><TextInput value={item.title} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], title: v }; set('items', ts); }} placeholder="K-12 SCHOOL FOR LEASE" /></Field>
+             </div>
+             <div className="space-y-3">
+                <Field label="Mandate Value (Price Display)"><TextInput value={item.price} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], price: v }; set('items', ts); }} placeholder="9.50 Cr" /></Field>
+                <div className="grid grid-cols-2 gap-2">
+                   <Field label="Rating (Star)"><TextInput value={item.rating} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], rating: v }; set('items', ts); }} placeholder="8.5" /></Field>
+                   <Field label="Margin %"><TextInput value={item.margin} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], margin: v }; set('items', ts); }} placeholder="25%+" /></Field>
+                </div>
+                <Field label="Sales P.A. (Run Rate)"><TextInput value={item.runRate} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], runRate: v }; set('items', ts); }} placeholder="1.2 Cr" /></Field>
+             </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+             <Field label="CTA Button Label"><TextInput value={item.ctaLabel} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLabel: v }; set('items', ts); }} placeholder="Contact Business" /></Field>
+             <Field label="CTA Button Link"><TextInput value={item.ctaLink} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLink: v }; set('items', ts); }} placeholder="/contact-us" /></Field>
+          </div>
+
+          <Field label="Description Bullets" hint="Sentences separated by periods will become bullets. First 3 used.">
+             <TextArea 
+               value={item.description} 
+               onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], description: v }; set('items', ts); }} 
+               placeholder="Established school. Stable revenue model. Prime location." 
+             />
+          </Field>
+        </div>
+      ))}
+      <button 
+        onClick={() => set('items', [...(data.items || []), { type: 'Investment', location: '', title: '', price: '', rating: '8.5', margin: '25%+', runRate: '', description: '' }])}
+        className="w-full flex justify-center items-center gap-2 py-4 bg-white border-2 border-dashed border-gray-200 rounded-[25px] text-gray-400 font-black uppercase tracking-widest hover:border-blue-400 hover:text-blue-500 transition-all"
+      >
+        <Plus size={16} /> Add New Mandate Card
+      </button>
+    </div>
+  ),
 };
 
 // Fallback: generic key-value editor for unknown block types
@@ -1577,6 +1645,7 @@ function BlockEditor({ slug, block, onSaved }) {
     catalogues_page_content: '📄 Catalogues Page Content',
     guides_page_content: '📖 Guides Page Content',
     contact_page_content: '✉️ Contact Page Content',
+    listings: '🏛️ Property & Business Listings',
   };
 
   return (
