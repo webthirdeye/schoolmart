@@ -68,9 +68,8 @@ const Architecture = () => {
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1487958449943-2429e8be8625?w=1200&q=80"}
-                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 z-0 brightness-90"
+                className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 z-0"
               />
-              <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-all" />
               <div className="absolute bottom-6 left-6 right-6 flex justify-between items-end backdrop-blur-md bg-white/10 p-4 rounded-2xl border border-white/20">
                  <span className="text-[9px] font-black text-white uppercase tracking-widest">Master Planning Case Studies</span>
                  <ArrowUpRight className="text-white" size={24} />
@@ -90,7 +89,7 @@ const Architecture = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ChevronRight size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />
@@ -147,19 +146,19 @@ const Architecture = () => {
               {/* FULL WIDTH CAMPUS AUDIT HUB */}
               <div className="mt-16 pt-16 border-t border-gray-100">
                  <div 
-                   className="rounded-[40px] bg-gray-900 p-8 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-2xl border border-white/5 min-h-[300px]"
+                   className="rounded-[40px] bg-white p-8 lg:p-16 text-gray-900 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-sm border border-gray-100 min-h-[300px]"
                  >
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/10 rounded-full blur-[120px] -mr-64 -mt-64" />
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64" />
                     
                     <div className="relative z-10 max-w-2xl text-center md:text-left">
                        <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
                           <Building2 size={32} className="text-sm-blue" />
-                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Infrastructure Support</span>
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Infrastructure Support</span>
                        </div>
                        <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
                           Campus Audit Pro.
                        </h4>
-                       <p className="text-white/40 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
+                       <p className="text-gray-400 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
                           Professional site visits and master planning audits for institutional excellence. Get your campus future-ready with NEP-compliant studio designs.
                        </p>
                     </div>
@@ -167,7 +166,7 @@ const Architecture = () => {
                     <div className="mt-10 md:mt-0 relative z-10">
                        <Link 
                          to="/registration"
-                         className="px-10 py-5 bg-sm-blue text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-2xl flex items-center gap-3 group"
+                         className="px-10 py-5 bg-sm-blue text-white font-black rounded-full hover:bg-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-3 group"
                        >
                          Request Site Visit
                          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

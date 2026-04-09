@@ -19,46 +19,41 @@ const BannerSection = () => {
   const d = { ...DEFAULTS, ...data };
 
   return (
-    <section className="pt-2 md:pt-4 pb-4 px-4 overflow-hidden relative">
+    <section className="pt-2 md:pt-4 pb-4 px-4 overflow-hidden relative bg-sm-gray">
       <div className="max-w-7xl mx-auto">
         <div 
-          className="relative rounded-2xl overflow-hidden shadow-xl"
-          style={{ background: d.bgColor || 'linear-gradient(to right, #0a1628, #0f1f3d, #12213f)' }}
+          className="relative rounded-[40px] overflow-hidden shadow-sm border border-gray-200"
+          style={{ background: d.bgColor || 'linear-gradient(to right, #ffffff, #f8f9fa, #f1f3f5)' }}
         >
-          <div className="flex flex-col lg:flex-row items-stretch min-h-[280px]">
+          <div className="flex flex-col lg:flex-row items-stretch min-h-[320px]">
 
             {/* Left — Text Content */}
-            <div className="flex-1 p-8 lg:p-10 z-10 flex flex-col justify-center">
-              <p className="text-[10px] font-bold text-orange-400/70 uppercase tracking-[0.25em] mb-3">
+            <div className="flex-1 p-10 lg:p-14 z-10 flex flex-col justify-center">
+              <p className="text-[10px] font-black text-sm-orange uppercase tracking-[0.3em] mb-4">
                 {d.badge}
               </p>
-              <h2 className="text-4xl lg:text-5xl font-extrabold text-white font-heading leading-[1.05] mb-1">
+              <h2 className="text-4xl lg:text-6xl font-black text-gray-900 font-heading leading-[1] mb-2 uppercase tracking-tighter">
                 {d.headline1}
               </h2>
               <h2
-                className="text-4xl lg:text-5xl font-extrabold font-heading leading-[1.05] mb-5"
+                className="text-4xl lg:text-6xl font-black font-heading leading-[1] mb-8 uppercase tracking-tighter"
                 style={{ color: '#F97316' }}
               >
                 {d.headline2}
               </h2>
 
-              <p className="text-[11px] text-white/40 uppercase tracking-[0.18em] mb-1">{d.subline1}</p>
-              <p className="text-[11px] text-white/30 uppercase tracking-[0.12em] mb-7">
-                {d.subline2}
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-4">
                 <Link
                   to={d.cta1?.path || '/furniture'}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-sm-orange text-white font-bold rounded-xl hover:bg-orange-500 transition-all duration-200 text-sm shadow-lg shadow-orange-900/40"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-gray-900 text-white font-black rounded-2xl hover:bg-sm-blue transition-all duration-300 text-[10px] uppercase tracking-widest shadow-xl shadow-gray-200"
                 >
-                  {d.cta1?.label || 'Shop Furniture →'}
+                  {d.cta1?.label || 'Get Started →'}
                 </Link>
                 <Link
                   to={d.cta2?.path || '/catalogues'}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-2.5 bg-white/10 border border-white/20 text-white font-semibold rounded-xl hover:bg-white/20 transition-all duration-200 text-sm"
+                  className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-white border border-gray-200 text-gray-900 font-black rounded-2xl hover:bg-gray-50 transition-all duration-300 text-[10px] uppercase tracking-widest"
                 >
-                  {d.cta2?.label || 'View Catalogue'}
+                  {d.cta2?.label || 'Institutional Catalogues'}
                 </Link>
               </div>
             </div>

@@ -48,7 +48,7 @@ const DigitalInfra = () => {
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img} 
-                className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-all duration-1000 brightness-50"
+                className="absolute inset-0 w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-all duration-1000"
               />
               <div className="absolute top-0 right-0 w-48 h-48 bg-sm-blue/20 rounded-full blur-[80px] -mr-20 -mt-20 opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90 relative z-10">
@@ -65,9 +65,8 @@ const DigitalInfra = () => {
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1558494949-ef010cbdcc51?w=1200&q=80"}
-                className="w-full h-full object-cover brightness-90 transition-all duration-700 hover:scale-110"
+                className="w-full h-full object-cover transition-all duration-700 hover:scale-110"
               />
-              <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-all" />
               <div className="absolute bottom-8 left-8 p-6 bg-white/10 backdrop-blur-md rounded-2xl border border-white/20 text-white max-w-md hidden lg:block">
                  <p className="text-[11px] font-black uppercase tracking-widest mb-2 opacity-60">Success Metric</p>
                  <h3 className="text-xl font-black uppercase tracking-tighter">99.9% Uptime Deployment Guaranteed.</h3>
@@ -87,7 +86,7 @@ const DigitalInfra = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ArrowRight size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-45deg]' : 'opacity-0 group-hover:opacity-100 text-sm-blue'}`} />
@@ -146,20 +145,19 @@ const DigitalInfra = () => {
               {/* FULL WIDTH DIGITAL AUDIT HUB */}
               <div className="mt-16 pt-16 border-t border-gray-100">
                  <div 
-                   style={{ backgroundColor: (blocks?.feature_card?.bgColor || '#0A0E14') }}
-                   className="rounded-[40px] p-8 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-2xl border border-white/5 min-h-[300px]"
+                   className="rounded-[40px] bg-white p-8 lg:p-16 text-gray-900 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-sm border border-gray-100 min-h-[300px]"
                  >
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/10 rounded-full blur-[120px] -mr-64 -mt-64" />
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64" />
                     
                     <div className="relative z-10 max-w-2xl text-center md:text-left">
                        <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
-                          <Laptop size={32} style={{ color: blocks?.feature_card?.btnColor || '#3B82F6' }} />
-                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Infrastructure Support</span>
+                          <Laptop size={32} className="text-sm-blue" />
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Infrastructure Support</span>
                        </div>
                        <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
                           {blocks?.feature_card?.title || "Digital Audit Pro."}
                        </h4>
-                       <p className="text-white/40 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
+                       <p className="text-gray-400 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
                           {blocks?.feature_card?.subtitle || "Deployment Security & System Performance Audits. Get your institutional hardware future-ready."}
                        </p>
                     </div>
@@ -167,8 +165,7 @@ const DigitalInfra = () => {
                     <div className="mt-10 md:mt-0 relative z-10">
                        <Link 
                          to={blocks?.feature_card?.btnPath || '/registration'}
-                         style={{ backgroundColor: blocks?.feature_card?.btnColor || '#3B82F6' }}
-                         className="px-10 py-5 text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-2xl flex items-center gap-3 group"
+                         className="px-10 py-5 bg-sm-blue text-white font-black rounded-full hover:bg-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-3 group"
                        >
                          {blocks?.feature_card?.btnLabel || "Request Site Visit"}
                          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

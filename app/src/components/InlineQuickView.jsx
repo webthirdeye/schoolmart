@@ -88,8 +88,8 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
              </div>
 
              {/* KEY FEATURES & SPECS */}
-             <div className="bg-gray-900 rounded-[25px] p-8 text-white relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/20 blur-[60px] rounded-full translate-x-10 -translate-y-10" />
+             <div className="bg-gray-50 rounded-[25px] p-8 text-gray-900 border border-gray-100 relative overflow-hidden group">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/5 blur-[60px] rounded-full translate-x-10 -translate-y-10" />
                 <h3 className="text-xs font-black uppercase tracking-[0.25em] mb-6 text-sm-blue flex items-center gap-2">
                   <CheckCircle2 size={14} /> {featuresTitle}
                 </h3>
@@ -103,18 +103,18 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
                         <Component 
                           key={idx} 
                           {...extraProps}
-                          className={`flex items-center justify-between p-3.5 bg-white/5 border border-white/10 rounded-xl transition-all ${isClickable ? 'hover:bg-white/10 hover:border-sm-blue cursor-pointer group/feat' : ''}`}
+                          className={`flex items-center justify-between p-3.5 bg-white border border-gray-200 rounded-xl transition-all ${isClickable ? 'hover:bg-gray-50 hover:border-sm-blue cursor-pointer group/feat' : ''}`}
                         >
                           <div className="flex items-center gap-4">
                             <div className={`w-8 h-8 rounded-lg bg-sm-blue/10 flex items-center justify-center text-sm-blue ${isClickable ? 'group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all' : ''}`}>
                                <CheckCircle2 size={14} />
                             </div>
                             <div>
-                               <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
-                               {feat.size && <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>}
+                               <p className="text-[11px] font-bold text-gray-900 uppercase tracking-tight">{feat.name}</p>
+                               {feat.size && <p className="text-[9px] text-gray-400 uppercase font-black">{feat.size}</p>}
                             </div>
                           </div>
-                          {isClickable && <ExternalLink size={12} className="text-white/20 group-hover/feat:text-sm-blue transition-all" />}
+                          {isClickable && <ExternalLink size={12} className="text-gray-300 group-hover/feat:text-sm-blue transition-all" />}
                         </Component>
                       );
                     }) : [
@@ -122,13 +122,13 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
                       { name: '100% NEP 2020 Compliant', size: 'Standardized' },
                       { name: 'Anti-Microbial Surface Coating', size: 'Safe & Hygienic' }
                     ].map((feat, idx) => (
-                      <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group/feat">
+                      <div key={idx} className="flex items-center gap-4 p-3.5 bg-white border border-gray-200 rounded-xl hover:bg-gray-50 hover:border-gray-300 transition-all group/feat">
                          <div className="w-8 h-8 rounded-lg bg-sm-blue/20 flex items-center justify-center text-sm-blue group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all">
                             <CheckCircle2 size={14} />
                          </div>
                          <div>
-                            <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
-                            <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>
+                            <p className="text-[11px] font-bold text-gray-900 uppercase tracking-tight">{feat.name}</p>
+                            <p className="text-[9px] text-gray-400 uppercase font-black">{feat.size}</p>
                          </div>
                       </div>
                     ))}
@@ -137,7 +137,7 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
                 <div className="mt-8 flex gap-3">
                   <a 
                     href={ctaLink}
-                    className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-500/30 active:scale-95 transition-all text-center flex items-center justify-center"
+                    className="flex-1 py-3 bg-gray-900 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-sm-blue shadow-xl shadow-gray-200 active:scale-95 transition-all text-center flex items-center justify-center"
                   >
                     {ctaLabel}
                   </a>
@@ -145,7 +145,7 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
                     href={chatLink}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2"
+                    className="px-6 py-3 bg-white border border-gray-200 text-gray-900 font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-gray-50 transition-all flex items-center gap-2"
                   >
                     <MessageSquare size={14} /> {chatLabel}
                   </a>

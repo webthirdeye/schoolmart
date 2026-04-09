@@ -43,19 +43,19 @@ const Mathematics = () => {
       <div className="max-w-7xl mx-auto px-4">
         
         <section className="pt-4 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-3 items-stretch">
-           <div className="lg:col-span-12 bg-gray-900 rounded-[40px] p-12 lg:p-20 text-white flex flex-col justify-center border border-gray-800 shadow-2xl relative overflow-hidden group min-h-[450px]">
+           <div className="lg:col-span-12 bg-white rounded-[40px] p-12 lg:p-20 text-gray-900 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[450px]">
               <CMSMedia 
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=1000&q=80"}
-                className="absolute inset-0 w-full h-full object-cover brightness-50 opacity-40 group-hover:opacity-60 transition-all duration-1000"
+                className="absolute inset-0 w-full h-full object-cover transition-all duration-1000"
               />
-              <div className="absolute top-0 right-0 w-96 h-96 bg-sm-blue/10 rounded-full blur-[120px] -mr-48 -mt-48 opacity-60" />
+              <div className="absolute top-0 right-0 w-96 h-96 bg-sm-blue/5 rounded-full blur-[120px] -mr-48 -mt-48 opacity-60" />
               <div className="px-4 py-1.5 bg-sm-blue text-white font-black rounded-full text-[9px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
                  <Hash size={12} className="inline mr-2" /> {heroBlock.badge || "Logic & Symmetry 2025"}
               </div>
               <h1 className="text-5xl lg:text-8xl font-black font-heading leading-[0.9] mb-8 tracking-tighter uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Play <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">with</span> <br/> Numbers." }} />
-              <p className="text-gray-400 text-[10px] md:text-[11px] font-bold uppercase tracking-widest max-w-md leading-loose relative z-10">
+              <p className="text-gray-500 text-[10px] md:text-[11px] font-bold uppercase tracking-widest max-w-md leading-loose relative z-10">
                  {heroBlock.subtitle || (heroBlock.data?.subtitle) || "We create gamified math labs where abstract concepts become tangible experiences through interactive equipment."}
               </p>
            </div>
@@ -73,7 +73,7 @@ const Mathematics = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ChevronRight size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />

@@ -48,9 +48,8 @@ const Science = () => {
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1541829070764-84a7d30dee62?w=1000&q=80"}
-                className="absolute inset-0 w-full h-full object-cover brightness-95 opacity-20 group-hover:opacity-30 transition-all duration-1000"
+                className="w-full h-full object-cover transition-all duration-1000"
               />
-              <div className="absolute top-0 right-0 w-64 h-64 bg-emerald-500/10 rounded-full blur-[100px] -mr-32 -mt-32" />
               <div className="px-3 py-1 bg-emerald-500 text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90 relative z-10">
                  <Activity size={12} className="inline mr-2 animate-pulse" /> {heroBlock.badge || "Experimental Discovery 2025"}
               </div>
@@ -62,16 +61,14 @@ const Science = () => {
 
            <div className="lg:col-span-4 flex flex-col gap-3">
               <div className="flex-grow rounded-[40px] overflow-hidden relative shadow-lg group border border-gray-100 min-h-[250px]">
-                 <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" className="w-full h-full object-cover brightness-90 transition-all duration-700 hover:scale-110" alt="Lab" />
-                 <div className="absolute inset-0 bg-emerald-900/10 group-hover:bg-transparent transition-all" />
+                 <img src="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80" className="w-full h-full object-cover transition-all duration-700 hover:scale-110" alt="Lab" />
               </div>
               <div 
-                style={{ backgroundColor: blocks?.feature_card?.bgColor || '#1A1A1A' }}
-                className="rounded-[40px] p-8 text-white flex flex-col justify-between group overflow-hidden relative border border-gray-800 shadow-2xl transition-transform hover:scale-[1.02]">
-                 <h3 className="text-[12px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed" style={{ color: blocks?.feature_card?.accentColor || '#34D399' }} dangerouslySetInnerHTML={{ __html: (blocks?.feature_card?.title || "Zero-Leaking <br/> Security <br/> Performance.").replace(/\n/g, '<br/>') }} />
+                className="rounded-[40px] p-8 bg-white border border-emerald-100 text-gray-900 flex flex-col justify-between group overflow-hidden relative shadow-sm transition-transform hover:scale-[1.02]">
+                 <h3 className="text-[12px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed text-gray-900" dangerouslySetInnerHTML={{ __html: (blocks?.feature_card?.title || "Zero-Leaking <br/> Security <br/> Performance.").replace(/\n/g, '<br/>') }} />
                  <Link to={blocks?.feature_card?.btnPath || "/contact-us"}
                    style={{ backgroundColor: blocks?.feature_card?.btnColor || '#10B981' }}
-                   className="p-4 text-white rounded-full self-end mt-4 shadow-xl active:scale-95 hover:bg-white hover:text-emerald-500 transition-all"><ArrowUpRight size={24} /></Link>
+                   className="p-4 text-white rounded-full self-end mt-4 shadow-xl active:scale-95 hover:bg-emerald-500 hover:text-white transition-all"><ArrowUpRight size={24} /></Link>
               </div>
            </div>
         </section>
@@ -88,7 +85,7 @@ const Science = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ChevronRight size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />
@@ -153,12 +150,34 @@ const Science = () => {
                     </div>
                  ))}
               </div>
-              <Link 
-                 to={blocks?.info_split_grid?.ctaPath || "/registration"}
-                 className="inline-flex items-center gap-2 mt-10 px-8 py-4 bg-gray-900 text-white font-black rounded-full text-[10px] uppercase tracking-widest hover:bg-emerald-500 transition-all"
-              >
-                 {blocks?.info_split_grid?.ctaLabel || "Request Site Visit"} <ArrowRight size={14} />
-              </Link>
+                 <div 
+                   className="rounded-[40px] bg-white p-8 lg:p-16 text-gray-900 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-sm border border-gray-100 min-h-[300px]"
+                 >
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64" />
+                    
+                    <div className="relative z-10 max-w-2xl text-center md:text-left">
+                       <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
+                          <Building2 size={32} className="text-sm-blue" />
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Infrastructure Support</span>
+                       </div>
+                       <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
+                          {blocks?.feature_card?.title || "Space Planning Hub."}
+                       </h4>
+                       <p className="text-gray-400 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
+                          {blocks?.feature_card?.subtitle || "Free Layout Design & Mockup Services. Get professional campus architecture audits and master planning."}
+                       </p>
+                    </div>
+
+                    <div className="mt-10 md:mt-0 relative z-10">
+                       <Link 
+                         to={blocks?.feature_card?.btnPath || '/registration'}
+                         className="px-10 py-5 bg-sm-blue text-white font-black rounded-full hover:bg-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-3 group"
+                       >
+                         {blocks?.feature_card?.btnLabel || "Request Pitch"}
+                         <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
+                       </Link>
+                    </div>
+                 </div>
            </div>
            
            <div className="rounded-[40px] overflow-hidden shadow-2xl h-[400px] border border-gray-100">

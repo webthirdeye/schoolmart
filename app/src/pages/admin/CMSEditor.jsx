@@ -1490,81 +1490,112 @@ const BlockForms = {
   ),
 
   listings: ({ data, set, allBlocks }) => {
+    // Dynamically pull locations from sidebar_categories block if it exists
     const locations = allBlocks?.find(b => b.blockType === 'sidebar_categories')?.data?.categories || [];
+    const subCats = ['K-12 School', 'Pre-School', 'College', 'Vocational', 'Hobby Center', 'Coaching'];
     
     return (
     <div className="space-y-6">
       <SectionTitle>Property & Business Listings ({(data.items || []).length})</SectionTitle>
+      
       {(data.items || []).map((item, i) => (
-        <div key={i} className="border border-gray-200 rounded-[25px] p-6 space-y-4 bg-gray-50/50 shadow-sm relative group">
+        <div key={i} className="border border-gray-200 rounded-[25px] p-6 space-y-4 bg-white shadow-sm relative group hover:border-blue-200 transition-all">
           <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-               <span className="w-6 h-6 rounded-full bg-gray-900 text-white flex items-center justify-center text-[10px] font-black">
+            <div className="flex items-center gap-3">
+               <span className="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center text-[10px] font-black shadow-lg shadow-blue-200">
                  {i + 1}
                </span>
-               <span className="text-xs font-black uppercase tracking-widest text-gray-500">Mandate Editor</span>
+               <div>
+                  <span className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">Mandate Identifier</span>
+                  <p className="text-xs font-bold text-gray-900">{item.title || 'Untitled Mandate'}</p>
+               </div>
             </div>
-            <button onClick={() => set('items', (data.items || []).filter((_, j) => j !== i))} className="p-2 text-red-400 hover:text-red-600 transition-colors">
+            <button 
+              onClick={() => set('items', (data.items || []).filter((_, j) => j !== i))} 
+              className="w-10 h-10 flex items-center justify-center text-red-400 hover:bg-red-50 hover:text-red-600 rounded-full transition-all"
+            >
               <Trash2 size={16} />
             </button>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-             <div className="space-y-3">
-                <Field label="Mandate Type">
-                   <select 
-                     value={item.type || 'Investment'} 
-                     onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], type: v.target.value }; set('items', ts); }}
-                     className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white"
-                   >
-                      <option value="Investment">Investment Opportunity</option>
-                      <option value="Sale">Direct Sale Mandate</option>
-                   </select>
-                </Field>
-                <Field label="Location (Dynamic from Sidebar Tabs)">
-                   <div className="relative">
-                      <select 
-                        value={item.location || ''} 
-                        onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], location: v.target.value }; set('items', ts); }}
-                        className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-white appearance-none"
-                      >
-                         <option value="">Select Location...</option>
-                         {locations.map(loc => <option key={loc} value={loc}>{loc}</option>)}
-                      </select>
-                      <ChevronDown size={14} className="absolute right-3 top-2.5 text-gray-400 pointer-events-none" />
-                   </div>
-                </Field>
-                <Field label="Deal Title"><TextInput value={item.title} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], title: v }; set('items', ts); }} placeholder="K-12 SCHOOL FOR LEASE" /></Field>
-             </div>
-             <div className="space-y-3">
-                <Field label="Mandate Value (Price Display)"><TextInput value={item.price} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], price: v }; set('items', ts); }} placeholder="9.50 Cr" /></Field>
-                <div className="grid grid-cols-2 gap-2">
-                   <Field label="Rating (Star)"><TextInput value={item.rating} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], rating: v }; set('items', ts); }} placeholder="8.5" /></Field>
-                   <Field label="Margin %"><TextInput value={item.margin} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], margin: v }; set('items', ts); }} placeholder="25%+" /></Field>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+             <Field label="Mandate Type">
+                <select 
+                  value={item.type || 'Investment'} 
+                  onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], type: v.target.value }; set('items', ts); }}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 font-bold focus:bg-white outline-none"
+                >
+                   <option value="Investment">Investment Opportunity</option>
+                   <option value="Sale">Direct Sale Mandate</option>
+                   <option value="Lease">Lease Mandate</option>
+                   <option value="Joint Venture">Joint Venture</option>
+                </select>
+             </Field>
+             <Field label="Location (From Hot Locations)">
+                <select 
+                  value={item.location || ''} 
+                  onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], location: v.target.value }; set('items', ts); }}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 font-bold focus:bg-white outline-none"
+                >
+                   <option value="">Select Location...</option>
+                   {locations.map((loc, li) => (
+                     <option key={li} value={loc}>{loc}</option>
+                   ))}
+                </select>
+             </Field>
+             <Field label="Sub-Category (Segment)">
+                <select 
+                  value={item.subcategory || ''} 
+                  onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], subcategory: v.target.value }; set('items', ts); }}
+                  className="w-full px-3 py-2 border border-gray-200 rounded-lg text-sm bg-gray-50 font-bold focus:bg-white outline-none"
+                >
+                   <option value="">Select Segment...</option>
+                   {subCats.map((sc, si) => (
+                     <option key={si} value={sc}>{sc}</option>
+                   ))}
+                </select>
+             </Field>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2">
+             <div className="space-y-4">
+                <Field label="Mandate Title"><TextInput value={item.title} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], title: v }; set('items', ts); }} placeholder="K-12 SCHOOL FOR LEASE" /></Field>
+                <div className="grid grid-cols-2 gap-3">
+                   <Field label="Value (Price)"><TextInput value={item.price} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], price: v }; set('items', ts); }} placeholder="9.50 Cr" /></Field>
+                   <Field label="Rating (8.5/10)"><TextInput value={item.rating} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], rating: v }; set('items', ts); }} placeholder="8.5" /></Field>
                 </div>
-                <Field label="Sales P.A. (Run Rate)"><TextInput value={item.runRate} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], runRate: v }; set('items', ts); }} placeholder="1.2 Cr" /></Field>
+             </div>
+             <div className="space-y-4">
+                <div className="grid grid-cols-2 gap-3">
+                   <Field label="Margin %"><TextInput value={item.margin} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], margin: v }; set('items', ts); }} placeholder="25%+" /></Field>
+                   <Field label="Sales P.A. (Run Rate)"><TextInput value={item.runRate} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], runRate: v }; set('items', ts); }} placeholder="1.2 Cr" /></Field>
+                </div>
+                <div className="grid grid-cols-2 gap-3">
+                   <Field label="CTA Label"><TextInput value={item.ctaLabel} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLabel: v }; set('items', ts); }} placeholder="Contact Business" /></Field>
+                   <Field label="CTA Target Link"><TextInput value={item.ctaLink} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLink: v }; set('items', ts); }} placeholder="/contact-us" /></Field>
+                </div>
              </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4">
-             <Field label="CTA Button Label"><TextInput value={item.ctaLabel} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLabel: v }; set('items', ts); }} placeholder="Contact Business" /></Field>
-             <Field label="CTA Button Link"><TextInput value={item.ctaLink} onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], ctaLink: v }; set('items', ts); }} placeholder="/contact-us" /></Field>
-          </div>
-
-          <Field label="Description Bullets" hint="Sentences separated by periods will become bullets. First 3 used.">
+          <Field label="Description / Key Highlights" hint="Separate points with periods (.) for the card to split them into bullets.">
              <TextArea 
                value={item.description} 
                onChange={v => { const ts = [...data.items]; ts[i] = { ...ts[i], description: v }; set('items', ts); }} 
-               placeholder="Established school. Stable revenue model. Prime location." 
+               placeholder="Established school in prime locality. Stable revenue model with 10% YoY growth. Modern infra and NEP ready curriculum." 
+               rows={4}
              />
           </Field>
         </div>
       ))}
+
       <button 
-        onClick={() => set('items', [...(data.items || []), { type: 'Investment', location: '', title: '', price: '', rating: '8.5', margin: '25%+', runRate: '', description: '' }])}
-        className="w-full flex justify-center items-center gap-2 py-4 bg-white border-2 border-dashed border-gray-200 rounded-[25px] text-gray-400 font-black uppercase tracking-widest hover:border-blue-400 hover:text-blue-500 transition-all"
+        onClick={() => set('items', [...(data.items || []), { type: 'Investment', location: '', subcategory: '', title: '', price: '', rating: '8.5', margin: '25%+', runRate: '', description: '', ctaLabel: 'Contact Business', ctaLink: '/contact-us' }])}
+        className="w-full flex flex-col justify-center items-center gap-2 py-8 bg-blue-50/30 border-2 border-dashed border-blue-200 rounded-[35px] text-blue-500 font-black uppercase tracking-[0.3em] hover:bg-blue-50 hover:border-blue-400 transition-all group"
       >
-        <Plus size={16} /> Add New Mandate Card
+        <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform">
+           <Plus size={24} />
+        </div>
+        <span>Draft New Mandate</span>
       </button>
     </div>
   )},

@@ -71,11 +71,12 @@ const GenericInnerPage = ({ explicitSlug }) => {
 
   const themeClasses = {
     Dark: {
-      bg: 'bg-gray-900',
-      text: 'text-white',
-      badge: 'bg-sm-blue/20 text-sm-blue border-sm-blue/20',
-      subtitle: 'text-white/40',
-      hr: 'bg-sm-blue/10'
+      bg: 'bg-white',
+      text: 'text-gray-900',
+      sub: 'text-gray-400',
+      accent: 'text-sm-blue',
+      badge: 'bg-sm-blue/10 text-sm-blue',
+      border: 'border-gray-100'
     },
     Rose: {
       bg: 'bg-rose-50/50',
@@ -197,7 +198,7 @@ const GenericInnerPage = ({ explicitSlug }) => {
               {(catalogGrid.catalogs || []).map((cat, i) => (
                 <div key={i} className="bg-white border border-gray-100 rounded-[40px] shadow-sm hover:shadow-2xl transition-all group overflow-hidden flex flex-col hover:scale-[1.02] duration-500">
                   <div className="h-48 relative overflow-hidden shrink-0">
-                     <img src={cat.img} alt={cat.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-90 group-hover:brightness-100" />
+                     <img src={cat.img} alt={cat.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                      <div className={`absolute top-4 left-4 ${cat.color} text-white px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-xl shadow-black/20`}>{cat.subtitle}</div>
                   </div>
                   <div className="p-10 flex flex-col flex-grow">
@@ -227,7 +228,7 @@ const GenericInnerPage = ({ explicitSlug }) => {
               {(lookbookGrid.collections || []).map((coll, i) => (
                 <div key={i} className="flex flex-col md:flex-row items-center gap-12 bg-white border border-gray-100 rounded-[45px] p-12 hover:shadow-2xl transition-all group">
                   <div className={`md:w-1/2 h-80 relative overflow-hidden rounded-[40px] ${i % 2 === 1 ? 'md:order-last' : ''}`}>
-                    <img src={coll.img} alt={coll.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-90 group-hover:brightness-100" />
+                    <img src={coll.img} alt={coll.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                   </div>
                   <div className="md:w-1/2 flex flex-col">
                     <span className={`w-fit px-4 py-1.5 ${coll.color} text-white text-[8px] font-black uppercase tracking-widest rounded-full mb-6`}>{coll.subtitle}</span>
@@ -274,7 +275,7 @@ const GenericInnerPage = ({ explicitSlug }) => {
                 {(portfolioGrid.projects || []).map((p, i) => (
                   <div key={i} className="bg-white border border-gray-100 rounded-[40px] shadow-sm hover:shadow-2xl transition-all group overflow-hidden flex flex-col hover:scale-[1.02] duration-500">
                     <div className="h-56 relative overflow-hidden shrink-0">
-                       <img src={p.img} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 brightness-90 group-hover:brightness-100" />
+                       <img src={p.img} alt={p.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" />
                        <div className={`absolute top-4 left-4 ${p.color} text-white px-4 py-1.5 rounded-full text-[8px] font-black uppercase tracking-widest shadow-xl shadow-black/20 flex items-center gap-2`}>
                           <MapPin size={10} /> {p.subtitle}
                        </div>

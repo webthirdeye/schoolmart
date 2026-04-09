@@ -93,7 +93,7 @@ const SchoolDesigns = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ChevronDown size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />
@@ -150,29 +150,27 @@ const SchoolDesigns = () => {
               {/* FULL WIDTH DESIGN AUDIT HUB */}
               <div className="mt-16 pt-16 border-t border-gray-100">
                  <div 
-                   style={{ backgroundColor: blocks?.feature_card?.bgColor || '#111827' }}
-                   className="rounded-[40px] p-8 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-2xl border border-white/5 min-h-[300px]"
-                 >
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/10 rounded-full blur-[120px] -mr-64 -mt-64" />
-                    
-                    <div className="relative z-10 max-w-2xl text-center md:text-left">
-                       <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
-                          <Layout size={32} style={{ color: blocks?.feature_card?.btnColor || '#3B82F6' }} />
-                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Design Support</span>
-                       </div>
-                       <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
-                          {blocks?.feature_card?.title || 'Bespoke Space Design.'}
-                       </h4>
-                       <p className="text-white/40 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
-                          {blocks?.feature_card?.subtitle || 'Request a custom pitch for your institutional project. We specialize in non-linear architecture and psychological color mapping.'}
-                       </p>
-                    </div>
+                     className="rounded-[40px] p-8 lg:p-16 bg-white text-gray-900 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-sm border border-gray-100 min-h-[300px]"
+                   >
+                     <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64" />
+                     
+                     <div className="relative z-10 max-w-2xl text-center md:text-left">
+                        <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
+                           <Layout size={32} className="text-sm-blue" />
+                           <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Design Support</span>
+                        </div>
+                        <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
+                           {blocks?.feature_card?.title || 'Bespoke Space Design.'}
+                        </h4>
+                        <p className="text-gray-400 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
+                           {blocks?.feature_card?.subtitle || 'Request a custom pitch for your institutional project. We specialize in non-linear architecture and psychological color mapping.'}
+                        </p>
+                     </div>
 
                     <div className="mt-10 md:mt-0 relative z-10">
                        <Link 
                          to={blocks?.feature_card?.btnPath || '/registration'}
-                         style={{ backgroundColor: blocks?.feature_card?.btnColor || '#3B82F6' }}
-                         className="px-10 py-5 text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-2xl flex items-center gap-3 group"
+                         className="px-10 py-5 bg-gray-900 text-white font-black rounded-full hover:bg-sm-blue transition-all text-[11px] uppercase tracking-widest shadow-2xl flex items-center gap-3 group"
                        >
                          {blocks?.feature_card?.btnLabel || 'Request Design Pitch'}
                          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
@@ -205,8 +203,7 @@ const SchoolDesigns = () => {
            </div>
            <div className="order-1 lg:order-2">
               <div className="relative rounded-[40px] overflow-hidden shadow-2xl transition-transform duration-1000">
-                 <img src={blocks?.info_split_grid?.image || 'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=1000&q=80'} alt="Atmosphere" className="w-full h-[400px] object-cover" />
-                 <div className="absolute inset-0 bg-blue-900/10 backdrop-contrast-125" />
+                  <img src={blocks?.info_split_grid?.image || 'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=1000&q=80'} alt="Atmosphere" className="w-full h-[400px] object-cover" />
               </div>
            </div>
         </section>

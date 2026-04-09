@@ -45,9 +45,8 @@ const Furniture = () => {
                 mediaType={heroBlock.mediaType} 
                 mediaUrl={heroBlock.mediaUrl} 
                 fallbackImg={heroBlock.img || "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=1200&q=80"} 
-                className="w-full h-full object-cover brightness-90 transition-all duration-1000"
+                className="w-full h-full object-cover transition-all duration-1000"
               />
-              <div className="absolute inset-0 bg-sm-blue/10 mix-blend-multiply opacity-0 group-hover:opacity-100 transition-opacity" />
               <div className="absolute bottom-8 left-8 right-8 flex justify-between items-end backdrop-blur-md bg-white/10 p-6 rounded-[30px] border border-white/20">
                  <div>
                     <span className="text-[8px] font-black text-white/60 uppercase tracking-widest block mb-2">{heroBlock.badge || "Featured Series"}</span>
@@ -94,7 +93,7 @@ const Furniture = () => {
                  <button 
                    key={i} 
                    onClick={() => { setSelectedCat(cat); document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' }); }} 
-                   className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
+                   className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCat === cat ? 'bg-gray-900 text-white shadow-xl translate-x-1' : 'bg-white border border-gray-100 text-gray-500 hover:bg-gray-50 hover:text-gray-900'}`}
                  >
                    {cat}
                    <ChevronDown size={14} className={`transition-transform ${selectedCat === cat ? 'rotate-[-90deg]' : 'opacity-0 group-hover:opacity-100'}`} />
@@ -153,20 +152,19 @@ const Furniture = () => {
               {/* FULL WIDTH SPACE PLANNING HUB */}
               <div className="mt-16 pt-16 border-t border-gray-100">
                  <div 
-                   style={{ backgroundColor: (blocks?.feature_card?.bgColor || '#0A0E14') }}
-                   className="rounded-[40px] p-8 lg:p-16 text-white flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-2xl border border-white/5 min-h-[300px]"
+                   className="rounded-[40px] bg-white p-8 lg:p-16 text-gray-900 flex flex-col md:flex-row items-center justify-between relative overflow-hidden group shadow-sm border border-gray-100 min-h-[300px]"
                  >
-                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/10 rounded-full blur-[120px] -mr-64 -mt-64" />
+                    <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-sm-blue/5 rounded-full blur-[120px] -mr-64 -mt-64" />
                     
                     <div className="relative z-10 max-w-2xl text-center md:text-left">
                        <div className="flex items-center gap-3 mb-6 justify-center md:justify-start">
-                          <Building2 size={32} style={{ color: blocks?.feature_card?.btnColor || '#3B82F6' }} />
-                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white/40">Infrastructure Support</span>
+                          <Building2 size={32} className="text-sm-blue" />
+                          <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gray-400">Infrastructure Support</span>
                        </div>
                        <h4 className="text-4xl lg:text-5xl font-black font-heading tracking-tighter uppercase leading-[0.9] mb-6">
                           {blocks?.feature_card?.title || "Space Planning Hub."}
                        </h4>
-                       <p className="text-white/40 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
+                       <p className="text-gray-400 text-xs lg:text-sm font-bold uppercase tracking-widest leading-loose max-w-lg">
                           {blocks?.feature_card?.subtitle || "Free Layout Design & Mockup Services. Get professional campus architecture audits and master planning."}
                        </p>
                     </div>
@@ -174,8 +172,7 @@ const Furniture = () => {
                     <div className="mt-10 md:mt-0 relative z-10">
                        <Link 
                          to={blocks?.feature_card?.btnPath || '/registration'}
-                         style={{ backgroundColor: blocks?.feature_card?.btnColor || '#3B82F6' }}
-                         className="px-10 py-5 text-white font-black rounded-full hover:bg-white hover:text-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-2xl flex items-center gap-3 group"
+                         className="px-10 py-5 bg-sm-blue text-white font-black rounded-full hover:bg-gray-900 transition-all text-[11px] uppercase tracking-widest shadow-xl flex items-center gap-3 group"
                        >
                          {blocks?.feature_card?.btnLabel || "Request Pitch"}
                          <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />

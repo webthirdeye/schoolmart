@@ -16,16 +16,21 @@ const PropertyListingCard = ({ item }) => {
     <div className="bg-white border border-gray-100 rounded-[35px] shadow-sm overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500 relative p-2 mb-8 break-inside-avoid">
       {/* HEADER SECTION - CATEGORY & LOCATION */}
       <div className="flex items-center justify-between px-6 pt-6 pb-2">
-         <div className="flex items-center gap-2">
-           <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
-           <span className="text-[9px] lg:text-[10px] font-black text-[#004a8e] uppercase tracking-[0.2em]">
-             {item.type === 'Sale' ? 'Direct Sale Mandate' : 'Investment Opportunity'}
-           </span>
-         </div>
-         <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full border border-gray-100">
-            <MapPin size={10} className="text-red-500" />
-            <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">{item.location?.split(',')[0]}</span>
-         </div>
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+            <div className="flex flex-col">
+              <span className="text-[9px] lg:text-[10px] font-black text-[#004a8e] uppercase tracking-[0.2em]">
+                {item.type || 'Institutional Mandate'}
+              </span>
+              {item.subcategory && (
+                <span className="text-[8px] font-bold text-gray-400 uppercase tracking-widest">{item.subcategory}</span>
+              )}
+            </div>
+          </div>
+          <div className="flex items-center gap-1.5 px-3 py-1 bg-gray-50 rounded-full border border-gray-100">
+             <MapPin size={10} className="text-red-500" />
+             <span className="text-[9px] font-black text-gray-500 uppercase tracking-widest">{item.location || 'Pan India'}</span>
+          </div>
       </div>
 
       <div className="px-6 pb-6 flex flex-col">
@@ -161,7 +166,7 @@ const SchoolSale = () => {
                       <button 
                         key={i} 
                         onClick={() => { setSelectedCity(city); window.scrollTo({ top: 0, behavior: 'smooth' }); }}
-                        className={`w-full text-left px-6 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCity === city ? 'bg-gray-900 text-white shadow-xl' : 'bg-white border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-gray-900'}`}
+                        className={`w-full text-left px-6 py-4 rounded-2xl text-[13px] font-black uppercase tracking-widest transition-all flex items-center justify-between group ${selectedCity === city ? 'bg-gray-900 text-white shadow-xl' : 'bg-white border border-gray-100 text-gray-400 hover:bg-gray-50 hover:text-gray-900'}`}
                       >
                          {city}
                          <ChevronRight size={14} className={`transition-transform ${selectedCity === city ? 'translate-x-1' : 'opacity-0 group-hover:opacity-100'}`} />
@@ -169,15 +174,15 @@ const SchoolSale = () => {
                    ))}
                 </div>
 
-                <div className="p-8 bg-[#004a8e] rounded-[40px] text-white mt-12 relative overflow-hidden group shadow-3xl">
-                   <div className="absolute top-0 right-0 p-4 opacity-10 group-hover:rotate-12 transition-transform">
-                      <Rocket size={80} />
+                <div className="p-8 bg-white border border-gray-100 rounded-[40px] text-gray-900 mt-12 relative overflow-hidden group shadow-sm">
+                   <div className="absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 group-hover:rotate-12 transition-all">
+                      <Rocket size={80} className="text-[#004a8e]" />
                    </div>
                    <h4 className="text-lg font-black uppercase tracking-tight mb-2 relative z-10 font-heading leading-tight">Elite <br /> Advisory.</h4>
-                   <p className="text-[10px] text-white/50 font-bold uppercase tracking-widest leading-loose mb-8 relative z-10">
+                   <p className="text-[10px] text-gray-400 font-bold uppercase tracking-widest leading-loose mb-8 relative z-10">
                       We help you find the right mandate for your school growth.
                    </p>
-                   <Link to="/contact-us" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-[#004a8e] font-black rounded-full text-[9px] uppercase tracking-widest hover:scale-105 transition-all relative z-10 shadow-xl">
+                   <Link to="/contact-us" className="inline-flex items-center gap-2 px-8 py-3 bg-[#004a8e] text-white font-black rounded-full text-[9px] uppercase tracking-widest hover:scale-105 transition-all relative z-10 shadow-xl shadow-blue-500/20">
                       Contact Us <ArrowRight size={14} />
                    </Link>
                 </div>

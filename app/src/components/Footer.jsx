@@ -47,41 +47,39 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="bg-sm-navy text-white">
+    <footer className="bg-white border-t border-gray-100 text-gray-900">
       {/* Main Footer Content */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+      <div className="max-w-7xl mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Column 1 - About Us */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-black uppercase tracking-widest text-[#FFDB00] font-heading">About Us</h3>
-            <div className="text-[13px] text-gray-300 space-y-4 leading-relaxed font-medium">
+          <div className="space-y-6">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#004a8e] font-heading">Identity</h3>
+            <div className="text-[13px] text-gray-500 space-y-4 leading-relaxed font-medium">
               <p>
-                <Link to="/" className="text-white hover:text-[#FFDB00] transition-colors duration-200 font-bold border-b border-white/20">
+                <Link to="/" className="text-[#004a8e] hover:text-sm-blue transition-colors duration-200 font-bold border-b border-[#004a8e]/20">
                   schoolmart.in
                 </Link>{' '}
                 is a consortium of architects, designers, school innovators who strive to bring the learning outcome through latest infrastructure and edtech.
               </p>
               <p>
-                We help schools in setting up new schools, expanding to new schools, design to execution, new environments, NEP ready environments, labs, libraries, sports infra etc.
+                We help schools in setting up new schools, expanding to new schools, design to execution, new environments, labs, libraries, sports infra etc.
               </p>
-              <p>
-                <Link to="/" className="text-white hover:text-[#FFDB00] transition-colors duration-200 font-bold border-b border-white/20">
-                  Schoolmart.in
-                </Link>{' '}
-                is an initiative of thirdeye group. Schoolmart has <span className="text-[#FFDB00] font-black">4000+</span> partner schools across India and helping them build their infrastructure since <span className="text-[#FFDB00] font-black">7 years</span>.
+              <p className="pt-2">
+                <span className="text-sm-blue font-black uppercase tracking-widest text-[10px] block mb-2">Heritage</span>
+                An initiative of thirdeye group. Helping <span className="text-[#004a8e] font-black">4000+</span> partner schools build excellence since <span className="text-[#004a8e] font-black">7 years</span>.
               </p>
             </div>
           </div>
 
           {/* Column 2 - Brand & Seller Help */}
           <div>
-            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#FFDB00] mb-6 font-heading">Brand & Seller Help</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#004a8e] mb-8 font-heading">Partner Support</h3>
+            <ul className="space-y-4">
               {brandHelp.map((link) => (
                 <li key={link.name}>
                   <Link 
                     to={link.path} 
-                    className="text-[13px] text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all duration-200 font-medium"
+                    className="text-[11px] text-gray-400 hover:text-sm-blue hover:translate-x-1 inline-block transition-all duration-200 font-bold uppercase tracking-widest"
                   >
                     {link.name}
                   </Link>
@@ -92,13 +90,13 @@ const Footer = () => {
 
           {/* Column 3 - School Help */}
           <div>
-            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#FFDB00] mb-6 font-heading">School Help</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#004a8e] mb-8 font-heading">Institutional</h3>
+            <ul className="space-y-4">
               {schoolHelp.map((link) => (
                 <li key={link.name}>
                   <Link 
                     to={link.path} 
-                    className="text-[13px] text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all duration-200 font-medium"
+                    className="text-[11px] text-gray-400 hover:text-sm-blue hover:translate-x-1 inline-block transition-all duration-200 font-bold uppercase tracking-widest"
                   >
                     {link.name}
                   </Link>
@@ -109,13 +107,13 @@ const Footer = () => {
 
           {/* Column 4 - Business */}
           <div>
-            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#FFDB00] mb-6 font-heading">Business</h3>
-            <ul className="space-y-3">
+            <h3 className="text-sm font-black uppercase tracking-[0.2em] text-[#004a8e] mb-8 font-heading">Corporate</h3>
+            <ul className="space-y-4">
               {businessLinks.map((link) => (
                 <li key={link.name}>
                   <Link 
                     to={link.path} 
-                    className="text-[13px] text-gray-300 hover:text-white hover:translate-x-1 inline-block transition-all duration-200 font-medium"
+                    className="text-[11px] text-gray-400 hover:text-sm-blue hover:translate-x-1 inline-block transition-all duration-200 font-bold uppercase tracking-widest"
                   >
                     {link.name}
                   </Link>
@@ -126,13 +124,13 @@ const Footer = () => {
         </div>
 
         {/* Trending Section */}
-        <div className="mt-8 pt-8 border-t border-white/10">
-          <h3 className="text-xs font-black uppercase tracking-[0.3em] text-gray-500 mb-4 font-heading">Industry Insights & Trends</h3>
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
+        <div className="mt-16 pt-12 border-t border-gray-100">
+          <h3 className="text-[10px] font-black uppercase tracking-[0.4em] text-gray-300 mb-6 font-heading">Strategic Insights</h3>
+          <div className="flex flex-wrap gap-x-8 gap-y-4">
             {trendingLinks.map((item) => (
               <span 
                 key={item} 
-                className="text-[11px] font-black uppercase tracking-[0.1em] text-gray-400 hover:text-[#FFDB00] cursor-pointer transition-colors duration-200"
+                className="text-[10px] font-black uppercase tracking-[0.15em] text-gray-400 hover:text-sm-blue cursor-pointer transition-colors duration-200"
               >
                 {item}
               </span>
@@ -142,46 +140,45 @@ const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="bg-sm-blue py-4">
-        <div className="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="text-sm text-white/80">
+      <div className="bg-gray-50 border-t border-gray-100 py-8">
+        <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-8">
+          <div className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400">
             © 2016-2023, Third Eye Retail Pvt. Ltd.
           </div>
           
-          <div className="flex items-center gap-6">
-            <Link to="#" className="text-sm text-white/80 hover:text-white transition-colors duration-200">
-              Privacy Policy
+          <div className="flex items-center gap-10">
+            <Link to="/p/privacy-policy" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-[#004a8e] transition-colors duration-200">
+              Privacy Protocol
             </Link>
-            <Link to="#" className="text-sm text-white/80 hover:text-white transition-colors duration-200">
-              Terms of Use
+            <Link to="/p/terms-of-use" className="text-[10px] font-black uppercase tracking-[0.2em] text-gray-400 hover:text-[#004a8e] transition-colors duration-200">
+              Service Terms
             </Link>
           </div>
 
-          <div className="flex items-center gap-3">
-            <span className="text-sm text-white/80">Keep in Touch</span>
+          <div className="flex items-center gap-4">
             <a 
               href="https://www.facebook.com/schoolmart.in" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-400 hover:bg-[#004a8e] hover:text-white transition-all duration-300"
             >
-              <Facebook size={16} />
+              <Facebook size={18} />
             </a>
             <a 
               href="https://twitter.com/schoolmarts" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-400 hover:bg-[#004a8e] hover:text-white transition-all duration-300"
             >
-              <Twitter size={16} />
+              <Twitter size={18} />
             </a>
             <a 
               href="https://www.youtube.com/channel/UCgKY_Kf8jH1hoP3p0I0tiRA" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="w-8 h-8 bg-white/10 rounded-full flex items-center justify-center hover:bg-white/20 transition-colors duration-200"
+              className="w-10 h-10 border border-gray-200 rounded-full flex items-center justify-center text-gray-400 hover:bg-[#004a8e] hover:text-white transition-all duration-300"
             >
-              <Youtube size={16} />
+              <Youtube size={18} />
             </a>
           </div>
         </div>

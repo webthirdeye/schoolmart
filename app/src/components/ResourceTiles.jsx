@@ -188,30 +188,25 @@ const ResourceTiles = () => {
                 <Link
                   key={tile.title}
                   to={tile.path}
-                  className={`block break-inside-avoid ${tile.height} rounded-2xl overflow-hidden relative group shadow-sm border border-gray-300`}
-                  style={{ marginBottom: '6px' }}
+                  className="block break-inside-avoid bg-white rounded-2xl overflow-hidden relative group shadow-sm border border-gray-200 flex flex-col mb-4"
                 >
-                  <img
-                    src={tile.img}
-                    alt={tile.title}
-                    className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    onError={(e) => {
-                      e.target.src = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80';
-                    }}
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-all duration-300 group-hover:from-black/70" />
-
-                  <div className="absolute inset-0 p-4 flex flex-col justify-end">
-                    <h3 className="text-white font-black text-base font-heading leading-tight drop-shadow uppercase tracking-wide">
+                  <div className={`${tile.height} relative overflow-hidden bg-gray-50`}>
+                    <img
+                      src={tile.img}
+                      alt={tile.title}
+                      className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      onError={(e) => {
+                        e.target.src = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80';
+                      }}
+                    />
+                  </div>
+                  <div className="p-3 bg-white">
+                    <h3 className="text-gray-900 font-black text-[11px] font-heading leading-tight uppercase tracking-wider mb-0.5 group-hover:text-sm-blue transition-colors">
                       {tile.title}
                     </h3>
-                    <p className="text-white/80 text-xs mt-1 font-medium leading-relaxed">
+                    <p className="text-gray-400 text-[9px] font-medium leading-relaxed truncate">
                       {tile.subtitle}
                     </p>
-                    <div className="mt-2 flex items-center gap-1.5 opacity-100 transition-opacity duration-300">
-                      <span className="text-white text-xs font-black uppercase tracking-widest">Explore</span>
-                      <ArrowRight size={12} className="text-white" />
-                    </div>
                   </div>
                 </Link>
               ))}
@@ -234,7 +229,6 @@ const ResourceTiles = () => {
                         alt={item.title} 
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent opacity-40 group-hover:opacity-60 transition-opacity" />
                       
                       {/* Floating Indicator */}
                       <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
