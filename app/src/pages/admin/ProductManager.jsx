@@ -333,28 +333,96 @@ export default function ProductManager({ fixedPage, liveCategories }) {
           <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Core Features & Technical Specs (Right Side Box)</label>
           <div className="space-y-2">
              {[0, 1, 2].map(i => (
-                <div key={i} className="flex flex-col md:flex-row gap-2 bg-gray-50 p-2 rounded-xl border border-gray-200">
+                <div key={i} className="flex flex-col space-y-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
+                   <div className="flex flex-col md:flex-row gap-2">
+                      <input 
+                        value={editing.resources?.[i]?.name || ''} 
+                        onChange={e => {
+                           const newRes = [...(editing.resources || [{},{},{}])];
+                           newRes[i] = { ...newRes[i], name: e.target.value };
+                           setEditing({ ...editing, resources: newRes });
+                        }}
+                        className="flex-[2] px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Feature Name (e.g. Ergonomic Design)" 
+                      />
+                      <input 
+                        value={editing.resources?.[i]?.size || ''} 
+                        onChange={e => {
+                           const newRes = [...(editing.resources || [{},{},{}])];
+                           newRes[i] = { ...newRes[i], size: e.target.value };
+                           setEditing({ ...editing, resources: newRes });
+                        }}
+                        className="flex-1 px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Spec / Badge (e.g. Premium)" 
+                      />
+                   </div>
                    <input 
-                     value={editing.resources?.[i]?.name || ''} 
-                     onChange={e => {
-                        const newRes = [...(editing.resources || [{},{},{}])];
-                        newRes[i] = { ...newRes[i], name: e.target.value };
-                        setEditing({ ...editing, resources: newRes });
-                     }}
-                     className="flex-[2] px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Feature Name (e.g. Ergonomic Design)" 
-                   />
-                   <input 
-                     value={editing.resources?.[i]?.size || ''} 
-                     onChange={e => {
-                        const newRes = [...(editing.resources || [{},{},{}])];
-                        newRes[i] = { ...newRes[i], size: e.target.value };
-                        setEditing({ ...editing, resources: newRes });
-                     }}
-                     className="flex-1 px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" placeholder="Spec / Badge (e.g. Premium)" 
+                      value={editing.resources?.[i]?.url || ''} 
+                      onChange={e => {
+                         const newRes = [...(editing.resources || [{},{},{}])];
+                         newRes[i] = { ...newRes[i], url: e.target.value };
+                         setEditing({ ...editing, resources: newRes });
+                      }}
+                      className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500 font-mono text-blue-600" placeholder="Link URL (e.g. /specs.pdf or https://...)" 
                    />
                 </div>
              ))}
           </div>
+        </div>
+
+        {/* ADVANCED LABELS */}
+        <div className="space-y-4 py-4 border-y border-gray-100">
+           <div className="flex items-center gap-2">
+              <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Advanced Labels & Actions</label>
+              <div className="h-px flex-1 bg-gray-100"></div>
+           </div>
+           
+           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <p className="text-[10px] text-gray-400 font-bold uppercase">Section Headings</p>
+                <input 
+                  value={editing.featuresTitle || ''} 
+                  onChange={e => setEditing({ ...editing, featuresTitle: e.target.value })}
+                  className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                  placeholder="Features Title (Default: KEY FEATURES...)" 
+                />
+                <input 
+                  value={editing.executionTitle || ''} 
+                  onChange={e => setEditing({ ...editing, executionTitle: e.target.value })}
+                  className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                  placeholder="Execution Title (Default: EXECUTION STRATEGY)" 
+                />
+              </div>
+
+              <div className="space-y-2">
+                <p className="text-[10px] text-gray-400 font-bold uppercase">Button Commands</p>
+                <div className="grid grid-cols-2 gap-2">
+                  <input 
+                    value={editing.ctaLabel || ''} 
+                    onChange={e => setEditing({ ...editing, ctaLabel: e.target.value })}
+                    className="px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                    placeholder="Quote Label" 
+                  />
+                  <input 
+                    value={editing.ctaLink || ''} 
+                    onChange={e => setEditing({ ...editing, ctaLink: e.target.value })}
+                    className="px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                    placeholder="Quote Link" 
+                  />
+                  <input 
+                    value={editing.chatLabel || ''} 
+                    onChange={e => setEditing({ ...editing, chatLabel: e.target.value })}
+                    className="px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                    placeholder="Chat Label" 
+                  />
+                  <input 
+                    value={editing.chatLink || ''} 
+                    onChange={e => setEditing({ ...editing, chatLink: e.target.value })}
+                    className="px-3 py-2 text-xs border border-gray-200 rounded-lg outline-none focus:ring-1 focus:ring-blue-500" 
+                    placeholder="Chat Link" 
+                  />
+                </div>
+              </div>
+           </div>
+           <p className="text-[9px] text-gray-400 italic">* Leave these empty to use Global Defaults from Settings</p>
         </div>
 
         <ImageUpload 

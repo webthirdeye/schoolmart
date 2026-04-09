@@ -20,7 +20,13 @@ const productSchema = new mongoose.Schema({
     name: { type: String },
     size: { type: String },
     url: { type: String }
-  }]
+  }],
+  featuresTitle: { type: String }, // e.g. "Key Features & Technical Specs"
+  executionTitle: { type: String }, // e.g. "Execution Strategy"
+  ctaLabel: { type: String },      // e.g. "Request Quote"
+  ctaLink: { type: String },       // e.g. "/registration"
+  chatLabel: { type: String },     // e.g. "Chat"
+  chatLink: { type: String }       // e.g. "https://wa.me/..."
 }, { timestamps: true });
 
 module.exports = mongoose.model('Product', productSchema);

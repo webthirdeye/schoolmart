@@ -1,9 +1,22 @@
 // src/components/InlineQuickView.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { X, FileText, Download, ExternalLink, MessageSquare, Info, BarChart3, Clock, CheckCircle2 } from 'lucide-react';
 
+import { useSiteSettings } from '../hooks/useSiteSettings';
+
 const InlineQuickView = ({ isOpen, onClose, data }) => {
+  const { data: globalUI } = useSiteSettings('product_ui');
+  
   if (!isOpen || !data) return null;
+
+  // Labels & Links Logic: Product Override > Global Default > Hardcoded Fallback
+  const executionTitle = data.executionTitle || globalUI.executionTitle || "Execution Strategy";
+  const featuresTitle = data.featuresTitle || globalUI.featuresTitle || "Key Features & Technical Specs";
+  const ctaLabel = data.ctaLabel || globalUI.ctaLabel || "Request Quote";
+  const ctaLink = data.ctaLink || globalUI.ctaLink || "/registration";
+  const chatLabel = data.chatLabel || globalUI.chatLabel || "Chat";
+  const chatLink = data.chatLink || globalUI.chatLink || "https://wa.me/919966109191";
 
   return (
     <div className="col-span-full mt-4 mb-8 animate-in fade-in slide-in-from-top-4 duration-500 overflow-hidden">
@@ -67,10 +80,10 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
              <div className="space-y-4">
                 <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">
                    <span className="w-8 h-1 bg-sm-blue rounded-full" />
-                   Execution Strategy
+                   {executionTitle}
                 </h3>
                 <p className="text-gray-500 text-sm leading-loose">
-                  {data.description || 'This module represents our commitment to institutional excellence. Designed specifically for long-term durability and ergonomic support, it ensures that learning environments remain dynamic and adaptive. Every unit is constructed using sustainable materials and undergoes rigorous quality checks to meet global safety standards.'}
+                   {data.description || 'This module represents our commitment to institutional excellence. Designed specifically for long-term durability and ergonomic support, it ensures that learning environments remain dynamic and adaptive. Every unit is constructed using sustainable materials and undergoes rigorous quality checks to meet global safety standards.'}
                 </p>
              </div>
 
@@ -78,50 +91,63 @@ const InlineQuickView = ({ isOpen, onClose, data }) => {
              <div className="bg-gray-900 rounded-[25px] p-8 text-white relative overflow-hidden group">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/20 blur-[60px] rounded-full translate-x-10 -translate-y-10" />
                 <h3 className="text-xs font-black uppercase tracking-[0.25em] mb-6 text-sm-blue flex items-center gap-2">
-                  <CheckCircle2 size={14} /> Key Features & Technical Specs
+                  <CheckCircle2 size={14} /> {featuresTitle}
                 </h3>
                 <div className="space-y-3">
-                   {(data.resources?.length > 0 && data.resources.some(r => r.name)) ? data.resources.filter(r => r.name).map((feat, idx) => (
-                     <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl">
-                        <div className="w-8 h-8 rounded-lg bg-sm-blue/10 flex items-center justify-center text-sm-blue">
-                           <CheckCircle2 size={14} />
-                        </div>
-                        <div>
-                           <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
-                           {feat.size && <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>}
-                        </div>
-                     </div>
-                   )) : [
-                     { name: 'Ergonomic High-Density Support', size: 'Premium Build' },
-                     { name: '100% NEP 2020 Compliant', size: 'Standardized' },
-                     { name: 'Anti-Microbial Surface Coating', size: 'Safe & Hygienic' }
-                   ].map((feat, idx) => (
-                     <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group/feat">
-                        <div className="w-8 h-8 rounded-lg bg-sm-blue/20 flex items-center justify-center text-sm-blue group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all">
-                           <CheckCircle2 size={14} />
-                        </div>
-                        <div>
-                           <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
-                           <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>
-                        </div>
-                     </div>
-                   ))}
+                    {(data.resources?.length > 0 && data.resources.some(r => r.name)) ? data.resources.filter(r => r.name).map((feat, idx) => {
+                      const isClickable = feat.url && feat.url !== '#';
+                      const Component = isClickable ? 'a' : 'div';
+                      const extraProps = isClickable ? { href: feat.url, target: '_blank', rel: 'noopener noreferrer' } : {};
+                      
+                      return (
+                        <Component 
+                          key={idx} 
+                          {...extraProps}
+                          className={`flex items-center justify-between p-3.5 bg-white/5 border border-white/10 rounded-xl transition-all ${isClickable ? 'hover:bg-white/10 hover:border-sm-blue cursor-pointer group/feat' : ''}`}
+                        >
+                          <div className="flex items-center gap-4">
+                            <div className={`w-8 h-8 rounded-lg bg-sm-blue/10 flex items-center justify-center text-sm-blue ${isClickable ? 'group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all' : ''}`}>
+                               <CheckCircle2 size={14} />
+                            </div>
+                            <div>
+                               <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
+                               {feat.size && <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>}
+                            </div>
+                          </div>
+                          {isClickable && <ExternalLink size={12} className="text-white/20 group-hover/feat:text-sm-blue transition-all" />}
+                        </Component>
+                      );
+                    }) : [
+                      { name: 'Ergonomic High-Density Support', size: 'Premium Build' },
+                      { name: '100% NEP 2020 Compliant', size: 'Standardized' },
+                      { name: 'Anti-Microbial Surface Coating', size: 'Safe & Hygienic' }
+                    ].map((feat, idx) => (
+                      <div key={idx} className="flex items-center gap-4 p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all group/feat">
+                         <div className="w-8 h-8 rounded-lg bg-sm-blue/20 flex items-center justify-center text-sm-blue group-hover/feat:bg-sm-blue group-hover/feat:text-white transition-all">
+                            <CheckCircle2 size={14} />
+                         </div>
+                         <div>
+                            <p className="text-[11px] font-bold text-white uppercase tracking-tight">{feat.name}</p>
+                            <p className="text-[9px] text-white/30 uppercase font-black">{feat.size}</p>
+                         </div>
+                      </div>
+                    ))}
                 </div>
                 
                 <div className="mt-8 flex gap-3">
                   <a 
-                    href={`https://wa.me/919966109191?text=Hi, I am interested in ${data.name || data.title}. Please provide more details and a quote.`}
-                    target="_blank"
-                    className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] text-center uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-900/40 active:scale-95 transition-all"
+                    href={ctaLink}
+                    className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-500/30 active:scale-95 transition-all text-center flex items-center justify-center"
                   >
-                    Request Quote
+                    {ctaLabel}
                   </a>
                   <a 
-                    href="https://wa.me/919966109191"
+                    href={chatLink}
                     target="_blank"
+                    rel="noopener noreferrer"
                     className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2"
                   >
-                    <MessageSquare size={14} /> Chat
+                    <MessageSquare size={14} /> {chatLabel}
                   </a>
                 </div>
              </div>

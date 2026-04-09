@@ -1,9 +1,22 @@
 // src/components/QuickView.jsx
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { X, FileText, Download, ExternalLink, MessageSquare, Info, BarChart3, Clock, CheckCircle2 } from 'lucide-react';
 
+import { useSiteSettings } from '../hooks/useSiteSettings';
+
 const QuickView = ({ isOpen, onClose, data }) => {
+  const { data: globalUI } = useSiteSettings('product_ui');
+
   if (!isOpen || !data) return null;
+
+  // Labels & Links Logic: Product Override > Global Default > Hardcoded Fallback
+  const executionTitle = data.executionTitle || globalUI.executionTitle || "Execution Strategy";
+  const featuresTitle = data.featuresTitle || globalUI.featuresTitle || "Key Features & Technical Specs";
+  const ctaLabel = data.ctaLabel || globalUI.ctaLabel || "Request Quote";
+  const ctaLink = data.ctaLink || globalUI.ctaLink || "/registration";
+  const chatLabel = data.chatLabel || globalUI.chatLabel || "Chat";
+  const chatLink = data.chatLink || globalUI.chatLink || "https://wa.me/919966109191";
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6 lg:p-10">
@@ -89,7 +102,7 @@ const QuickView = ({ isOpen, onClose, data }) => {
                <div className="space-y-4">
                   <h3 className="text-lg font-black text-gray-900 uppercase tracking-tight flex items-center gap-2">
                      <span className="w-8 h-1 bg-sm-blue rounded-full" />
-                     Execution Strategy
+                     {executionTitle}
                   </h3>
                   <p className="text-gray-500 text-sm leading-loose">
                     {data.description || 'This module represents our commitment to institutional excellence. Designed specifically for long-term durability and ergonomic support, it ensures that learning environments remain dynamic and adaptive. Every unit is constructed using sustainable materials and undergoes rigorous quality checks to meet global safety standards. Integration includes full spatial planning and logistical support.'}
@@ -100,7 +113,7 @@ const QuickView = ({ isOpen, onClose, data }) => {
                <div className="bg-gray-900 rounded-[25px] p-8 text-white relative overflow-hidden group">
                   <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/20 blur-[60px] rounded-full translate-x-10 -translate-y-10" />
                   <h3 className="text-xs font-black uppercase tracking-[0.25em] mb-6 text-sm-blue flex items-center gap-2">
-                    <FileText size={14} /> Available Resources
+                    <FileText size={14} /> {featuresTitle}
                   </h3>
                   <div className="space-y-3">
                      {(data.resources?.length > 0 && data.resources.some(r => r.name)) ? data.resources.filter(r => r.name).map((file, idx) => (
@@ -117,9 +130,9 @@ const QuickView = ({ isOpen, onClose, data }) => {
                           <ExternalLink size={14} className="text-white/20 group-hover/file:text-white" />
                        </div>
                      )) : [
-                       { name: 'Technical Specifications (PDF)', size: '2.4 MB' },
-                       { name: 'Institutional Layout Guide', size: '4.8 MB' },
-                       { name: 'Warranty & Support Policy', size: '1.2 MB' }
+                       { name: 'Ergonomic High-Density Support', size: 'Premium Build' },
+                       { name: '100% NEP 2020 Compliant', size: 'Standardized' },
+                       { name: 'Anti-Microbial Surface Coating', size: 'Safe & Hygienic' }
                      ].map((file, idx) => (
                        <div key={idx} className="flex items-center justify-between p-3.5 bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-white/20 transition-all cursor-pointer group/file">
                           <div className="flex items-center gap-3">
@@ -137,12 +150,20 @@ const QuickView = ({ isOpen, onClose, data }) => {
                   </div>
                   
                   <div className="mt-8 flex gap-3">
-                    <button className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-900/40 active:scale-95 transition-all">
-                      Request Quote
-                    </button>
-                    <button className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2">
-                      <MessageSquare size={14} /> Chat
-                    </button>
+                    <a 
+                      href={ctaLink}
+                      className="flex-1 py-3 bg-sm-blue text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-blue-600 shadow-xl shadow-blue-500/30 active:scale-95 transition-all text-center flex items-center justify-center"
+                    >
+                      {ctaLabel}
+                    </a>
+                    <a 
+                      href={chatLink}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-6 py-3 bg-white/10 border border-white/20 text-white font-black rounded-xl text-[10px] uppercase tracking-widest hover:bg-white/20 transition-all flex items-center gap-2"
+                    >
+                      <MessageSquare size={14} /> {chatLabel}
+                    </a>
                   </div>
                </div>
             </div>

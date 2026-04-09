@@ -95,6 +95,7 @@ export default function GlobalSettings() {
           { key: 'footer', label: 'Footer', icon: Globe },
           { key: 'branding', label: 'Branding', icon: Palette },
           { key: 'pdf', label: 'PDF Access', icon: Lock },
+          { key: 'product_ui', label: 'Product UI', icon: FileText },
         ].map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-5 py-2 rounded-lg text-sm font-bold transition-all ${activeTab === tab.key ? 'bg-white text-gray-900 shadow-sm' : 'text-gray-400 hover:text-gray-600'}`}>
@@ -248,6 +249,61 @@ export default function GlobalSettings() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Product UI Tab */}
+      {activeTab === 'product_ui' && (
+        <div className="space-y-6">
+           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+              <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">🏷️ Global Section Titles</h3>
+              <p className="text-xs text-gray-500">Change the headings that appear in the product Quick View and Detail boxes.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <TextInput 
+                  label="Technical Specs Heading" 
+                  value={settings.product_ui?.featuresTitle} 
+                  onChange={v => updateLocal('product_ui', 'featuresTitle', v)}
+                  placeholder="KEY FEATURES & TECHNICAL SPECS"
+                />
+                <TextInput 
+                  label="Execution Strategy Heading" 
+                  value={settings.product_ui?.executionTitle} 
+                  onChange={v => updateLocal('product_ui', 'executionTitle', v)}
+                  placeholder="EXECUTION STRATEGY"
+                />
+              </div>
+           </div>
+
+           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+              <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">🔘 Action Button Defaults</h3>
+              <p className="text-xs text-gray-500">Customize the labels and links for the primary call-to-action buttons.</p>
+              <div className="grid grid-cols-2 gap-4">
+                <TextInput 
+                  label="Request Quote Label" 
+                  value={settings.product_ui?.ctaLabel} 
+                  onChange={v => updateLocal('product_ui', 'ctaLabel', v)}
+                  placeholder="REQUEST QUOTE"
+                />
+                <TextInput 
+                  label="Request Quote Link" 
+                  value={settings.product_ui?.ctaLink} 
+                  onChange={v => updateLocal('product_ui', 'ctaLink', v)}
+                  placeholder="/registration"
+                />
+                <TextInput 
+                  label="Chat Label" 
+                  value={settings.product_ui?.chatLabel} 
+                  onChange={v => updateLocal('product_ui', 'chatLabel', v)}
+                  placeholder="CHAT"
+                />
+                <TextInput 
+                  label="Chat Link" 
+                  value={settings.product_ui?.chatLink} 
+                  onChange={v => updateLocal('product_ui', 'chatLink', v)}
+                  placeholder="https://wa.me/919966109191"
+                />
+              </div>
+           </div>
         </div>
       )}
 
