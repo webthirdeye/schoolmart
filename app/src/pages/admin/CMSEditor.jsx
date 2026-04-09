@@ -1490,7 +1490,7 @@ const BlockForms = {
   ),
 
   listings: ({ data, set, allBlocks }) => {
-    const locations = allBlocks?.find(b => b.blockType === 'sidebar_categories')?.data?.categories?.map(c => c.name) || [];
+    const locations = allBlocks?.find(b => b.blockType === 'sidebar_categories')?.data?.categories || [];
     
     return (
     <div className="space-y-6">
