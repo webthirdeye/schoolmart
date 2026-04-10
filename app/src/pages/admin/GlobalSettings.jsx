@@ -115,6 +115,41 @@ export default function GlobalSettings() {
             <TextArea label="Description" value={footer.brand?.description} onChange={v => updateLocal('footer', 'brand.description', v)} rows={3} />
           </div>
 
+          {/* Footer Theme */}
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
+            <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">🎨 Footer Theme & Colors</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-gray-500 uppercase">Background</label>
+                <div className="flex gap-2">
+                  <input type="color" value={footer.bgColor || '#0f172a'} onChange={e => updateLocal('footer', 'bgColor', e.target.value)}
+                    className="h-10 w-12 p-1 border rounded-lg cursor-pointer" />
+                  <input type="text" value={footer.bgColor || '#0f172a'} onChange={e => updateLocal('footer', 'bgColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs font-mono uppercase" />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-gray-500 uppercase">Text Color</label>
+                <div className="flex gap-2">
+                  <input type="color" value={footer.textColor || '#9ca3af'} onChange={e => updateLocal('footer', 'textColor', e.target.value)}
+                    className="h-10 w-12 p-1 border rounded-lg cursor-pointer" />
+                  <input type="text" value={footer.textColor || '#9ca3af'} onChange={e => updateLocal('footer', 'textColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs font-mono uppercase" />
+                </div>
+              </div>
+              <div className="space-y-1">
+                <label className="text-[10px] font-bold text-gray-500 uppercase">Heading Color</label>
+                <div className="flex gap-2">
+                  <input type="color" value={footer.headingColor || '#38bdf8'} onChange={e => updateLocal('footer', 'headingColor', e.target.value)}
+                    className="h-10 w-12 p-1 border rounded-lg cursor-pointer" />
+                  <input type="text" value={footer.headingColor || '#38bdf8'} onChange={e => updateLocal('footer', 'headingColor', e.target.value)}
+                    className="flex-1 px-3 py-2 border border-gray-200 rounded-lg text-xs font-mono uppercase" />
+                </div>
+              </div>
+            </div>
+            <p className="text-[10px] text-gray-400">Default Dark: #0f172a background, #9ca3af text, #38bdf8 headings</p>
+          </div>
+
           {/* Footer Columns */}
           <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 space-y-4">
             <h3 className="font-bold text-gray-800 text-sm flex items-center gap-2">📋 Footer Columns</h3>
