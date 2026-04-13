@@ -47,7 +47,7 @@ const ContactUs = () => {
        subtitle: 'From architectural blueprints to furniture installations, we assist you in every step.',
     };
 
-    if (loading) return null;
+    // Instant loading
 
     return (
         <div className="bg-white min-h-screen font-sans selection:bg-blue-100 relative">

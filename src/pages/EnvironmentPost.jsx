@@ -87,7 +87,7 @@ const EnvironmentPost = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  if (loading) return null;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-white pb-6 font-body relative">

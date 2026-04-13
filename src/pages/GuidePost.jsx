@@ -61,7 +61,7 @@ const GuidePost = () => {
     summaryPoints: matchedItem?.summaryPoints?.length ? matchedItem.summaryPoints : DEFAULT_DATA.summaryPoints,
   };
 
-  if (loading) return null;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-white pb-10 font-body">

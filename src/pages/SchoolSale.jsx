@@ -111,7 +111,7 @@ const SchoolSale = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  if (loading) return null;
+  // Instant loading
 
   const filteredListings = listings.filter(l => {
     const matchesSearch = (l.location || '').toLowerCase().includes(searchTerm.toLowerCase()) || 

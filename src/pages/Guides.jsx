@@ -59,7 +59,7 @@ const Guides = () => {
   const heroData = blocks?.guides_page_content || d.hero;
   const items = d.caseStudies || DEFAULT_CONTENT.caseStudies;
 
-  if (loading) return null;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-10">

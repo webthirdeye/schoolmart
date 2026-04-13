@@ -5,7 +5,7 @@ import { clearCMSCache } from '../../hooks/useCMSBlock';
 import { 
   ChevronDown, ChevronRight, Trash2, Plus, Eye, EyeOff, Save, GripVertical, 
   Image as ImageIcon, Link2, Type, List, ToggleLeft, Upload, Layers, Palette, Video,
-  Globe, FileText, Lock, MessageSquare, Box, Package
+  Globe, FileText, Lock, MessageSquare, Box, Package, Search
 } from 'lucide-react';
 import ProductManager from './ProductManager';
 import ImageUpload from '../../components/admin/ImageUpload';
@@ -54,17 +54,24 @@ const BlockForms = {
 
   topbar: ({ data = {}, set }) => (
     <div className="space-y-6">
-      <SectionTitle>Top Bar & Navigation DNA</SectionTitle>
+      <SectionTitle>Top Bar Appearance</SectionTitle>
       <div className="grid grid-cols-2 gap-4">
-         <ColorInput label="Hub Background" value={data?.bgColor} onChange={v => set('bgColor', v)} />
-         <ColorInput label="Nav Text Identity" value={data?.textColor} onChange={v => set('textColor', v)} />
+         <ColorInput label="Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+         <ColorInput label="Text Color" value={data?.textColor} onChange={v => set('textColor', v)} />
       </div>
-      <SectionTitle>Social Media Routing Hub</SectionTitle>
+      <SectionTitle>Contact Information</SectionTitle>
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Facebook Link"><TextInput value={data?.socials?.facebook} onChange={v => set('socials', { ...(data?.socials || {}), facebook: v })} /></Field>
-        <Field label="Twitter/X Link"><TextInput value={data?.socials?.twitter} onChange={v => set('socials', { ...(data?.socials || {}), twitter: v })} /></Field>
-        <Field label="Instagram Link"><TextInput value={data?.socials?.instagram} onChange={v => set('socials', { ...(data?.socials || {}), instagram: v })} /></Field>
-        <Field label="LinkedIn Link"><TextInput value={data?.socials?.linkedin} onChange={v => set('socials', { ...(data?.socials || {}), linkedin: v })} /></Field>
+        <Field label="Email Address"><TextInput value={data?.email} onChange={v => set('email', v)} placeholder="info@schoolmart.in" /></Field>
+        <Field label="Phone Number 1"><TextInput value={data?.phone1} onChange={v => set('phone1', v)} placeholder="+91 9966109191" /></Field>
+        <Field label="Phone Number 2"><TextInput value={data?.phone2} onChange={v => set('phone2', v)} placeholder="+91 9866091111" /></Field>
+      </div>
+      <SectionTitle>Social Media Links</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Facebook"><TextInput value={data?.socials?.facebook} onChange={v => set('socials', { ...(data?.socials || {}), facebook: v })} placeholder="https://facebook.com/..." /></Field>
+        <Field label="Twitter / X"><TextInput value={data?.socials?.twitter} onChange={v => set('socials', { ...(data?.socials || {}), twitter: v })} placeholder="https://twitter.com/..." /></Field>
+        <Field label="Instagram"><TextInput value={data?.socials?.instagram} onChange={v => set('socials', { ...(data?.socials || {}), instagram: v })} placeholder="https://instagram.com/..." /></Field>
+        <Field label="LinkedIn"><TextInput value={data?.socials?.linkedin} onChange={v => set('socials', { ...(data?.socials || {}), linkedin: v })} placeholder="https://linkedin.com/..." /></Field>
+        <Field label="YouTube"><TextInput value={data?.socials?.youtube} onChange={v => set('socials', { ...(data?.socials || {}), youtube: v })} placeholder="https://youtube.com/..." /></Field>
       </div>
     </div>
   ),
@@ -401,35 +408,399 @@ const BlockForms = {
 
   tiles: ({ data = {}, set }) => (
     <div className="space-y-6">
-      <SectionTitle>Institutional Grid Matrix (Masonry)</SectionTitle>
+      <SectionTitle>Masonry Grid Tiles</SectionTitle>
+      <p className="text-[11px] text-gray-400 font-medium">Each tile links to an inner page. The inner page content is managed from that page's own editor.</p>
       <div className="space-y-4">
         {(data.tiles || []).map((t, i) => (
           <div key={i} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm relative group">
             <button onClick={() => set('tiles', data.tiles.filter((_, j) => j !== i))} className="absolute top-4 right-4 text-red-300 hover:text-red-500"><Trash2 size={16}/></button>
-            <div className="grid grid-cols-2 gap-4 mb-4">
-              <Field label="Tile Heading"><TextInput value={t.title} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], title: v }; set('tiles', x); }} /></Field>
-              <Field label="Target Path"><TextInput value={t.path} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], path: v }; set('tiles', x); }} /></Field>
+            <div className="flex items-center gap-2 mb-4">
+              <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-[10px] font-black text-indigo-600">{i + 1}</div>
+              <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest">{t.title || 'Untitled Tile'}</p>
             </div>
-            <Field label="Brief Subtitle"><TextInput value={t.subtitle} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], subtitle: v }; set('tiles', x); }} /></Field>
-            <ImageUpload label="Tile Cover Visual" value={t.img} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], img: v }; set('tiles', x); }} />
+            <div className="grid grid-cols-2 gap-4 mb-4">
+              <Field label="Tile Title"><TextInput value={t.title} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], title: v }; set('tiles', x); }} /></Field>
+              <Field label="Routing Page Link" hint="Where this tile navigates to"><TextInput value={t.path} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], path: v }; set('tiles', x); }} placeholder="/p/immersive-learning" /></Field>
+            </div>
+            <Field label="Subtitle"><TextInput value={t.subtitle} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], subtitle: v }; set('tiles', x); }} /></Field>
+            <div className="mt-4">
+              <ImageUpload label="Cover Image" value={t.img} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], img: v }; set('tiles', x); }} />
+            </div>
+            <div className="mt-4 grid grid-cols-2 gap-4">
+              <Field label="Tile Height" hint="CSS class: h-48, h-52, h-56, h-64, h-72"><TextInput value={t.height} onChange={v => { const x = [...data.tiles]; x[i] = { ...x[i], height: v }; set('tiles', x); }} placeholder="h-64" /></Field>
+              <div className="flex items-center gap-2 pt-6">
+                <input type="checkbox" checked={!!t.featured} onChange={e => { const x = [...data.tiles]; x[i] = { ...x[i], featured: e.target.checked }; set('tiles', x); }} className="w-4 h-4 rounded" />
+                <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Featured Tile</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
-      <button onClick={() => set('tiles', [...(data.tiles || []), { title: '', subtitle: '', path: '/', img: '' }])}
-        className="w-full py-6 rounded-3xl border-2 border-dashed border-gray-100 text-[10px] font-black uppercase tracking-widest">+ Append Grid Node</button>
+      <button onClick={() => set('tiles', [...(data.tiles || []), { title: '', subtitle: '', path: '/', img: '', height: 'h-64' }])}
+        className="w-full py-6 rounded-3xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:border-indigo-300 hover:bg-indigo-50 transition-all">+ Add Tile</button>
     </div>
   ),
 
   cta_whatsapp: ({ data = {}, set }) => (
-    <div className="space-y-4 p-8 bg-green-50/20 rounded-3xl border border-green-100">
-      <SectionTitle>WhatsApp Direct Strategy</SectionTitle>
+    <div className="space-y-6">
+      <SectionTitle>WhatsApp CTA Section</SectionTitle>
+      <ColorInput label="Section Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+      <Field label="Badge Text"><TextInput value={data?.badge} onChange={v => set('badge', v)} placeholder="Direct Consultation" /></Field>
+      <Field label="Main Headline"><TextInput value={data?.headline} onChange={v => set('headline', v)} placeholder="Ready to scale your campus?" /></Field>
+      <Field label="Description"><TextArea value={data?.description} onChange={v => set('description', v)} rows={3} placeholder="At SchoolMart, we provide end-to-end expertise..." /></Field>
+      <SectionTitle>Contact Links</SectionTitle>
       <div className="grid grid-cols-2 gap-4">
-         <Field label="WhatsApp Group ID/Link"><TextInput value={data.whatsappUrl} onChange={v => set('whatsappUrl', v)} placeholder="https://chat.whatsapp.com/..." /></Field>
-         <Field label="Button Command"><TextInput value={data.btnLabel} onChange={v => set('btnLabel', v)} placeholder="Join Discussion" /></Field>
+         <Field label="WhatsApp Number" hint="Country code + number, no spaces"><TextInput value={data?.whatsappNumber} onChange={v => set('whatsappNumber', v)} placeholder="919966109191" /></Field>
+         <Field label="Phone Number"><TextInput value={data?.phone} onChange={v => set('phone', v)} placeholder="+91 9966109191" /></Field>
       </div>
-      <div className="p-4 bg-green-50 flex items-center gap-3 rounded-2xl">
-         <MessageSquare className="text-green-600" size={20} />
-         <p className="text-[10px] text-green-700 font-bold uppercase tracking-widest">Connects institutional leads directly to your moderated community thread.</p>
+      <div className="grid grid-cols-2 gap-4">
+         <Field label="WhatsApp Button Label"><TextInput value={data?.whatsappLabel} onChange={v => set('whatsappLabel', v)} placeholder="Connect on WhatsApp" /></Field>
+         <Field label="Phone Button Label"><TextInput value={data?.phoneLabel} onChange={v => set('phoneLabel', v)} placeholder="Call Support" /></Field>
+      </div>
+    </div>
+  ),
+
+  partners: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Partner Schools Section</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} placeholder="Trusted by Leading Schools" /></Field>
+      <Field label="Sub-heading"><TextInput value={data?.subheading} onChange={v => set('subheading', v)} placeholder="4000+ partner schools across India" /></Field>
+      
+      <SectionTitle>Stats</SectionTitle>
+      <div className="space-y-3">
+        {(data?.stats || []).map((stat, i) => (
+          <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 relative flex gap-4 items-center">
+            <button onClick={() => set('stats', data.stats.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="flex-1"><Field label="Value"><TextInput value={stat.value} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], value: v }; set('stats', s); }} placeholder="4000+" /></Field></div>
+            <div className="flex-1"><Field label="Label"><TextInput value={stat.label} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], label: v }; set('stats', s); }} placeholder="Partner Schools" /></Field></div>
+          </div>
+        ))}
+        <button onClick={() => set('stats', [...(data?.stats || []), { value: '', label: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Stat</button>
+      </div>
+      
+      <SectionTitle>Partner School Names (Ticker)</SectionTitle>
+      <Field label="School Names" hint="One school name per line. These scroll in the marquee ticker.">
+        <TextArea value={(data?.clients || []).map(c => typeof c === 'string' ? c : c.name).join('\n')} onChange={v => set('clients', v.split('\n').map(s => s.trim()).filter(Boolean).map(name => ({ name })))} rows={8} placeholder="AVN Vida International School\nDRS International School\nDelhi Public School" />
+      </Field>
+    </div>
+  ),
+
+  sidebar_trending: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>Sidebar — Trending Items</SectionTitle>
+      <Field label="Trending Links" hint="One item per line. These appear in the sidebar 'TRENDING' widget.">
+        <TextArea value={(data?.items || []).join('\n')} onChange={v => set('items', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={8} placeholder="Schools for Sale / Lease\nFundraising\nPartnerships\nWorkshops\nJob Openings\nJoin as Influencers" />
+      </Field>
+    </div>
+  ),
+
+  sidebar_resources: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>Sidebar — Resources Items</SectionTitle>
+      <Field label="Resource Links" hint="One item per line. These appear in the sidebar 'RESOURCES' widget.">
+        <TextArea value={(data?.items || []).join('\n')} onChange={v => set('items', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={10} placeholder="Setup School in India\nDigitization Guide\nProduct Catalog 2025\nSkill Lab Guide\nLookbook – Play Furniture" />
+      </Field>
+    </div>
+  ),
+
+  navbar: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Navbar Category Bar</SectionTitle>
+      <p className="text-[11px] text-gray-400 font-medium">These are the category icons shown below the main navigation bar.</p>
+      <div className="space-y-4">
+        {(data?.categories || []).map((cat, i) => (
+          <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 relative">
+            <button onClick={() => set('categories', data.categories.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="grid grid-cols-3 gap-4">
+              <Field label="Category Name"><TextInput value={cat.name} onChange={v => { const c = [...data.categories]; c[i] = { ...c[i], name: v }; set('categories', c); }} /></Field>
+              <Field label="Page Link"><TextInput value={cat.path} onChange={v => { const c = [...data.categories]; c[i] = { ...c[i], path: v }; set('categories', c); }} placeholder="/furniture" /></Field>
+              <Field label="Icon Name" hint="Armchair, Building2, Laptop, etc."><TextInput value={cat.icon} onChange={v => { const c = [...data.categories]; c[i] = { ...c[i], icon: v }; set('categories', c); }} /></Field>
+            </div>
+          </div>
+        ))}
+        <button onClick={() => set('categories', [...(data?.categories || []), { name: '', path: '/', icon: 'BookOpen' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Category</button>
+      </div>
+    </div>
+  ),
+
+  // ── REGISTRATION PAGE ─────────────────────────────────────────
+  registration_hero: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Registration Hero Section</SectionTitle>
+      <Field label="Badge Text"><TextInput value={data?.badge} onChange={v => set('badge', v)} placeholder="Partner Network" /></Field>
+      <Field label="Main Heading (HTML)" hint="Use <br/> for line breaks, <span> for styled text"><TextArea value={data?.heading} onChange={v => set('heading', v)} rows={3} placeholder='Join <br/> The <span class="text-sm-blue italic font-serif opacity-80">Circle.</span>' /></Field>
+      <Field label="Description Paragraph"><TextArea value={data?.description} onChange={v => set('description', v)} rows={3} placeholder="Get exclusive access to architectural blueprints..." /></Field>
+      <SectionTitle>Sidebar Stat Cards</SectionTitle>
+      <div className="space-y-3">
+        {(data?.statCards || []).map((card, i) => (
+          <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 relative flex gap-4">
+            <button onClick={() => set('statCards', data.statCards.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="flex-1"><Field label="Title"><TextInput value={card.title} onChange={v => { const s = [...data.statCards]; s[i] = { ...s[i], title: v }; set('statCards', s); }} /></Field></div>
+            <div className="flex-1"><Field label="Subtitle"><TextInput value={card.subtitle} onChange={v => { const s = [...data.statCards]; s[i] = { ...s[i], subtitle: v }; set('statCards', s); }} /></Field></div>
+          </div>
+        ))}
+        <button onClick={() => set('statCards', [...(data?.statCards || []), { title: '', subtitle: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Stat Card</button>
+      </div>
+    </div>
+  ),
+
+  registration_fields: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Registration Form Fields</SectionTitle>
+      <Field label="Form Title"><TextInput value={data?.formTitle} onChange={v => set('formTitle', v)} placeholder="Partner school Registration Form." /></Field>
+      <Field label="Form Subtitle"><TextInput value={data?.formSubtitle} onChange={v => set('formSubtitle', v)} placeholder="Please Select the services and get information..." /></Field>
+      <Field label="Section Heading (Left Column)"><TextInput value={data?.sectionHeading} onChange={v => set('sectionHeading', v)} placeholder="Institutional Info" /></Field>
+      <Field label="Submit Button Text"><TextInput value={data?.submitLabel} onChange={v => set('submitLabel', v)} placeholder="SUBMIT" /></Field>
+      <SectionTitle>Form Fields</SectionTitle>
+      <p className="text-[11px] text-gray-400 font-medium">Add, remove, reorder, and mark fields as required. Required fields show a red asterisk (*) on the frontend.</p>
+      <div className="space-y-3">
+        {(data?.fields || []).map((field, i) => (
+          <div key={i} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm relative">
+            <button onClick={() => set('fields', data.fields.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="grid grid-cols-4 gap-3">
+              <Field label="Field Label"><TextInput value={field.label} onChange={v => { const f = [...data.fields]; f[i] = { ...f[i], label: v }; set('fields', f); }} /></Field>
+              <Field label="Placeholder"><TextInput value={field.placeholder} onChange={v => { const f = [...data.fields]; f[i] = { ...f[i], placeholder: v }; set('fields', f); }} /></Field>
+              <Field label="Type">
+                <select value={field.type || 'text'} onChange={e => { const f = [...data.fields]; f[i] = { ...f[i], type: e.target.value }; set('fields', f); }}
+                  className="w-full px-3 py-2.5 bg-white border border-gray-100 rounded-xl text-sm">
+                  <option value="text">Text</option><option value="email">Email</option><option value="password">Password</option>
+                  <option value="tel">Phone</option><option value="textarea">Textarea</option><option value="select">Dropdown</option>
+                </select>
+              </Field>
+              <div className="flex items-center gap-2 pt-6">
+                <input type="checkbox" checked={!!field.required} onChange={e => { const f = [...data.fields]; f[i] = { ...f[i], required: e.target.checked }; set('fields', f); }} className="w-4 h-4 rounded text-red-600" />
+                <span className="text-[10px] font-black text-red-500 uppercase tracking-widest">Required *</span>
+              </div>
+            </div>
+            {field.type === 'select' && (
+              <div className="mt-3">
+                <Field label="Dropdown Options" hint="One option per line">
+                  <TextArea value={(field.options || []).join('\n')} onChange={v => { const f = [...data.fields]; f[i] = { ...f[i], options: v.split('\n').map(s => s.trim()).filter(Boolean) }; set('fields', f); }} rows={3} />
+                </Field>
+              </div>
+            )}
+          </div>
+        ))}
+        <button onClick={() => set('fields', [...(data?.fields || []), { label: '', placeholder: '', type: 'text', required: false }])}
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Field</button>
+      </div>
+    </div>
+  ),
+
+  registration_services: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Select Services Checklist</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} placeholder="Select Services" /></Field>
+      <Field label="Service Items" hint="One service per line. Users can check/uncheck these during registration.">
+        <TextArea value={(data?.services || []).join('\n')} onChange={v => set('services', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={15} placeholder="School design architecture services green schools\nProject management planning to completion\nExisting school refurbishment redesign" />
+      </Field>
+    </div>
+  ),
+
+  registration_school_types: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>School Type Dropdown Options</SectionTitle>
+      <Field label="Options" hint="One option per line. These appear in the 'Type of School' dropdown.">
+        <TextArea value={(data?.options || []).join('\n')} onChange={v => set('options', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={8} placeholder="International school\nCBSE School\nICSE School\nSTATE Board School\nCollege University\nBusiness Educational Partners" />
+      </Field>
+    </div>
+  ),
+
+  registration_features: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Bottom Feature Cards</SectionTitle>
+      <div className="space-y-4">
+        {(data?.cards || []).map((card, i) => (
+          <div key={i} className="bg-gray-50 p-5 rounded-2xl border border-gray-100 relative">
+            <button onClick={() => set('cards', data.cards.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Card Title"><TextInput value={card.title} onChange={v => { const c = [...data.cards]; c[i] = { ...c[i], title: v }; set('cards', c); }} /></Field>
+              <Field label="Icon Name" hint="ShieldCheck, Globe, Sparkles, ArrowRight"><TextInput value={card.icon} onChange={v => { const c = [...data.cards]; c[i] = { ...c[i], icon: v }; set('cards', c); }} /></Field>
+            </div>
+            <Field label="Card Description"><TextArea value={card.description} onChange={v => { const c = [...data.cards]; c[i] = { ...c[i], description: v }; set('cards', c); }} rows={2} /></Field>
+          </div>
+        ))}
+        <button onClick={() => set('cards', [...(data?.cards || []), { title: '', description: '', icon: 'Globe' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Feature Card</button>
+      </div>
+    </div>
+  ),
+
+  // ── LOGIN PAGE ────────────────────────────────────────────────
+  login_hero: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Login Hero Section (Left Side)</SectionTitle>
+      <Field label="Badge Text"><TextInput value={data?.badge} onChange={v => set('badge', v)} placeholder="Secure Institutional Portal" /></Field>
+      <Field label="Main Heading (HTML)" hint="Use <br/> for line breaks"><TextArea value={data?.heading} onChange={v => set('heading', v)} rows={3} placeholder='Welcome <br/> <span class="text-sm-blue italic">Back.</span>' /></Field>
+      <Field label="Description Paragraph"><TextArea value={data?.description} onChange={v => set('description', v)} rows={3} /></Field>
+      <SectionTitle>Member Stats</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Stats Title"><TextInput value={data?.statsTitle} onChange={v => set('statsTitle', v)} placeholder="Member Circle" /></Field>
+        <Field label="Stats Count"><TextInput value={data?.statsCount} onChange={v => set('statsCount', v)} placeholder="15k+ Institutions Online" /></Field>
+      </div>
+    </div>
+  ),
+
+  login_fields: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Login Form Labels & Text</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Step 1 Heading"><TextInput value={data?.step1Heading} onChange={v => set('step1Heading', v)} placeholder="SIGN IN" /></Field>
+        <Field label="Step 1 Subtitle"><TextInput value={data?.step1Subtitle} onChange={v => set('step1Subtitle', v)} placeholder="Everything a school needs is within reach." /></Field>
+      </div>
+      <SectionTitle>Field Labels</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Email Label"><TextInput value={data?.emailLabel} onChange={v => set('emailLabel', v)} placeholder="Work Email" /></Field>
+        <Field label="Email Placeholder"><TextInput value={data?.emailPlaceholder} onChange={v => set('emailPlaceholder', v)} placeholder="example@institutional.in" /></Field>
+        <Field label="Password Label"><TextInput value={data?.passwordLabel} onChange={v => set('passwordLabel', v)} placeholder="Security Key" /></Field>
+        <Field label="Forgot Password Link Text"><TextInput value={data?.forgotText} onChange={v => set('forgotText', v)} placeholder="Forgot?" /></Field>
+      </div>
+      <SectionTitle>Buttons & Prompts</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Login Button Text"><TextInput value={data?.loginBtnText} onChange={v => set('loginBtnText', v)} placeholder="Authorize Portal" /></Field>
+        <Field label="New User Prompt"><TextInput value={data?.newUserPrompt} onChange={v => set('newUserPrompt', v)} placeholder="New Institution?" /></Field>
+        <Field label="Register Link Text"><TextInput value={data?.registerLinkText} onChange={v => set('registerLinkText', v)} placeholder="Create School Account" /></Field>
+      </div>
+      <SectionTitle>OTP Step Labels</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Step 2 Heading"><TextInput value={data?.step2Heading} onChange={v => set('step2Heading', v)} placeholder="2FA VERIFY" /></Field>
+        <Field label="Step 2 Subtitle"><TextInput value={data?.step2Subtitle} onChange={v => set('step2Subtitle', v)} placeholder="Enter the code from your email" /></Field>
+        <Field label="Verify Button Text"><TextInput value={data?.verifyBtnText} onChange={v => set('verifyBtnText', v)} placeholder="Verify Identity" /></Field>
+        <Field label="Resend Button Text"><TextInput value={data?.resendText} onChange={v => set('resendText', v)} placeholder="Resend Security Code" /></Field>
+      </div>
+    </div>
+  ),
+
+  // ── GENERIC INNER PAGE BLOCKS ─────────────────────────────────
+  page_hero: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Page Hero Section</SectionTitle>
+      <Field label="Badge Text"><TextInput value={data?.badge} onChange={v => set('badge', v)} /></Field>
+      <Field label="Title (HTML allowed)"><TextArea value={data?.titleHtml} onChange={v => set('titleHtml', v)} rows={3} /></Field>
+      <Field label="Subtitle"><TextArea value={data?.subtitle} onChange={v => set('subtitle', v)} rows={2} /></Field>
+      <Field label="Description"><TextArea value={data?.description} onChange={v => set('description', v)} rows={3} /></Field>
+      <div className="grid grid-cols-2 gap-4">
+        <ColorInput label="Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+        <ColorInput label="Text Color" value={data?.textColor} onChange={v => set('textColor', v)} />
+      </div>
+      <MediaUpload label="Hero Image / Video" value={data?.mediaUrl} onChange={v => set('mediaUrl', v)} />
+      <ImageUpload label="Fallback Image" value={data?.img} onChange={v => set('img', v)} />
+    </div>
+  ),
+
+  page_content: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Content Section</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} /></Field>
+      <Field label="Body Content (HTML/Markdown)"><TextArea value={data?.content} onChange={v => set('content', v)} rows={8} /></Field>
+      <ColorInput label="Section Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+      <ImageUpload label="Section Image" value={data?.image} onChange={v => set('image', v)} />
+    </div>
+  ),
+
+  page_features: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Feature Cards Grid</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} /></Field>
+      <div className="space-y-4">
+        {(data?.features || []).map((feat, i) => (
+          <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 relative">
+            <button onClick={() => set('features', data.features.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="grid grid-cols-3 gap-3">
+              <Field label="Title"><TextInput value={feat.title} onChange={v => { const f = [...data.features]; f[i] = { ...f[i], title: v }; set('features', f); }} /></Field>
+              <Field label="Description"><TextInput value={feat.description} onChange={v => { const f = [...data.features]; f[i] = { ...f[i], description: v }; set('features', f); }} /></Field>
+              <Field label="Icon"><TextInput value={feat.icon} onChange={v => { const f = [...data.features]; f[i] = { ...f[i], icon: v }; set('features', f); }} /></Field>
+            </div>
+          </div>
+        ))}
+        <button onClick={() => set('features', [...(data?.features || []), { title: '', description: '', icon: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Feature</button>
+      </div>
+    </div>
+  ),
+
+  page_stats: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Statistics Section</SectionTitle>
+      <ColorInput label="Section Background" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+      <div className="space-y-3">
+        {(data?.stats || []).map((stat, i) => (
+          <div key={i} className="bg-gray-50 p-3 rounded-xl border border-gray-100 relative flex gap-4">
+            <button onClick={() => set('stats', data.stats.filter((_, j) => j !== i))} className="absolute top-2 right-2 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="flex-1"><Field label="Value"><TextInput value={stat.value} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], value: v }; set('stats', s); }} /></Field></div>
+            <div className="flex-1"><Field label="Label"><TextInput value={stat.label} onChange={v => { const s = [...data.stats]; s[i] = { ...s[i], label: v }; set('stats', s); }} /></Field></div>
+          </div>
+        ))}
+        <button onClick={() => set('stats', [...(data?.stats || []), { value: '', label: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Stat</button>
+      </div>
+    </div>
+  ),
+
+  page_faq: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>FAQ Section</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} placeholder="Frequently Asked Questions" /></Field>
+      <div className="space-y-3">
+        {(data?.items || []).map((item, i) => (
+          <div key={i} className="bg-white p-4 rounded-2xl border border-gray-100 shadow-sm relative">
+            <button onClick={() => set('items', data.items.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <Field label="Question"><TextInput value={item.question} onChange={v => { const f = [...data.items]; f[i] = { ...f[i], question: v }; set('items', f); }} /></Field>
+            <Field label="Answer"><TextArea value={item.answer} onChange={v => { const f = [...data.items]; f[i] = { ...f[i], answer: v }; set('items', f); }} rows={3} /></Field>
+          </div>
+        ))}
+        <button onClick={() => set('items', [...(data?.items || []), { question: '', answer: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add FAQ</button>
+      </div>
+    </div>
+  ),
+
+  page_cta: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>Call to Action Strip</SectionTitle>
+      <ColorInput label="Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
+      <Field label="Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} /></Field>
+      <Field label="Description"><TextArea value={data?.description} onChange={v => set('description', v)} rows={2} /></Field>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Button Label"><TextInput value={data?.btnLabel} onChange={v => set('btnLabel', v)} /></Field>
+        <Field label="Button Link"><TextInput value={data?.btnLink} onChange={v => set('btnLink', v)} /></Field>
+      </div>
+    </div>
+  ),
+
+  page_gallery: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Image Gallery / Masonry Grid</SectionTitle>
+      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} /></Field>
+      <div className="space-y-3">
+        {(data?.images || []).map((img, i) => (
+          <div key={i} className="bg-gray-50 p-4 rounded-2xl border border-gray-100 relative">
+            <button onClick={() => set('images', data.images.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
+            <div className="grid grid-cols-2 gap-4">
+              <Field label="Caption"><TextInput value={img.caption} onChange={v => { const g = [...data.images]; g[i] = { ...g[i], caption: v }; set('images', g); }} /></Field>
+              <Field label="Link"><TextInput value={img.link} onChange={v => { const g = [...data.images]; g[i] = { ...g[i], link: v }; set('images', g); }} /></Field>
+            </div>
+            <ImageUpload label="Image" value={img.url} onChange={v => { const g = [...data.images]; g[i] = { ...g[i], url: v }; set('images', g); }} />
+          </div>
+        ))}
+        <button onClick={() => set('images', [...(data?.images || []), { url: '', caption: '', link: '' }])}
+          className="w-full py-3 rounded-xl border-2 border-dashed border-gray-100 text-gray-400 font-bold uppercase text-[9px] tracking-widest">+ Add Image</button>
+      </div>
+    </div>
+  ),
+
+  pdf_resource: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>PDF / Download Resource</SectionTitle>
+      <Field label="Resource Title"><TextInput value={data?.title} onChange={v => set('title', v)} /></Field>
+      <Field label="Description"><TextArea value={data?.description} onChange={v => set('description', v)} rows={2} /></Field>
+      <FileUpload label="Upload PDF" value={data?.fileUrl} onChange={v => set('fileUrl', v)} accept=".pdf" />
+      <div className="flex items-center gap-2 pt-2">
+        <input type="checkbox" checked={!!data?.registeredOnly} onChange={e => set('registeredOnly', e.target.checked)} className="w-4 h-4 rounded" />
+        <span className="text-[10px] font-black text-amber-600 uppercase tracking-widest">🔒 Registered Users Only</span>
       </div>
     </div>
   )
@@ -458,6 +829,23 @@ const PAGE_META = {
   'school-sale': { icon: Globe, color: 'bg-orange-600', iconColor: 'text-orange-600' },
   partnerships: { icon: Globe, color: 'bg-yellow-500', iconColor: 'text-yellow-500' },
   'setup-guide': { icon: FileText, color: 'bg-cyan-600', iconColor: 'text-cyan-600' },
+  registration: { icon: Plus, color: 'bg-emerald-500', iconColor: 'text-emerald-500' },
+  login: { icon: Lock, color: 'bg-violet-500', iconColor: 'text-violet-500' },
+  workshops: { icon: Layers, color: 'bg-pink-500', iconColor: 'text-pink-500' },
+  fundraising: { icon: Globe, color: 'bg-lime-600', iconColor: 'text-lime-600' },
+  'how-it-works': { icon: List, color: 'bg-sky-500', iconColor: 'text-sky-500' },
+  pricing: { icon: Package, color: 'bg-teal-600', iconColor: 'text-teal-600' },
+  'shipping-policy': { icon: FileText, color: 'bg-gray-500', iconColor: 'text-gray-500' },
+  'cancellation-policy': { icon: FileText, color: 'bg-gray-500', iconColor: 'text-gray-500' },
+  'replacement-return': { icon: FileText, color: 'bg-gray-500', iconColor: 'text-gray-500' },
+  payments: { icon: FileText, color: 'bg-green-600', iconColor: 'text-green-600' },
+  'order-rejection-policy': { icon: FileText, color: 'bg-gray-500', iconColor: 'text-gray-500' },
+  'seller-help': { icon: MessageSquare, color: 'bg-blue-500', iconColor: 'text-blue-500' },
+  'sell-on-schoolmart': { icon: Package, color: 'bg-orange-500', iconColor: 'text-orange-500' },
+  'report-issue': { icon: MessageSquare, color: 'bg-red-500', iconColor: 'text-red-500' },
+  blog: { icon: FileText, color: 'bg-indigo-400', iconColor: 'text-indigo-400' },
+  'delivery-locations': { icon: Globe, color: 'bg-cyan-500', iconColor: 'text-cyan-500' },
+  'forgot-password': { icon: Lock, color: 'bg-amber-500', iconColor: 'text-amber-500' },
 };
 
 const getPageMeta = (slug) => PAGE_META[slug] || { icon: FileText, color: 'bg-indigo-500', iconColor: 'text-indigo-500' };
@@ -470,6 +858,7 @@ export default function CMSEditor() {
   const [loading, setLoading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
   const [activeBlockId, setActiveBlockId] = useState(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
   useEffect(() => {
     getAllPages()
@@ -500,6 +889,13 @@ export default function CMSEditor() {
     }
   };
 
+  const filteredPages = pages.filter(p => 
+    (p.title || p.slug).toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.slug.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const currentPageTitle = pages.find(p => p.slug === selectedPage)?.title || selectedPage;
+
   if (loading) return <div className="flex h-screen items-center justify-center"><div className="animate-spin w-12 h-12 border-4 border-indigo-500 border-t-transparent rounded-full shadow-indigo-500/20 shadow-2xl" /></div>;
 
   return (
@@ -508,10 +904,22 @@ export default function CMSEditor() {
       <div className="p-10 max-w-7xl mx-auto min-w-0 min-h-screen">
         {!selectedPage ? (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-500">
-             <div className="space-y-2">
-                <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">Command Hub</h2>
-                <p className="text-sm text-gray-400 font-medium">Select a module to initialize total administrative sovereignty.</p>
-             </div>
+              <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
+                <div className="space-y-2">
+                   <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">Command Hub</h2>
+                   <p className="text-sm text-gray-400 font-medium">Select a module to initialize total administrative sovereignty.</p>
+                </div>
+                <div className="relative group w-full md:w-80">
+                   <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={18} />
+                   <input 
+                     type="text" 
+                     placeholder="Search modules..." 
+                     value={searchQuery}
+                     onChange={(e) => setSearchQuery(e.target.value)}
+                     className="w-full pl-14 pr-6 py-4 bg-white border border-gray-100 rounded-[2rem] shadow-sm focus:ring-4 focus:ring-indigo-50 outline-none transition-all font-medium text-sm text-gray-700"
+                   />
+                </div>
+              </div>
 
              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 pb-20">
                 {/* Special Product Manager Injector */}
@@ -530,7 +938,7 @@ export default function CMSEditor() {
                   </div>
                 </button>
 
-                {pages.map((p) => {
+                {filteredPages.map((p) => {
                   const meta = getPageMeta(p.slug);
                   const Icon = meta.icon;
                   return (
@@ -591,7 +999,7 @@ export default function CMSEditor() {
                   <ChevronRight className="rotate-180 group-hover:-translate-x-1 transition-transform" size={24} />
                 </button>
                 <div>
-                  <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">{selectedPage} COMMAND CENTER</h2>
+                  <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">{currentPageTitle} COMMAND CENTER</h2>
                   <p className="text-[10px] font-black text-indigo-400 mt-2 uppercase tracking-[0.2em] flex items-center gap-2">
                     <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse shadow-lg shadow-green-500/50"></span>
                     OPERATIONAL STATUS: LIVE SYNC ACTIVE

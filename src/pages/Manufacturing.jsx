@@ -50,7 +50,7 @@ const Manufacturing = () => {
     whatsappNumber: '919966109191'
   };
 
-  if (loading) return null;
+  // Instant fallback rendering
 
   return (
     <main className="min-h-screen bg-white pb-10 overflow-hidden relative font-sans">

@@ -54,14 +54,14 @@ const CTASection = () => {
               >
                 <div className="absolute inset-0 bg-white opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity" />
                 <MessageCircle size={24} className="group-hover:rotate-12 transition-transform" />
-                <span className="text-[13px] uppercase tracking-[0.2em] text-white font-black">Connect on WhatsApp</span>
+                <span className="text-[13px] uppercase tracking-[0.2em] text-white font-black">{d.whatsappLabel || 'Connect on WhatsApp'}</span>
               </a>
               <a
                 href={`tel:${d.phone}`}
                 className="flex items-center justify-center gap-4 px-10 py-5 bg-white border border-gray-200 text-gray-900 font-black rounded-2xl hover:bg-gray-900 hover:text-white hover:border-gray-900 transition-all active:scale-95 shadow-sm"
               >
                 <Phone size={22} />
-                <span className="text-[13px] uppercase tracking-[0.2em] font-black">Call Support</span>
+                <span className="text-[13px] uppercase tracking-[0.2em] font-black">{d.phoneLabel || 'Call Support'}</span>
               </a>
             </div>
           </div>

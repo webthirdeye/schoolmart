@@ -52,7 +52,7 @@ const Corporate = () => {
     phone: '+91 9966109191'
   };
 
-  if (loading) return null;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-white">

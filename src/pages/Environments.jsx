@@ -49,7 +49,7 @@ const Environments = () => {
   const heroData = blocks?.environments_page_content || d.hero;
   const masonryItems = (d.masonryItems?.length ? d.masonryItems : DEFAULT_CONTENT.masonryItems);
 
-  if (loading) return null;
+  // Instant fallback rendering
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-10">

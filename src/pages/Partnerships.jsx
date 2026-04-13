@@ -74,7 +74,7 @@ const Partnerships = () => {
     whatsappNumber: '919966109191'
   };
 
-  if (loading) return null;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-white">

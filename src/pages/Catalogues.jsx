@@ -61,7 +61,7 @@ const Catalogues = () => {
     window.open(item.fileUrl || '#', '_blank');
   };
 
-  if (loading) return null;
+  // Loading removed for instant fallback rendering
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-10 relative">

@@ -14,7 +14,7 @@ const AboutUs = () => {
       img: 'https://images.unsplash.com/photo-152305085306e-8c333bf48974?w=1200&q=80'
     };
 
-    if (loading) return null;
+    // Instant loading with fallbacks
 
     return (
         <div className="bg-white min-h-screen">

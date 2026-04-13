@@ -4,9 +4,11 @@ import { useState, useEffect } from 'react';
 import { getPage } from '../services/api';
 
 const cache = {};
+let cacheVersion = 0;
 
 // Call this after any admin save to force a fresh fetch on next page visit
 export function clearCMSCache(slug) {
+  cacheVersion++;
   if (slug) {
     delete cache[slug];
   } else {
@@ -15,23 +17,36 @@ export function clearCMSCache(slug) {
 }
 
 export function useCMSPage(slug) {
-  const [blocks, setBlocks] = useState(cache[slug] || null);
+  const [blocks, setBlocks] = useState(cache[slug]?.data || null);
   const [loading, setLoading] = useState(!cache[slug]);
+  const [ver, setVer] = useState(cacheVersion);
 
   useEffect(() => {
-    if (cache[slug]) { setBlocks(cache[slug]); setLoading(false); return; }
+    // Re-fetch when cache is cleared (version changed) or first load
+    if (cache[slug] && cache[slug].version === cacheVersion) {
+      setBlocks(cache[slug].data);
+      setLoading(false);
+      return;
+    }
+    setLoading(true);
     getPage(slug)
       .then(page => {
         const indexed = {};
         (page.blocks || []).forEach(b => {
-          if (b.isVisible !== false) indexed[b.type] = b.data;
+          if (b.isVisible !== false) {
+            // Index by BOTH key and type so lookups work either way
+            indexed[b.key] = b.data;
+            if (b.type && b.type !== b.key) {
+              indexed[b.type] = b.data;
+            }
+          }
         });
-        cache[slug] = indexed;
+        cache[slug] = { data: indexed, version: cacheVersion };
         setBlocks(indexed);
       })
       .catch(() => setBlocks({}))
       .finally(() => setLoading(false));
-  }, [slug]);
+  }, [slug, cacheVersion]);
 
   return { blocks, loading };
 }

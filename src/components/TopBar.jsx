@@ -19,7 +19,7 @@ const TopBar = () => {
   const socials = data.socials || {};
 
   return (
-    <div className="bg-[#0057A8] text-white py-1.5 px-4 border-b border-white/5 relative z-[70]">
+    <div className="text-white py-1.5 px-4 border-b border-white/5 relative z-[70]" style={{ backgroundColor: data.bgColor || '#0057A8' }}>
       <div className="max-w-7xl mx-auto flex items-center justify-between gap-1">
         {/* Contact Strip */}
         <div className="flex items-center gap-2 md:gap-6">
