@@ -42,5 +42,17 @@ const startServer = async () => {
   });
 };
 
+process.on('unhandledRejection', (err) => {
+  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
+  console.log(err.name, err.message, err.stack);
+  process.exit(1);
+});
+
+process.on('uncaughtException', (err) => {
+  console.log('UNCAUGHT EXCEPTION! 💥 Shutting down...');
+  console.log(err.name, err.message, err.stack);
+  process.exit(1);
+});
+
 startServer();
 
