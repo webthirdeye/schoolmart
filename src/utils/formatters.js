@@ -9,6 +9,12 @@ export const formatImgUrl = (url) => {
   // Clean potential whitespace or extra quotes from CSV bulk loads
   let cleanUrl = url.trim().replace(/^["']|["']$/g, '');
 
+  // Auto-fix stale localhost URLs stored in DB
+  if (cleanUrl.includes('localhost:5000')) {
+    const backendBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000/api').replace(/\/api$/, '');
+    cleanUrl = cleanUrl.replace('http://localhost:5000', backendBase);
+  }
+
   // Handle Google Drive file links
   if (cleanUrl.includes('drive.google.com')) {
     // Extract file ID from /file/d/ID/view or id=ID
