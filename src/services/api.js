@@ -13,9 +13,15 @@ const getHeaders = () => {
 export const login = async (email, password) => {
   const res = await fetch(`${API_URL}/auth/login`, {
     method: 'POST',
-    headers: getHeaders(),
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ email, password })
   });
+  if (!res.ok) {
+    const text = await res.text();
+    let msg = 'Login failed';
+    try { msg = JSON.parse(text).message || msg; } catch {}
+    throw new Error(msg);
+  }
   const data = await res.json();
   if (data.token) localStorage.setItem('token', data.token);
   return data;

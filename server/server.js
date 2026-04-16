@@ -5,9 +5,15 @@ const { connectDB, sequelize } = require('./config/db');
 
 const app = express();
 
-// Middleware
-app.use(cors());
-app.use(express.json());
+// Middleware — explicit CORS for Vercel ↔ Railway cross-origin
+app.use(cors({
+  origin: true,
+  methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+}));
+app.options('*', cors());   // handle all OPTIONS preflight requests
+app.use(express.json({ limit: '10mb' }));
 
 // Routes
 app.use('/api/products', require('./routes/productRoutes'));
