@@ -212,6 +212,55 @@ const TileEditor = ({ t, i, data, set }) => {
 // ── Block-Specific Form Renderers ───────────────────────────────────────────
 const BlockForms = {
 
+  page_hero: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Inner Page Hero (Split Design)</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Category Badge" hint="Example: Resource Hub"><TextInput value={data?.badge} onChange={v => set('badge', v)} /></Field>
+        <Field label="Subtitle Statement"><TextInput value={data?.subtitle} onChange={v => set('subtitle', v)} /></Field>
+      </div>
+      <Field label="Master Title (HTML Allowed)" hint='Example: Immersive Learning: <br/> VR & AR.'>
+        <TextArea value={data?.titleHtml || data?.title} onChange={v => set('titleHtml', v)} rows={3} />
+      </Field>
+      
+      <SectionTitle>Floating Logic Card</SectionTitle>
+      <div className="bg-blue-50/50 p-6 rounded-3xl border border-blue-100 space-y-4">
+        <Field label="Card Mini-label" hint="Example: Global Standard"><TextInput value={data?.cardLabel} onChange={v => set('cardLabel', v)} /></Field>
+        <Field label="Card Main Text" hint="Example: Implementing NEP 2020 Compliance"><TextInput value={data?.cardText} onChange={v => set('cardText', v)} /></Field>
+      </div>
+
+      <SectionTitle>Visual Experience</SectionTitle>
+      <ImageUpload label="Primary High-Res Image" value={data?.img} onChange={v => set('img', v)} />
+      
+      <SectionTitle>Action Buttons</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Primary Btn Label"><TextInput value={data?.btn1Label} onChange={v => set('btn1Label', v)} placeholder="Download Guide" /></Field>
+        <Field label="Secondary Btn Label"><TextInput value={data?.btn2Label} onChange={v => set('btn2Label', v)} placeholder="Share" /></Field>
+      </div>
+    </div>
+  ),
+
+  page_content: ({ data = {}, set }) => (
+    <div className="space-y-4">
+      <SectionTitle>Main Article Content</SectionTitle>
+      <Field label="Body Content (HTML/Markdown)" hint="The main text of your page. HTML and line breaks are fully supported.">
+        <TextArea value={data?.content} onChange={v => set('content', v)} rows={15} />
+      </Field>
+    </div>
+  ),
+
+  resource_specs: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Technical Meta-Data</SectionTitle>
+      <Field label="Specifications (One per line)" hint="Shows up as grid blocks under the content.">
+        <TextArea value={(data?.specs || []).join('\n')} onChange={v => set('specs', v.split('\n').filter(s => s.trim()))} rows={5} />
+      </Field>
+      <Field label="Tags / Categories (One per line)" hint="Shows up in the sidebar.">
+        <TextArea value={(data?.tags || []).join('\n')} onChange={v => set('tags', v.split('\n').filter(s => s.trim()))} rows={5} />
+      </Field>
+    </div>
+  ),
+
   masonry_grid: ({ data = {}, set }) => {
     const items = data.items || [];
     return (

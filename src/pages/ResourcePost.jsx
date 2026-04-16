@@ -74,21 +74,23 @@ const ResourcePost = () => {
                         
                         <div className="mb-6 inline-flex self-start items-center gap-2 px-4 py-1.5 bg-sm-blue/10 rounded-full border border-sm-blue/20">
                             <div className="w-2 h-2 rounded-full bg-sm-blue animate-pulse" />
-                            <span className="text-[10px] font-black text-sm-blue uppercase tracking-widest">Resource Hub</span>
+                            <span className="text-[10px] font-black text-sm-blue uppercase tracking-widest">
+                                {heroBlock.badge || 'Resource Hub'}
+                            </span>
                         </div>
                         
-                        <h1 className="text-4xl lg:text-5xl font-black text-gray-900 font-heading leading-tight mb-4 uppercase tracking-tight">
-                            {resource.title}
-                        </h1>
+                        <h1 className="text-4xl lg:text-5xl font-black text-gray-900 font-heading leading-tight mb-4 uppercase tracking-tight"
+                             dangerouslySetInnerHTML={{ __html: resource.title }} />
+
                         <p className="text-lg lg:text-xl text-gray-500 font-medium leading-relaxed max-w-xl mb-10">
                             {resource.subtitle}
                         </p>
                         <div className="flex flex-wrap gap-4">
                             <button className="px-8 py-4 bg-sm-blue text-white font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] shadow-xl hover:bg-blue-700 transition-all flex items-center gap-3 active:scale-[0.98]">
-                                Download Guide <Download size={18} />
+                                {heroBlock.btn1Label || 'Download Guide'} <Download size={18} />
                             </button>
                             <button className="px-8 py-4 bg-white text-gray-900 border-2 border-gray-200 font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all flex items-center gap-3">
-                                Share <Share2 size={18} />
+                                {heroBlock.btn2Label || 'Share'} <Share2 size={18} />
                             </button>
                         </div>
                     </div>
@@ -111,9 +113,13 @@ const ResourcePost = () => {
                                 <div className="p-2 bg-green-500 rounded-lg text-white">
                                     <MapPin size={16} />
                                 </div>
-                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">Global Standard</span>
+                                <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest">
+                                    {heroBlock.cardLabel || 'Global Standard'}
+                                </span>
                             </div>
-                            <p className="text-gray-900 font-bold text-sm leading-tight">Implementing NEP 2020 Compliance</p>
+                            <p className="text-gray-900 font-bold text-sm leading-tight">
+                                {heroBlock.cardText || 'Implementing NEP 2020 Compliance'}
+                            </p>
                         </div>
                     </div>
                 </div>
