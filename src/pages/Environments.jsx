@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Sparkles, Wind, Sun, Leaf, ArrowUpRight, CheckCircle2, Layers, ShieldCheck, Microscope } from 'lucide-react';
-import InlineQuickView from '../components/InlineQuickView';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
@@ -42,7 +41,6 @@ const ICONS = { Leaf, Wind, Sun, Layers };
 
 const Environments = () => {
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState(null);
   const { blocks, loading } = useCMSPage('environments');
   
   const d = blocks?.environments_page_content || DEFAULT_CONTENT;

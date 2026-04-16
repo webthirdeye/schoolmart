@@ -2,18 +2,17 @@
 import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { getProducts } from '../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { BookOpen, Library, GraduationCap, Users, Bookmark, ArrowRight, ArrowUpRight, Download, Eye, FileText, CheckCircle2, Stars, ChevronRight, ChevronDown } from 'lucide-react';
-import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
 import SidebarWidget from '../components/SidebarWidget';
 
 const Libraries = () => {
+  const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('libraries');
   const [items, setItems] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
@@ -121,15 +120,20 @@ const Libraries = () => {
               
               <div id="product-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start scroll-mt-[200px]">
                  {filteredItems.map((work, i) => (
-                    <React.Fragment key={i}>
-                       <CatalogueCard 
-                         work={work} 
-                         isSelected={selectedItem?.name === work.name} 
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
-                         themeColor="bg-sm-blue"
-                         ringColor="ring-blue-500"
-                         textColor="text-blue-400"
-                       />
+                    <CatalogueCard 
+                      key={i}
+                      work={work} 
+                      onClick={() => {
+                        if (work.ctaLink && (work.ctaLink.startsWith('http') || work.ctaLink.startsWith('www'))) {
+                          window.open(work.ctaLink, '_blank');
+                        } else {
+                          navigate(`/product/${work.slug}`);
+                        }
+                      }} 
+                      themeColor="bg-sm-blue"
+                      ringColor="ring-blue-500"
+                      textColor="text-blue-400"
+                    />
 
                        {/* INLINE EXPANSION LOGIC */}
                        {/* Mobile */}

@@ -54,7 +54,6 @@ const ResourcePost = () => {
 
     return (
         <div className="bg-white flex flex-col font-sans">
-        <div className="bg-white flex flex-col font-sans">
             {/* NEW: Premium Full-Width Hero Section */}
             <section className="relative w-full min-h-[550px] flex items-center overflow-hidden bg-gray-900">
                 {/* Background Image with optimized overlay */}

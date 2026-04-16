@@ -2,17 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { getProducts } from '../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Layout, Palette, Pencil, Ruler, Layers, Building, ArrowRight, ArrowUpRight, Download, Eye, FileText, CheckCircle2, Stars, Compass, Lightbulb, ChevronDown } from 'lucide-react';
-import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
 
 const SchoolDesigns = () => {
+  const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('design');
   const [items, setItems] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
@@ -112,38 +111,21 @@ const SchoolDesigns = () => {
                  {filteredItems.map((work, i) => (
                     <React.Fragment key={i}>
                        <CatalogueCard 
+                         key={i}
                          work={work} 
-                         isSelected={selectedItem?.name === work.name} 
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
+                         onClick={() => {
+                            if (work.ctaLink && (work.ctaLink.startsWith('http') || work.ctaLink.startsWith('www'))) {
+                              window.open(work.ctaLink, '_blank');
+                            } else {
+                              navigate(`/product/${work.slug}`);
+                            }
+                         }} 
                          themeColor="bg-sm-blue"
                          ringColor="ring-blue-500"
                          textColor="text-blue-400"
                        />
 
-                       {/* INLINE EXPANSION LOGIC */}
-                       {/* Mobile */}
-                       {selectedItem?.name === work.name && (
-                          <div className="md:hidden col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-                       
-                       {/* Tablet (2 cols) */}
-                       {(i % 2 === 1 || i === filteredItems.length - 1) && 
-                         filteredItems.slice(Math.floor(i/2)*2, i+1).some(dw => dw.name === selectedItem?.name) && (
-                          <div className="hidden md:block lg:hidden col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-
-                       {/* Desktop (3 cols) */}
-                       {(i % 3 === 2 || i === filteredItems.length - 1) && 
-                         filteredItems.slice(Math.floor(i/3)*3, i+1).some(dw => dw.name === selectedItem?.name) && (
-                          <div className="hidden lg:block col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-                    </React.Fragment>
+                     </React.Fragment>
                  ))}
               </div>
 

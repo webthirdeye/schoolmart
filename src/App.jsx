@@ -48,6 +48,7 @@ import OrderRejectionPolicy from './pages/OrderRejectionPolicy';
 import ReportIssue from './pages/ReportIssue';
 import Blog from './pages/Blog';
 import DeliveryLocations from './pages/DeliveryLocations';
+import ProductPost from './pages/ProductPost';
 
 // Admin Pages
 import AdminLogin from './pages/admin/AdminLogin';
@@ -128,6 +129,7 @@ function App() {
             {/* Unified Dynamic Resource Hub Routes */}
             <Route path="/p/:slug" element={<ResourcePost />} />
             <Route path="/resource/:slug" element={<ResourcePost />} />
+            <Route path="/product/:slug" element={<ProductPost />} />
           </Route>
 
           {/* Admin Routes */}

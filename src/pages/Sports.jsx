@@ -2,17 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { getProducts } from '../services/api';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Zap, Activity, Trophy, Shield, Target, ArrowRight, ArrowUpRight, Award, Layers, CheckCircle2, FileText, Stars, ChevronRight, ChevronDown } from 'lucide-react';
-import InlineQuickView from '../components/InlineQuickView';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
 
 const Sports = () => {
+  const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('sports');
   const [items, setItems] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
-  const [selectedItem, setSelectedItem] = useState(null);
 
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
@@ -109,50 +108,26 @@ const Sports = () => {
            </div>
 
            {/* MAIN CONTENT GALLERY */}
-           <div className="flex-1 min-w-0">
-
-              
+            <div className="flex-1 min-w-0">
               <div id="product-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start scroll-mt-[200px]">
                  {filteredItems.map((work, i) => (
-                    <React.Fragment key={i}>
-                       <CatalogueCard 
-                         work={work} 
-                         isSelected={selectedItem?.name === work.name} 
-                         onClick={() => setSelectedItem(selectedItem?.name === work.name ? null : work)} 
-                         themeColor="bg-sm-blue"
-                         ringColor="ring-blue-500"
-                         textColor="text-blue-400"
-                       />
-
-                       {/* INLINE EXPANSION LOGIC */}
-                       {/* Mobile */}
-                       {selectedItem?.name === work.name && (
-                          <div className="md:hidden col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-                       
-                       {/* Tablet (2 cols) */}
-                       {(i % 2 === 1 || i === filteredItems.length - 1) && 
-                         filteredItems.slice(Math.floor(i/2)*2, i+1).some(dw => dw.name === selectedItem?.name) && (
-                          <div className="hidden md:block lg:hidden col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-
-                       {/* Desktop (3 cols) */}
-                       {(i % 3 === 2 || i === filteredItems.length - 1) && 
-                         filteredItems.slice(Math.floor(i/3)*3, i+1).some(dw => dw.name === selectedItem?.name) && (
-                          <div className="hidden lg:block col-span-full">
-                             <InlineQuickView isOpen={true} onClose={() => setSelectedItem(null)} data={selectedItem} />
-                          </div>
-                       )}
-                    </React.Fragment>
+                    <CatalogueCard 
+                      key={i}
+                      work={work} 
+                      onClick={() => {
+                        if (work.ctaLink && (work.ctaLink.startsWith('http') || work.ctaLink.startsWith('www'))) {
+                          window.open(work.ctaLink, '_blank');
+                        } else {
+                          navigate(`/product/${work.slug}`);
+                        }
+                      }} 
+                      themeColor="bg-sm-blue"
+                      ringColor="ring-blue-500"
+                      textColor="text-blue-400"
+                    />
                  ))}
               </div>
-
-
-           </div>
+            </div>
         </section>
 
         {/* INFO SPLIT GRID - COMPACT */}
