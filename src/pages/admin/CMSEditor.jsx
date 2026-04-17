@@ -689,6 +689,61 @@ const BlockForms = {
     </div>
   ),
 
+  school_sale_listings: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>School Sale Mandates</SectionTitle>
+      {(data.items || []).map((item, i) => (
+        <div key={i} className="bg-white p-8 rounded-[2.5rem] border border-gray-100 shadow-sm relative group space-y-6">
+          <button 
+            onClick={() => set('items', data.items.filter((_, j) => j !== i))}
+            className="absolute top-6 right-6 text-red-300 hover:text-red-500 transition-colors"
+          >
+            <Trash2 size={20} />
+          </button>
+          
+          <div className="flex items-center gap-3">
+             <div className="w-8 h-8 rounded-xl bg-orange-100 flex items-center justify-center text-[10px] font-black text-orange-600 uppercase">
+                {i + 1}
+             </div>
+             <h5 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em]">Asset Module</h5>
+          </div>
+
+          <div className="grid grid-cols-2 gap-6">
+             <Field label="Listing Title"><TextInput value={item.title} onChange={v => { const s=[...data.items]; s[i]={...s[i], title:v}; set('items', s); }} placeholder="Super Star School at West Hyd" /></Field>
+             <Field label="Location"><TextInput value={item.location} onChange={v => { const s=[...data.items]; s[i]={...s[i], location:v}; set('items', s); }} placeholder="HYDERABAD" /></Field>
+          </div>
+
+          <div className="grid grid-cols-3 gap-4">
+             <Field label="Type" hint="SALE / LEASE"><TextInput value={item.type} onChange={v => { const s=[...data.items]; s[i]={...s[i], type:v}; set('items', s); }} placeholder="SALE" /></Field>
+             <Field label="Mandate Value"><TextInput value={item.price} onChange={v => { const s=[...data.items]; s[i]={...s[i], price:v}; set('items', s); }} placeholder="12cr" /></Field>
+             <Field label="Rating (1-5)"><TextInput value={item.rating} onChange={v => { const s=[...data.items]; s[i]={...s[i], rating:v}; set('items', s); }} placeholder="4.5" /></Field>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+             <Field label="Sales P.A. (Run Rate)"><TextInput value={item.runRate} onChange={v => { const s=[...data.items]; s[i]={...s[i], runRate:v}; set('items', s); }} placeholder="19CR" /></Field>
+             <Field label="Margin %"><TextInput value={item.margin} onChange={v => { const s=[...data.items]; s[i]={...s[i], margin:v}; set('items', s); }} placeholder="25%+" /></Field>
+          </div>
+
+          <Field label="Description / Highlights" hint="Detailed paragraph. Use full stops to separate bullet points.">
+             <TextArea value={item.description} onChange={v => { const s=[...data.items]; s[i]={...s[i], description:v}; set('items', s); }} rows={4} />
+          </Field>
+
+          <div className="grid grid-cols-2 gap-4 pt-4 border-t border-gray-50">
+             <Field label="CTA Button Label"><TextInput value={item.ctaLabel} onChange={v => { const s=[...data.items]; s[i]={...s[i], ctaLabel:v}; set('items', s); }} placeholder="Contact Us" /></Field>
+             <Field label="CTA Redirect Path"><TextInput value={item.ctaLink} onChange={v => { const s=[...data.items]; s[i]={...s[i], ctaLink:v}; set('items', s); }} placeholder="/contact-us" /></Field>
+          </div>
+        </div>
+      ))}
+
+      <button 
+        onClick={() => set('items', [...(data.items || []), { title: '', location: '', price: '', type: 'SALE', rating: '4.8', runRate: '', margin: '', description: '', ctaLabel: 'Contact Us', ctaLink: '/contact-us' }])}
+        className="w-full py-8 rounded-[2rem] border-2 border-dashed border-gray-100 text-gray-400 font-black uppercase text-[11px] tracking-widest hover:bg-white hover:border-orange-200 hover:text-orange-500 transition-all shadow-sm"
+      >
+        + Inject New Asset Mandate
+      </button>
+    </div>
+  ),
+
   tiles: ({ data = {}, set }) => (
     <div className="space-y-4">
       <SectionTitle>Masonry Grid Tiles</SectionTitle>
