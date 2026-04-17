@@ -1,6 +1,6 @@
 // src/pages/admin/CMSEditor.jsx
 import { useEffect, useState } from 'react';
-import { getAllPages, getPage, updateBlock, addBlock, deleteBlock, deletePage, uploadFile, bulkRenameSubcategory } from '../../services/api';
+import { getAllPages, getPage, updateBlock, addBlock, deleteBlock, deletePage, uploadFile, bulkRenameSubcategory, createPage } from '../../services/api';
 import { clearCMSCache } from '../../hooks/useCMSBlock';
 import { 
   ChevronDown, ChevronRight, Trash2, Plus, Eye, EyeOff, Save, GripVertical, 
@@ -1494,9 +1494,30 @@ export default function CMSEditor() {
         {!selectedPage ? (
           <div className="space-y-10 animate-in fade-in slide-in-from-bottom-5 duration-500">
               <div className="flex flex-col md:flex-row md:items-end justify-between gap-6">
-                <div className="space-y-2">
-                   <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">Command Hub</h2>
-                   <p className="text-sm text-gray-400 font-medium">Select a module to initialize total administrative sovereignty.</p>
+                <div className="flex items-center gap-6">
+                   <div className="space-y-2">
+                      <h2 className="text-4xl font-black text-gray-900 tracking-tighter uppercase">Command Hub</h2>
+                      <p className="text-sm text-gray-400 font-medium">Select a module to initialize total administrative sovereignty.</p>
+                   </div>
+                   <button 
+                     onClick={async () => {
+                       const name = prompt('Enter Page Name (e.g. Interactive Panels):');
+                       if (!name) return;
+                       const slug = prompt('Enter Page Slug (e.g. resource-interactive-panels):');
+                       if (!slug) return;
+                       try {
+                         await createPage(slug, name);
+                         const updated = await getAllPages();
+                         setPages(updated.data || updated);
+                         alert('Page created successfully!');
+                       } catch (err) {
+                         alert('Failed to create page: ' + err.message);
+                       }
+                     }}
+                     className="px-8 py-4 bg-indigo-600 text-white text-[10px] font-black uppercase tracking-widest rounded-2xl shadow-xl shadow-indigo-600/20 hover:scale-105 transition-all flex items-center gap-3"
+                   >
+                     <Plus size={16} /> New Page
+                   </button>
                 </div>
                 <div className="relative group w-full md:w-80">
                    <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-indigo-600 transition-colors" size={18} />

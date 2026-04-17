@@ -171,6 +171,15 @@ export const getAllPages = async () => {
   return await res.json();
 };
 
+export const createPage = async (slug, name) => {
+  const res = await fetch(`${API_URL}/cms/pages`, {
+    method: 'POST',
+    headers: getHeaders(),
+    body: JSON.stringify({ slug, name })
+  });
+  return await res.json();
+};
+
 export const deletePage = async (slug) => {
   const res = await fetch(`${API_URL}/cms/pages/${slug}`, {
     method: 'DELETE',
