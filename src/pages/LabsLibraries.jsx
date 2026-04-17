@@ -62,7 +62,7 @@ const LabsLibraries = () => {
                  className="rounded-[40px] p-8 text-white flex items-center justify-between group overflow-hidden relative border border-emerald-900 shadow-2xl transition-transform hover:scale-[1.01]">
                  <div className="flex flex-col gap-2">
                     <h3 style={{ color: blocks.action_strip.textColor || undefined }} className="text-[13px] font-black uppercase tracking-[0.2em] text-emerald-100/60">{blocks.action_strip.title || 'Skill Lab Guide 2025.'}</h3>
-                    <span className="text-[14px] font-black text-white uppercase tracking-widest font-heading">{blocks.action_strip.subtitle || 'TECHNICAL SPECIFICATIONS'}</span>
+                    <span style={{ color: blocks.action_strip.textColor || undefined }} className="text-[14px] font-black opacity-60 uppercase tracking-widest font-heading">{blocks.action_strip.subtitle || 'TECHNICAL SPECIFICATIONS'}</span>
                  </div>
                  <span className="p-4 bg-white text-emerald-800 rounded-full shadow-lg relative z-10 transition-all group-hover:bg-emerald-100 group-hover:scale-110">
                     <Download size={20} />

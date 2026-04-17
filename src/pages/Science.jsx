@@ -68,7 +68,7 @@ const Science = () => {
                     style={{ backgroundColor: blocks?.action_strip?.bgColor || '#059669' }}
                     className="flex-grow rounded-[40px] p-8 text-white flex flex-col justify-between shadow-lg relative overflow-hidden group transition-colors">
                      <div className="absolute -right-4 -top-4 w-24 h-24 bg-white/10 rounded-full blur-2xl group-hover:scale-150 transition-transform duration-700" />
-                     <span className="text-[12px] font-black uppercase tracking-[0.3em] opacity-60 relative z-10">{blocks?.action_strip?.subtitle || "Safety & Tech"}</span>
+                     <span style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-[12px] font-black uppercase tracking-[0.3em] opacity-60 relative z-10">{blocks?.action_strip?.subtitle || "Safety & Tech"}</span>
                      <h3 style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-2xl font-black uppercase tracking-tighter leading-tight mt-10 mb-2 relative z-10" 
                         dangerouslySetInnerHTML={{ __html: (blocks?.action_strip?.title || blocks?.feature_card?.title || "Security <br/> Performance.").replace(/\n/g, '<br/>') }} />
                      
