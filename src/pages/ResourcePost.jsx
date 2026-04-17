@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 
 // Fallback data for slugs not yet in the CMS
