@@ -54,82 +54,76 @@ const ResourcePost = () => {
 
     return (
         <div className="bg-white flex flex-col font-sans">
-            <section className="pt-8 lg:pt-16 pb-12 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center bg-[#F8FAFC]">
-                {/* LEFT CONTENT */}
-                <div className="lg:col-span-7 px-6 lg:pl-12 lg:pr-0 animate-in fade-in slide-in-from-left-12 duration-1000">
-                    <button 
-                        onClick={() => navigate(-1)}
-                        className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-10"
-                    >
-                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:border-sm-blue transition-all">
-                            <ArrowLeft size={18} />
-                        </div>
-                        <span className="text-[11px] font-black uppercase tracking-[0.3em]">Institutional Hub</span>
-                    </button>
+            <section className="pt-10 lg:pt-20 pb-16 bg-[#F9FAFB]">
+                <div className="max-w-7xl mx-auto px-6 lg:px-12">
+                   {/* Back Navigation */}
+                   <button 
+                       onClick={() => navigate(-1)}
+                       className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-12 animate-in fade-in slide-in-from-left-4 duration-700"
+                   >
+                       <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:border-sm-blue transition-all">
+                           <ArrowLeft size={18} />
+                       </div>
+                       <span className="text-[11px] font-black uppercase tracking-[0.3em]">Back to Hub</span>
+                   </button>
 
-                    <div className="flex items-center gap-4 mb-10">
-                        <div className="w-12 h-12 bg-sm-blue/10 rounded-2xl flex items-center justify-center animate-pulse">
-                            <Sparkles size={20} className="text-sm-blue" />
-                        </div>
-                        <span className="text-[12px] font-black uppercase tracking-[0.4em] text-gray-400">
-                            {heroBlock.badge || "Resource Center"}
-                        </span>
-                    </div>
+                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                      {/* TEXT CONTENT */}
+                      <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
+                         <div className="inline-flex items-center gap-3 px-4 py-2 bg-sm-blue/5 rounded-2xl border border-sm-blue/10 mb-8">
+                             <Sparkles size={16} className="text-sm-blue" />
+                             <span className="text-[11px] font-black text-sm-blue uppercase tracking-[0.2em]">
+                                 {heroBlock.badge || 'Institutional Insight'}
+                             </span>
+                         </div>
 
-                    <h1 
-                        className="text-6xl lg:text-[100px] font-black text-gray-900 leading-[0.85] mb-12 uppercase tracking-tighter drop-shadow-sm font-heading"
-                        dangerouslySetInnerHTML={{ __html: resource.title }} 
-                    />
+                         <h1 
+                             className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1] mb-8 uppercase tracking-tight font-heading"
+                             dangerouslySetInnerHTML={{ __html: resource.title }} 
+                         />
 
-                    <p className="text-xl lg:text-2xl text-gray-500 font-medium leading-relaxed mb-12 max-w-2xl border-l-4 border-sm-blue pl-6">
-                        {resource.subtitle}
-                    </p>
+                         <div className="w-16 h-1.5 bg-sm-blue rounded-full mb-8" />
 
-                    <div className="flex flex-wrap gap-6 pt-6 border-t border-gray-100">
-                        <button className="px-12 py-5 bg-gray-900 text-white font-black rounded-3xl text-[13px] uppercase tracking-[0.2em] shadow-2xl hover:bg-sm-blue transition-all flex items-center gap-4 active:scale-95 group">
-                            {heroBlock.btn1Label || 'Download Guide'} 
-                            <Download size={20} className="group-hover:translate-y-1 transition-transform" />
-                        </button>
-                        <button className="px-12 py-5 bg-white text-gray-900 border border-gray-100 font-black rounded-3xl text-[13px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all flex items-center gap-4 shadow-sm">
-                            {heroBlock.btn2Label || 'Share Post'} <Share2 size={20} />
-                        </button>
-                    </div>
-                </div>
+                         <p className="text-lg lg:text-xl text-gray-500 font-medium leading-relaxed mb-12 max-w-xl">
+                             {resource.subtitle}
+                         </p>
 
-                {/* RIGHT COMPOSITION */}
-                <div className="lg:col-span-5 relative h-[500px] lg:h-[750px] animate-in fade-in zoom-in-95 duration-1000 delay-300 fill-mode-forwards opacity-0 pr-6 lg:pr-12">
-                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[80%] bg-sm-blue/5 rounded-full blur-[120px] -z-10" />
-                    
-                    <div className="relative w-full h-full flex items-center justify-center">
-                        {/* Back Image (Offset) */}
-                        <div className="absolute top-10 right-0 w-3/4 h-2/3 rounded-[60px] overflow-hidden shadow-xl rotate-[6deg] opacity-40 blur-[2px] transition-all duration-700">
-                            <img src={resource.image} className="w-full h-full object-cover" alt="Context" />
-                        </div>
-                        
-                        {/* Front Central Image */}
-                        <div className="relative w-[90%] h-3/4 rounded-[60px] overflow-hidden shadow-2xl border-[20px] border-white z-10 transition-transform hover:scale-[1.02] duration-700">
+                         <div className="flex flex-wrap gap-5">
+                             <button className="px-10 py-5 bg-gray-900 text-white font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] shadow-xl hover:bg-sm-blue transition-all flex items-center gap-4 active:scale-95 group">
+                                 {heroBlock.btn1Label || 'Download Guide'} 
+                                 <Download size={18} className="transition-transform group-hover:translate-y-1" />
+                             </button>
+                             <button className="px-10 py-5 bg-white text-gray-900 border border-gray-200 font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all flex items-center gap-4 shadow-sm">
+                                 {heroBlock.btn2Label || 'Share'} <Share2 size={18} />
+                             </button>
+                         </div>
+                      </div>
+
+                      {/* IMAGE CARRIER */}
+                      <div className="relative h-[400px] lg:h-[600px] animate-in fade-in slide-in-from-right-12 duration-1000 delay-300">
+                         {/* Decorative Ring */}
+                         <div className="absolute inset-0 -m-8 border border-sm-blue/5 rounded-[60px] animate-pulse-slow" />
+                         
+                         <div className="w-full h-full rounded-[60px] overflow-hidden shadow-2xl shadow-gray-200 border-[12px] border-white relative group">
                             <img 
                                 src={resource.image} 
                                 alt={resource.title} 
-                                className="w-full h-full object-cover"
+                                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
                             />
-                        </div>
-
-                        {/* Floater Element */}
-                        <div className="absolute -left-4 bottom-20 bg-white p-8 rounded-[40px] shadow-2xl z-20 animate-bounce-slow flex items-center gap-5 border border-gray-50 max-w-[260px]">
-                            <div className="w-14 h-14 bg-sm-blue/10 rounded-2xl flex items-center justify-center text-sm-blue shadow-inner">
-                                <MapPin size={24} />
+                            
+                            {/* Floating Metadata Card */}
+                            <div className="absolute right-8 top-8 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-500 hidden sm:block">
+                               <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center text-green-600">
+                                     <MapPin size={16} />
+                                  </div>
+                                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{heroBlock.cardLabel || 'Verified Ready'}</span>
+                               </div>
+                               <p className="text-[13px] font-black text-gray-900 uppercase">NEP 2025 Spec</p>
                             </div>
-                            <div>
-                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">
-                                    {heroBlock.cardLabel || 'Global Standard'}
-                                </p>
-                                <p className="text-[15px] font-black text-gray-900 uppercase leading-tight">
-                                    {heroBlock.cardText || 'NEP 2025 Compliance'}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                         </div>
+                      </div>
+                   </div>
                 </div>
             </section>
 
