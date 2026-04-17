@@ -196,7 +196,7 @@ const SchoolSale = () => {
                 </div>
 
                 {filteredListings.length > 0 ? (
-                   <div className="columns-1 md:columns-2 lg:columns-3 gap-8">
+                   <div className="columns-1 md:columns-2 lg:columns-2 gap-8">
                       {filteredListings.map((item, i) => (
                          <PropertyListingCard key={i} item={item} />
                       ))}
