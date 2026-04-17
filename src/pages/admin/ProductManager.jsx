@@ -38,8 +38,8 @@ const parseCSV = (text) => {
 
 const downloadProductTemplate = () => {
   const headers = [
-    'name', 'description', 'category', 'subcategory', 'price', 'image',
-    'isFeatured', 'isNewProduct',
+    'name', 'category', 'subcategory', 'external_link', 'image', 'button_label',
+    'description', 'price', 'isFeatured', 'isNewProduct',
     'stat1_label', 'stat1_value', 'stat2_label', 'stat2_value', 'stat3_label', 'stat3_value',
     'feature1_name', 'feature1_spec', 'feature2_name', 'feature2_spec', 'feature3_name', 'feature3_spec'
   ];
@@ -114,6 +114,8 @@ const CSVProductImporter = ({ fixedPage, onImport, availableSubcategories = [] }
         price: r.price ? parseFloat(String(r.price).replace(/[$,]/g, '')) : 0,
         image: img,
         images: [img].filter(Boolean),
+        ctaLink: r.external_link || r.routing_page || r.link || r.cta_link || '',
+        ctaLabel: r.button_label || r.cta_label || '',
         isFeatured: String(r.isFeatured).toLowerCase() === 'true',
         isNewProduct: String(r.isNewProduct).toLowerCase() === 'true',
         stats: [
