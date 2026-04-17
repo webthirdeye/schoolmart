@@ -80,10 +80,10 @@ const DigitalInfra = () => {
                  style={{ backgroundColor: blocks?.action_strip?.bgColor || '#0A0A0A' }}
                  className="rounded-[30px] p-6 text-white flex items-center justify-between group overflow-hidden relative border border-gray-800 shadow-xl transition-all hover:border-sm-blue/50">
                  <div className="flex flex-col gap-1 relative z-10">
-                    <h3 style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-[11px] font-black uppercase tracking-[0.3em] text-sm-blue">
+                    <h3 style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-[11px] font-black uppercase tracking-[0.3em]">
                         {blocks?.action_strip?.title || "Digital Campus 2025"}
                     </h3>
-                    <span style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-[13px] font-black opacity-60 uppercase tracking-tight font-heading">
+                    <span style={{ color: blocks?.action_strip?.textColor || undefined }} className="text-[13px] font-black uppercase tracking-tight font-heading">
                         {blocks?.action_strip?.subtitle || "SECURE INFRASTRUCTURE"}
                     </span>
                  </div>
