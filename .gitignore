@@ -30,7 +30,6 @@ pnpm-debug.log*
 *.sw?
 
 # server
-server/uploads/
 server/check_topbar.cjs
 server/seedMissingCategories.cjs
 
