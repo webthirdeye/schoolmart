@@ -147,5 +147,22 @@ exports.deleteBlock = async (req, res) => {
   }
 };
 
+// Create a new page manually
+exports.createPage = async (req, res) => {
+  try {
+    const { slug, name } = req.body;
+    let page = await CMSPage.findOne({ where: { slug } });
+    if (!page) {
+      page = await CMSPage.create({ 
+        slug, 
+        title: name || slug.replace(/-/g, ' ').toUpperCase() 
+      });
+    }
+    res.status(201).json(page);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 
 

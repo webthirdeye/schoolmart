@@ -109,6 +109,7 @@ const ResourceTiles = () => {
   const activeTiles = (cmsTiles?.length ? cmsTiles : tiles).map((t, i) => ({
     ...t,
     height: t.height || ['h-64','h-48','h-56','h-72','h-52','h-64','h-48','h-60','h-56','h-48','h-52','h-64'][i % 12],
+    featured: !!t.featured,
   }));
 
   const handleQuoteSubmit = async (e) => {
@@ -138,7 +139,7 @@ const ResourceTiles = () => {
                 <Link
                   key={tile.title}
                   to={tile.path}
-                  className="block break-inside-avoid bg-white rounded-2xl overflow-hidden relative group shadow-sm border border-gray-200 mb-4"
+                  className={`block break-inside-avoid bg-white rounded-2xl overflow-hidden relative group shadow-sm transition-all duration-300 mb-4 ${tile.featured ? 'border-2 border-sm-yellow shadow-sm-yellow/20 ring-4 ring-sm-yellow/5' : 'border border-gray-200'} h-full`}
                 >
                   <div className={`${tile.height} relative overflow-hidden bg-gray-50`}>
                     <img

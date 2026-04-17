@@ -95,8 +95,12 @@ const TileEditor = ({ t, i, data, set }) => {
             description: inner.description || hero.description || hero.subtitle || '',
             heroImg:     inner.heroImg     || hero.img         || hero.mediaUrl || '',
             content:     inner.content     || body.body        || body.content  || '',
-            ctaLabel:    inner.ctaLabel    || cta.actionText   || cta.btnLabel  || '',
-            ctaPath:     inner.ctaPath     || cta.actionLink   || cta.btnLink   || '',
+            btn1Label:   inner.btn1Label   || cta.actionText   || cta.btn1Label || hero.btn1Label || '',
+            btn1Path:    inner.btn1Path    || cta.actionLink   || cta.btn1Path  || hero.btn1Path  || '',
+            btn2Label:   inner.btn2Label   || cta.btn2Label    || hero.btn2Label || '',
+            btn2Path:    inner.btn2Path    || cta.btn2Path     || hero.btn2Path  || '',
+            specs:       inner.specs       || indexed?.resource_specs?.specs || [],
+            tags:        inner.tags        || indexed?.resource_specs?.tags  || [],
           }
         };
         set('tiles', x);
@@ -153,52 +157,54 @@ const TileEditor = ({ t, i, data, set }) => {
               <>
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Tile Title"><TextInput value={t.title} onChange={v => update('title', v)} /></Field>
-                  <Field label="Routing Slug" hint="Internal path for this card"><TextInput value={t.path} onChange={v => update('path', v)} placeholder="/p/interactive-panels" /></Field>
+                  <Field label="Routing Path" hint="URL slug (e.g. /p/interactive-panels)"><TextInput value={t.path} onChange={v => update('path', v)} placeholder="/p/interactive-panels" /></Field>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
-                    <Field label="Tile Height / Span" hint="e.g. h-64, h-[500px], row-span-2">
-                        <TextInput value={t.span || t.height} onChange={v => update('span', v)} placeholder="h-64" />
-                    </Field>
-                    <div className="pt-6 flex items-center gap-3">
-                        <input type="checkbox" checked={!!t.isFeatured} onChange={e => update('isFeatured', e.target.checked)} className="w-5 h-5 rounded-lg border-gray-200 text-indigo-600 focus:ring-indigo-500" />
-                        <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">Featured Card Style</span>
-                    </div>
+                  <Field label="Tile Height" hint="h-48, h-56, h-64, h-72, row-span-2">
+                    <TextInput value={t.height} onChange={v => update('height', v)} placeholder="h-64" />
+                  </Field>
+                  <div className="flex items-center gap-2 pt-6">
+                    <input type="checkbox" checked={!!t.featured} onChange={e => update('featured', e.target.checked)} className="w-4 h-4 rounded ring-offset-2 focus:ring-2 focus:ring-indigo-600 transition-all" />
+                    <span className="text-[10px] font-black text-gray-500 uppercase tracking-widest">Featured Style Block</span>
+                  </div>
                 </div>
-                <Field label="Subtitle / Short Blurb"><TextInput value={t.subtitle} onChange={v => update('subtitle', v)} /></Field>
-                <ImageUpload label="Grid Card Image" value={t.img} onChange={v => update('img', v)} />
+                <Field label="Subtitle / Blurb"><TextInput value={t.subtitle} onChange={v => update('subtitle', v)} /></Field>
+                <ImageUpload label="Grid Cover Image" value={t.img} onChange={v => update('img', v)} />
               </>
             )}
+
             {tab === 'inner' && (
               <div className="space-y-6">
-                <div className="bg-blue-50/50 p-6 rounded-[2rem] border border-blue-100/50 space-y-4">
-                    <p className="text-[10px] font-black text-blue-500 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                        <Sparkles size={14} /> Inner Page Hero Logic
-                    </p>
-                    <div className="grid grid-cols-2 gap-4">
-                        <Field label="Inner Badge"><TextInput value={inner.badge} onChange={v => updateInner('badge', v)} placeholder="Institutional Insight" /></Field>
-                        <Field label="Hero Headline (HTML)"><TextInput value={inner.heading} onChange={v => updateInner('heading', v)} /></Field>
-                    </div>
-                    <Field label="Hero Subtitle"><TextArea value={inner.description} onChange={v => updateInner('description', v)} rows={2} /></Field>
-                    <ImageUpload label="Hero Floating Image" value={inner.heroImg} onChange={v => updateInner('heroImg', v)} />
-                    <div className="grid grid-cols-2 gap-4">
-                        <Field label="Btn 1 Label"><TextInput value={inner.btn1Label} onChange={v => updateInner('btn1Label', v)} /></Field>
-                        <Field label="Btn 2 Label"><TextInput value={inner.btn2Label} onChange={v => updateInner('btn2Label', v)} /></Field>
-                    </div>
+                <div className="p-6 bg-blue-50/40 rounded-3xl border border-blue-100/50 space-y-4">
+                  <h6 className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center gap-2 mb-2"><Sparkles size={12}/> Inner Page Identity</h6>
+                  <div className="grid grid-cols-2 gap-4">
+                    <Field label="Badge"><TextInput value={inner.badge} onChange={v => updateInner('badge', v)} placeholder="INSTITUTIONAL INSIGHT" /></Field>
+                    <Field label="Big Headline (HTML)"><TextInput value={inner.heading} onChange={v => updateInner('heading', v)} /></Field>
+                  </div>
+                  <Field label="Meta Subtitle"><TextArea value={inner.description} onChange={v => updateInner('description', v)} rows={2} /></Field>
+                  <ImageUpload label="Large Hero Imagery" value={inner.heroImg} onChange={v => updateInner('heroImg', v)} />
                 </div>
 
-                <div className="bg-gray-50 p-6 rounded-[2rem] border border-gray-100 space-y-4">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                        <List size={14} /> Specs & Taxonomy
-                    </p>
-                    <Field label="Technical Specs (Comma separated)" hint="e.g. 4K UHD, Multi-Touch, Android"><TextInput value={(inner.specs || []).join(', ')} onChange={v => updateInner('specs', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
-                    <Field label="Categories (Comma separated)" hint="e.g. Technology, Education"><TextInput value={(inner.tags || []).join(', ')} onChange={v => updateInner('tags', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
+                <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4">
+                  <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Technical specs & Taxonomy</h6>
+                  <Field label="Specifications (separated by comma)" hint="e.g. Multi-touch, 4K resolution"><TextInput value={(inner.specs || []).join(', ')} onChange={v => updateInner('specs', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
+                  <Field label="Categories (separated by comma)" hint="e.g. Technology, Digital"><TextInput value={(inner.tags || []).join(', ')} onChange={v => updateInner('tags', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
                 </div>
 
-                <div className="bg-white p-6 rounded-[2rem] border border-gray-100 shadow-sm space-y-4">
-                    <p className="text-[10px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2">
-                        <FileText size={14} /> Main Article Content
-                    </p>
-                    <TextArea value={inner.content} onChange={v => updateInner('content', v)} rows={12} placeholder="Write the main page content here (HTML supported)..." />
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                   <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2"><FileText size={12}/> Main Document Content (HTML)</h6>
+                   <TextArea value={inner.content} onChange={v => updateInner('content', v)} rows={10} placeholder="Enter the long-form page content here..." />
+                   
+                   <div className="pt-4 border-t border-gray-50 grid grid-cols-2 gap-4">
+                      <div className="space-y-4">
+                         <Field label="Primary Button Label"><TextInput value={inner.btn1Label} onChange={v => updateInner('btn1Label', v)} placeholder="DOWNLOAD GUIDE" /></Field>
+                         <Field label="Primary Button Path"><TextInput value={inner.btn1Path} onChange={v => updateInner('btn1Path', v)} placeholder="/p/some-guide.pdf" /></Field>
+                      </div>
+                      <div className="space-y-4">
+                         <Field label="Secondary Button Label"><TextInput value={inner.btn2Label} onChange={v => updateInner('btn2Label', v)} placeholder="SHARE" /></Field>
+                         <Field label="Secondary Button Path"><TextInput value={inner.btn2Path} onChange={v => updateInner('btn2Path', v)} placeholder="" /></Field>
+                      </div>
+                   </div>
                 </div>
               </div>
             )}
@@ -710,7 +716,18 @@ const BlockForms = {
               path: finalPath, 
               img: '', 
               span: 'h-64', 
-              inner: { badge: 'Institutional Insight', heading: name, description: '', content: '', specs: [], tags: [] } 
+              inner: { 
+                badge: 'Institutional Insight', 
+                heading: name, 
+                description: '', 
+                content: '', 
+                specs: [], 
+                tags: [],
+                btn1Label: 'DOWNLOAD GUIDE',
+                btn1Path: '',
+                btn2Label: 'SHARE',
+                btn2Path: ''
+              } 
             }]);
             
             alert(`Tile added and page "${finalCmsSlug}" created!`);

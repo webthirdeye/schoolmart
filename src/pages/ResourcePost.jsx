@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles, Box, FileText } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 
 // Fallback data for slugs not yet in the CMS
@@ -31,10 +31,20 @@ const ResourcePost = () => {
     const navigate = useNavigate();
     const { slug } = useParams();
     // Try CMS first, fallback to static RESOURCE_DATA
-    const { blocks } = useCMSPage(`resource-${slug}`);
-    const heroBlock = blocks?.page_hero || {};
-    const contentBlock = blocks?.page_content || {};
-    const specsBlock = blocks?.resource_specs || {};
+    const { blocks, loading } = useCMSPage(`resource-${slug}`);
+    const { blocks: homeBlocks } = useCMSPage('home');
+
+    // Find if this slug matches a tile in the home page masonry (for deep-edit support)
+    const homeTilesArray = homeBlocks?.tiles?.tiles || [];
+    const homeTile = homeTilesArray.find(t => 
+        t.path === `/p/${slug}` || t.path === slug || t.path?.endsWith(`/${slug}`)
+    );
+    const innerData = homeTile?.inner || {};
+
+    const heroBlock = blocks?.page_hero || blocks?.inner_page_hero || {};
+    const contentBlock = blocks?.page_content || blocks?.text_content || {};
+    
+    // Priority: Home Tile Deep Edit > Explicit Page Block > Hardcoded Fallback
     const fallback = RESOURCE_DATA[slug] || {
         title: (slug || '').replace(/-/g, ' ').toUpperCase(),
         subtitle: `In-depth technical analysis and implementation roadmap for ${slug?.replace(/-/g, ' ')}.`,
@@ -43,28 +53,44 @@ const ResourcePost = () => {
         specs: ['Compliance Check', 'Value Engineering', 'Standardization'],
         tags: ['Institutional', 'Guide', '2025 Spec']
     };
+
     const resource = {
-        title: heroBlock.titleHtml || heroBlock.title || fallback.title,
-        subtitle: heroBlock.subtitle || fallback.subtitle,
-        image: heroBlock.img || fallback.image,
-        content: contentBlock.content || fallback.content,
-        specs: specsBlock.specs || fallback.specs,
-        tags: specsBlock.tags || fallback.tags,
+        title: innerData.heading || heroBlock.titleHtml || heroBlock.title || fallback.title,
+        subtitle: innerData.description || heroBlock.subtitle || fallback.subtitle,
+        image: innerData.heroImg || heroBlock.img || heroBlock.mediaUrl || fallback.image,
+        badge: innerData.badge || heroBlock.badge || fallback.badge || 'RESOURCE GUIDE',
+        content: innerData.content || contentBlock.content || contentBlock.body || fallback.content,
+        specs: (innerData.specs && innerData.specs.length) ? innerData.specs : (fallback.specs || []),
+        tags: (innerData.tags && innerData.tags.length) ? innerData.tags : (fallback.tags || []),
+        btn1Label: innerData.btn1Label || heroBlock.btn1Label || 'DOWNLOAD GUIDE',
+        btn1Path: innerData.btn1Path || heroBlock.btn1Path || '#',
+        btn2Label: innerData.btn2Label || heroBlock.btn2Label || 'SHARE',
+        btn2Path: innerData.btn2Path || heroBlock.btn2Path || '#',
+        cardLabel: innerData.cardLabel || heroBlock.cardLabel || 'Verified Ready'
+    };
+
+    const handleShare = () => {
+        if (navigator.share) {
+            navigator.share({ title: resource.title, url: window.location.href });
+        } else {
+            navigator.clipboard.writeText(window.location.href);
+            alert('Link copied to clipboard!');
+        }
     };
 
     return (
         <div className="bg-white flex flex-col font-sans">
-            <section className="pt-0 pb-12 bg-[#F9FAFB]">
+            <section className="pt-8 pb-16 bg-gray-50/50">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
                    {/* Back Navigation */}
                    <button 
                        onClick={() => navigate(-1)}
-                       className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-6 animate-in fade-in slide-in-from-left-4 duration-700"
+                       className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-12 animate-in fade-in slide-in-from-left-4 duration-700"
                    >
                        <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center group-hover:scale-110 group-hover:border-sm-blue transition-all">
                            <ArrowLeft size={18} />
                        </div>
-                       <span className="text-[11px] font-black uppercase tracking-[0.3em]">Back to Hub</span>
+                       <span className="text-[11px] font-black uppercase tracking-[0.3em]">Institutional Hub</span>
                    </button>
 
                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
@@ -73,53 +99,73 @@ const ResourcePost = () => {
                          <div className="inline-flex items-center gap-3 px-4 py-2 bg-sm-blue/5 rounded-2xl border border-sm-blue/10 mb-8">
                              <Sparkles size={16} className="text-sm-blue" />
                              <span className="text-[11px] font-black text-sm-blue uppercase tracking-[0.2em]">
-                                 {heroBlock.badge || 'Institutional Insight'}
+                                 {resource.badge}
                              </span>
                          </div>
 
                          <h1 
-                             className="text-5xl lg:text-7xl font-black text-gray-900 leading-[1] mb-8 uppercase tracking-tight font-heading"
+                             className="text-4xl lg:text-6xl font-black text-gray-900 leading-[1.1] mb-8 uppercase tracking-tight font-heading"
                              dangerouslySetInnerHTML={{ __html: resource.title }} 
                          />
 
-                         <div className="w-16 h-1.5 bg-sm-blue rounded-full mb-8" />
+                         <div className="w-20 h-1.5 bg-sm-blue rounded-full mb-10" />
 
                          <p className="text-lg lg:text-xl text-gray-500 font-medium leading-relaxed mb-12 max-w-xl">
                              {resource.subtitle}
                          </p>
 
                          <div className="flex flex-wrap gap-5">
-                             <button className="px-10 py-5 bg-gray-900 text-white font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] shadow-xl hover:bg-sm-blue transition-all flex items-center gap-4 active:scale-95 group">
-                                 {heroBlock.btn1Label || 'Download Guide'} 
-                                 <Download size={18} className="transition-transform group-hover:translate-y-1" />
-                             </button>
-                             <button className="px-10 py-5 bg-white text-gray-900 border border-gray-200 font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all flex items-center gap-4 shadow-sm">
-                                 {heroBlock.btn2Label || 'Share'} <Share2 size={18} />
+                             {resource.btn1Path && resource.btn1Path !== '#' ? (
+                                <a 
+                                    href={resource.btn1Path} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer"
+                                    className="px-10 py-5 bg-gray-900 text-white font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] shadow-xl hover:bg-sm-blue hover:shadow-sm-blue/20 transition-all flex items-center gap-4 active:scale-95 group"
+                                >
+                                    {resource.btn1Label} 
+                                    <Download size={18} className="transition-transform group-hover:translate-y-1" />
+                                </a>
+                             ) : (
+                                <button className="px-10 py-5 bg-gray-900 text-white font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] shadow-xl hover:bg-sm-blue transition-all flex items-center gap-4 active:scale-95 group">
+                                    {resource.btn1Label} 
+                                    <Download size={18} className="transition-transform group-hover:translate-y-1" />
+                                </button>
+                             )}
+                             
+                             <button 
+                                onClick={resource.btn2Path && resource.btn2Path !== '#' ? () => window.open(resource.btn2Path, '_blank') : handleShare}
+                                className="px-10 py-5 bg-white text-gray-900 border border-gray-200 font-black rounded-2xl text-[13px] uppercase tracking-[0.2em] hover:bg-gray-50 transition-all flex items-center gap-4 shadow-sm"
+                             >
+                                 {resource.btn2Label} {resource.btn2Path && resource.btn2Path !== '#' ? <ArrowRight size={18} /> : <Share2 size={18} />}
                              </button>
                          </div>
                       </div>
 
                       {/* IMAGE CARRIER */}
-                      <div className="relative h-[400px] lg:h-[600px] animate-in fade-in slide-in-from-right-12 duration-1000 delay-300">
-                         {/* Decorative Ring */}
-                         <div className="absolute inset-0 -m-8 border border-sm-blue/5 rounded-[60px] animate-pulse-slow" />
+                      <div className="relative h-[450px] lg:h-[650px] animate-in fade-in slide-in-from-right-12 duration-1000 delay-300">
+                         {/* Decorative Background Elements */}
+                         <div className="absolute -top-12 -right-12 w-64 h-64 bg-sm-blue/5 blur-3xl rounded-full" />
+                         <div className="absolute -bottom-12 -left-12 w-64 h-64 bg-sm-yellow/10 blur-3xl rounded-full" />
                          
-                         <div className="w-full h-full rounded-[60px] overflow-hidden shadow-2xl shadow-gray-200 border-[12px] border-white relative group">
+                         <div className="w-full h-full rounded-[60px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border-[12px] border-white relative group">
                             <img 
                                 src={resource.image} 
                                 alt={resource.title} 
-                                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-110"
+                                className="w-full h-full object-cover transition-transform duration-[2s] group-hover:scale-105"
+                                onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80'; }}
                             />
                             
                             {/* Floating Metadata Card */}
-                            <div className="absolute right-8 top-8 bg-white/90 backdrop-blur-md p-6 rounded-3xl shadow-2xl border border-white/20 transform hover:scale-105 transition-transform duration-500 hidden sm:block">
-                               <div className="flex items-center gap-3 mb-2">
-                                  <div className="w-8 h-8 bg-green-500/10 rounded-lg flex items-center justify-center text-green-600">
-                                     <MapPin size={16} />
+                            <div className="absolute right-8 bottom-8 bg-white/80 backdrop-blur-xl p-8 rounded-[32px] shadow-2xl border border-white/20 transform hover:scale-105 transition-all duration-500 hidden sm:block">
+                               <div className="flex items-center gap-4 mb-3">
+                                  <div className="w-10 h-10 bg-sm-blue rounded-2xl flex items-center justify-center text-white shadow-lg shadow-sm-blue/30">
+                                     <Sparkles size={18} />
                                   </div>
-                                  <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">{heroBlock.cardLabel || 'Verified Ready'}</span>
+                                  <div>
+                                     <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest block">{resource.cardLabel}</span>
+                                     <p className="text-[14px] font-black text-gray-900 uppercase">Resource Verified</p>
+                                  </div>
                                </div>
-                               <p className="text-[13px] font-black text-gray-900 uppercase">NEP 2025 Spec</p>
                             </div>
                          </div>
                       </div>
@@ -128,22 +174,30 @@ const ResourcePost = () => {
             </section>
 
             {/* Main Content Body */}
-            <main className="max-w-7xl mx-auto px-4 py-16">
-                <div className="flex flex-col lg:flex-row gap-12">
+            <main className="max-w-7xl mx-auto px-4 lg:px-12 py-20">
+                <div className="flex flex-col lg:flex-row gap-20">
                     {/* Content Column */}
-                    <div className="flex-1 bg-white p-8 lg:p-12 rounded-[40px] shadow-sm border border-gray-100">
+                    <div className="flex-1">
                         <div 
-                            className="prose prose-lg max-w-none"
+                            className="prose prose-lg lg:prose-xl prose-slate max-w-none prose-headings:font-black prose-headings:uppercase prose-headings:tracking-tight prose-p:text-gray-600 prose-p:leading-relaxed"
                             dangerouslySetInnerHTML={{ __html: resource.content }}
                         />
                         
                         {/* Specs Grid */}
-                        <div className="mt-12 pt-12 border-t border-gray-100">
-                            <h3 className="text-sm font-black text-gray-400 uppercase tracking-[0.2em] mb-6">Technical Specifications</h3>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-                                {resource.specs.map(spec => (
-                                    <div key={spec} className="bg-gray-50 p-6 rounded-3xl border border-gray-100 text-center group hover:bg-sm-blue hover:text-white transition-all duration-300">
-                                        <p className="font-black text-[13px] uppercase tracking-widest">{spec}</p>
+                        <div className="mt-20 pt-16 border-t border-gray-100">
+                            <div className="flex items-center gap-4 mb-10">
+                                <div className="h-px bg-gray-100 flex-1" />
+                                <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] whitespace-nowrap">Technical Parameters</h3>
+                                <div className="h-px bg-gray-100 flex-1" />
+                            </div>
+                            
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {resource.specs.map((spec, idx) => (
+                                    <div key={idx} className="group p-8 bg-gray-50 border border-gray-100 rounded-[32px] hover:bg-white hover:shadow-xl hover:shadow-gray-200/50 transition-all duration-500">
+                                        <div className="w-10 h-10 rounded-xl bg-white border border-gray-100 flex items-center justify-center text-sm-blue mb-6 group-hover:scale-110 transition-transform">
+                                            <Box size={18} />
+                                        </div>
+                                        <p className="font-black text-[14px] text-gray-900 uppercase tracking-widest leading-snug">{spec}</p>
                                     </div>
                                 ))}
                             </div>
@@ -151,31 +205,52 @@ const ResourcePost = () => {
                     </div>
 
                     {/* Sidebar */}
-                    <aside className="lg:w-80 space-y-6">
-                        {/* Related Tags */}
-                        <div className="bg-white p-6 rounded-[24px] shadow-sm border border-gray-100">
-                            <h3 className="text-[12px] font-black text-gray-400 uppercase tracking-widest mb-4">Categories</h3>
-                            <div className="flex flex-wrap gap-2">
-                                {resource.tags.map(tag => (
-                                    <span key={tag} className="px-3 py-1.5 bg-gray-50 text-gray-600 text-[10px] font-black rounded-lg uppercase tracking-wider border border-gray-100">
-                                        {tag}
-                                    </span>
-                                ))}
+                    <aside className="lg:w-96 space-y-8">
+                        {/* Sticky Container */}
+                        <div className="sticky top-24 space-y-8">
+                            {/* Related Tags */}
+                            <div className="bg-white/40 backdrop-blur-xl p-8 rounded-[40px] shadow-sm border border-gray-100/50">
+                                <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] mb-6">Taxonomy</h3>
+                                <div className="flex flex-wrap gap-2">
+                                    {resource.tags.map(tag => (
+                                        <span key={tag} className="px-4 py-2 bg-white text-gray-600 text-[10px] font-black rounded-xl uppercase tracking-wider border border-gray-100 shadow-sm hover:border-sm-blue hover:text-sm-blue transition-all cursor-default">
+                                            {tag}
+                                        </span>
+                                    ))}
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Consultant CTA */}
-                        <div className="bg-sm-navy p-8 rounded-[32px] text-white relative overflow-hidden group">
-                            <div className="relative z-10">
-                                <MessageSquare className="text-sm-yellow mb-4" size={32} />
-                                <h3 className="text-xl font-black mb-2 uppercase tracking-tight leading-tight">Need Expert Advice?</h3>
-                                <p className="text-white/70 text-sm leading-relaxed mb-6">Our campus planners are ready to help you visualize your space.</p>
-                                <Link to="/contact-us" className="w-full py-3 bg-white text-sm-navy font-black rounded-xl text-[11px] uppercase tracking-[0.2em] flex items-center justify-center gap-2 hover:bg-sm-yellow transition-colors group-hover:shadow-xl">
-                                    Talk to Us <ArrowRight size={14} />
-                                </Link>
+                            {/* Consultant CTA */}
+                            <div className="bg-sm-navy p-10 rounded-[48px] text-white relative overflow-hidden group shadow-2xl shadow-sm-navy/20">
+                                <div className="relative z-10">
+                                    <div className="w-14 h-14 bg-white/10 rounded-2xl flex items-center justify-center mb-8">
+                                        <MessageSquare className="text-sm-yellow" size={28} />
+                                    </div>
+                                    <h3 className="text-2xl font-black mb-4 uppercase tracking-tight leading-tight">Expert <br/> Strategic Advice</h3>
+                                    <p className="text-white/60 text-[13px] leading-relaxed mb-10 font-medium">Our senior campus planners are available for one-on-one strategy sessions.</p>
+                                    
+                                    <Link to="/contact-us" className="w-full py-5 bg-white text-sm-navy font-black rounded-[20px] text-[12px] uppercase tracking-[0.2em] flex items-center justify-center gap-3 hover:bg-sm-yellow hover:text-sm-navy transition-all group-hover:shadow-2xl active:scale-95">
+                                        Book Consultation <ArrowRight size={16} />
+                                    </Link>
+                                </div>
+                                
+                                {/* Decorative elements */}
+                                <div className="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -mr-24 -mt-24 transition-transform duration-1000 group-hover:scale-150" />
+                                <div className="absolute bottom-0 left-0 w-32 h-32 bg-sm-blue/10 rounded-full -ml-16 -mb-16 blur-2xl" />
                             </div>
-                            {/* Decorative element */}
-                            <div className="absolute top-0 right-0 w-24 h-24 bg-white/5 rounded-full -mr-12 -mt-12 transition-transform duration-700 group-hover:scale-150" />
+                            
+                            {/* Share & Support Card */}
+                            <div className="bg-gray-50 p-8 rounded-[40px] border border-gray-100">
+                                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-4">Did you find this helpful?</p>
+                                <div className="flex gap-4">
+                                    <button onClick={handleShare} className="flex-1 py-3 bg-white border border-gray-200 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-gray-100 transition-all">
+                                        Share <Share2 size={14} />
+                                    </button>
+                                    <button onClick={() => window.print()} className="flex-1 py-3 bg-white border border-gray-200 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2 hover:bg-gray-100 transition-all">
+                                        Print <FileText size={14} />
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </aside>
                 </div>
