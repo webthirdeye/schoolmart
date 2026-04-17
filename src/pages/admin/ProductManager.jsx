@@ -524,11 +524,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
           <p className="text-[9px] text-gray-400 italic">* Use these only if you want to populate the redundant product page.</p>
         </details>
 
-        <ImageUpload
-          label="Card Image"
-          value={editing.image || editing.images?.[0] || ''}
-          onChange={url => setEditing({ ...editing, image: url, images: [url] })}
-        />
+
 
         <div className="flex gap-6 pt-2">
           <label className="flex items-center gap-2 cursor-pointer select-none">
