@@ -64,6 +64,27 @@ app.get('/api/dns-test', async (req, res) => {
   }
 });
 
+app.get('/api/test-email', async (req, res) => {
+  const sendEmail = require('./utils/sendEmail');
+  try {
+    const result = await sendEmail({
+      email: 'schoolmarttest@gmail.com', // Just a placeholder for testing
+      subject: 'SERVER TEST EMAIL',
+      message: 'This is a test of the email system.',
+      html: '<h1>TEST SUCCESSFUL</h1>'
+    });
+    res.json({ success: true, result });
+  } catch (err) {
+    res.status(500).json({ 
+      success: false, 
+      message: err.message, 
+      code: err.code,
+      command: err.command,
+      stack: err.stack 
+    });
+  }
+});
+
 // Port
 const PORT = process.env.PORT || 5000;
 
