@@ -1,8 +1,9 @@
 import React from 'react';
 import VideoPlayer from './VideoPlayer';
+import { formatImgUrl } from '../../utils/formatters';
 
 const CMSMedia = ({ mediaType, mediaUrl, fallbackImg, className = "w-full h-full object-cover" }) => {
-  const url = mediaUrl || fallbackImg;
+  const url = formatImgUrl(mediaUrl || fallbackImg);
 
   if (!url) return null;
 
