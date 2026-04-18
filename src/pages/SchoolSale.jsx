@@ -108,9 +108,12 @@ const SchoolSale = () => {
   const advisoryBlock = blocks?.advisory || {};
   
   // Dynamic Cities from listings + defaults
+  const categoryBlock = blocks?.sidebar_categories || {};
+  const cmsCities = (categoryBlock.categories || []).map(c => c.toUpperCase());
+  
+  // Combine CMS categories with listing cities as fallback
   const listingCities = Array.from(new Set(listings.map(l => (l.location || '').toUpperCase()))).filter(Boolean);
-  const DEFAULT_CITIES = ['HYDERABAD', 'CHENNAI', 'BANGALORE', 'MUMBAI', 'DELHI', 'PUNE'];
-  const CITIES = Array.from(new Set([...DEFAULT_CITIES, ...listingCities])).sort();
+  const CITIES = cmsCities.length > 0 ? cmsCities : Array.from(new Set(['HYDERABAD', 'CHENNAI', 'BANGALORE', 'MUMBAI', 'DELHI', 'PUNE', ...listingCities])).sort();
 
 
   useEffect(() => {
