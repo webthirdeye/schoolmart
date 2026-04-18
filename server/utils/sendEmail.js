@@ -1,6 +1,12 @@
 const nodemailer = require('nodemailer');
 
 const sendEmail = async (options) => {
+  console.log('INITIALIZING EMAIL SEND:', {
+    host: process.env.SMTP_HOST || 'NOT SET',
+    port: process.env.SMTP_PORT || 'NOT SET',
+    user: process.env.SMTP_USER || 'NOT SET'
+  });
+
   const transporter = nodemailer.createTransport({
     host: process.env.SMTP_HOST,
     port: process.env.SMTP_PORT,
