@@ -44,8 +44,8 @@ app.use('/api/upload', require('./routes/uploadRoutes'));
 
 // Static Folders
 const path = require('path');
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
-
+const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, 'uploads');
+app.use('/uploads', express.static(uploadDir));
 // Basic Route
 app.get('/', (req, res) => {
   res.json({ message: 'Welcome to SchoolMart API' });
