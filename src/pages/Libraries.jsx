@@ -19,10 +19,13 @@ const Libraries = () => {
   const sidebarCategories = blocks?.sidebar_categories || {};
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getProducts({ category: 'Libraries' }).then(res => {
-      setItems(res || []);
-      const defaultCat = sidebarCategories.categories?.[0] || 'Stack Area';
-      setSelectedCat(defaultCat);
+      const fetchedItems = res || [];
+      setItems(fetchedItems);
+      const firstCat = sidebarCategories.categories?.[0] || 
+                      (fetchedItems.length > 0 ? fetchedItems[0].subcategory : '');
+      if (firstCat) setSelectedCat(firstCat);
     });
   }, [sidebarCategories]);
   const sidebarResources = blocks?.sidebar_resources || {};

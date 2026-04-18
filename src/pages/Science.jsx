@@ -19,10 +19,13 @@ const Science = () => {
    const heroBlock = blocks?.inner_page_hero || {};
    
    useEffect(() => {
+    window.scrollTo(0, 0);
     getProducts({ category: 'Science' }).then(res => {
-         setItems(res || []);
-         const defaultCat = sidebarCategories.categories?.[0] || 'Chemistry';
-         setSelectedCat(defaultCat);
+         const fetchedItems = res || [];
+         setItems(fetchedItems);
+         const firstCat = sidebarCategories.categories?.[0] || 
+                         (fetchedItems.length > 0 ? fetchedItems[0].subcategory : '');
+         if (firstCat) setSelectedCat(firstCat);
       });
    }, [sidebarCategories]);
 

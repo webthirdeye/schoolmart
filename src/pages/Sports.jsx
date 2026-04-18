@@ -18,10 +18,13 @@ const Sports = () => {
   const sidebarCategories = blocks?.sidebar_categories || {};
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     getProducts({ category: 'Sports' }).then(res => {
-      setItems(res || []);
-      const defaultCat = sidebarCategories.categories?.[0] || 'Track & Field';
-      setSelectedCat(defaultCat);
+      const fetchedItems = res || [];
+      setItems(fetchedItems);
+      const firstCat = sidebarCategories.categories?.[0] || 
+                      (fetchedItems.length > 0 ? fetchedItems[0].subcategory : '');
+      if (firstCat) setSelectedCat(firstCat);
     });
   }, [sidebarCategories]);
 
