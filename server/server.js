@@ -44,7 +44,16 @@ app.use('/api/upload', require('./routes/uploadRoutes'));
 
 // Static Folders
 const path = require('path');
+const fs = require('fs');
 const uploadDir = process.env.UPLOAD_DIR || path.join(__dirname, 'uploads');
+
+// Sanity check for uploads folder
+if (!fs.existsSync(uploadDir)) {
+  console.log('📁 Creating missing uploads directory at:', uploadDir);
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+console.log('🚀 Serving static files from:', uploadDir);
+
 app.use('/uploads', express.static(uploadDir));
 // Basic Route
 app.get('/', (req, res) => {
