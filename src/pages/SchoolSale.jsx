@@ -104,8 +104,14 @@ const SchoolSale = () => {
     { title: 'Academic Excellence Hub', location: 'CHENNAI', price: '25cr', type: 'LEASE' },
     { title: 'Premier Global Academy', location: 'BANGALORE', price: '18cr', type: 'SALE' },
   ];
+  const heroBlock = blocks?.hero || blocks?.inner_page_hero || {};
+  const advisoryBlock = blocks?.advisory || {};
   
-  const CITIES = ['HYDERABAD', 'CHENNAI', 'AHMEDABAD', 'PUNE', 'BANGALORE', 'COIMBATORE', 'SURAT', 'DELHI', 'VIJAYAWADA', 'VISAKHAPATNAM'];
+  // Dynamic Cities from listings + defaults
+  const listingCities = Array.from(new Set(listings.map(l => (l.location || '').toUpperCase()))).filter(Boolean);
+  const DEFAULT_CITIES = ['HYDERABAD', 'CHENNAI', 'BANGALORE', 'MUMBAI', 'DELHI', 'PUNE'];
+  const CITIES = Array.from(new Set([...DEFAULT_CITIES, ...listingCities])).sort();
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -125,15 +131,13 @@ const SchoolSale = () => {
        {/* Small Hero Strip */}
        <section className="bg-white py-14 border-b border-gray-100 shadow-sm">
           <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row md:items-end justify-between gap-8">
-             <div>
-                <div className="flex items-center gap-3 mb-4">
-                   <div className="w-1.5 h-6 bg-sm-blue rounded-full" />
-                   <span className="text-[13px] font-black text-sm-blue uppercase tracking-[0.4em]">Institutional M&A</span>
-                </div>
-                <h1 className="text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none pr-4">
-                  Schools for <span className="text-sm-blue italic font-serif lowercase tracking-normal">Sale & Lease.</span>
-                </h1>
-             </div>
+              <div>
+                 <div className="flex items-center gap-3 mb-4">
+                    <div className="w-1.5 h-6 bg-sm-blue rounded-full" />
+                    <span className="text-[13px] font-black text-sm-blue uppercase tracking-[0.4em]">{heroBlock.badge || "Institutional M&A"}</span>
+                 </div>
+                 <h1 className="text-5xl font-black text-gray-900 uppercase tracking-tighter leading-none pr-4" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || heroBlock.title || 'Schools for <span class="text-sm-blue italic font-serif lowercase tracking-normal">Sale & Lease.</span>' }} />
+              </div>
              <div className="relative w-full md:w-[400px]">
                 <Search className="absolute left-5 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
                 <input 
@@ -172,16 +176,16 @@ const SchoolSale = () => {
                    ))}
                 </div>
 
-                <div className="p-10 bg-white border border-gray-100 rounded-[45px] text-gray-900 mt-12 relative overflow-hidden group shadow-md text-center">
+                 <div className="p-10 bg-white border border-gray-100 rounded-[45px] text-gray-900 mt-12 relative overflow-hidden group shadow-md text-center">
                    <div className="absolute -top-10 -right-10 p-4 opacity-[0.03] group-hover:opacity-[0.08] transition-all transform scale-150">
                       <Rocket size={150} className="text-sm-blue" />
                    </div>
-                   <h4 className="text-2xl font-black uppercase tracking-tight mb-4 relative z-10 font-heading leading-none">Elite <br /> Advisory.</h4>
+                   <h4 className="text-2xl font-black uppercase tracking-tight mb-4 relative z-10 font-heading leading-none" dangerouslySetInnerHTML={{ __html: advisoryBlock.titleHtml || advisoryBlock.title || "Elite <br /> Advisory." }} />
                    <p className="text-[12px] text-gray-400 font-bold uppercase tracking-widest leading-loose mb-10 relative z-10">
-                      Expert consultation for high-value institutional mandates.
+                      {advisoryBlock.subtitle || "Expert consultation for high-value institutional mandates."}
                    </p>
-                   <Link to="/contact-us" className="inline-flex items-center gap-3 px-10 py-4 bg-sm-blue text-white font-black rounded-full text-[12px] uppercase tracking-widest hover:bg-gray-900 transition-all relative z-10 shadow-2xl shadow-blue-500/20">
-                      Consult Now <ArrowRight size={16} />
+                   <Link to={advisoryBlock.ctaPath || "/contact-us"} className="inline-flex items-center gap-3 px-10 py-4 bg-sm-blue text-white font-black rounded-full text-[12px] uppercase tracking-widest hover:bg-gray-900 transition-all relative z-10 shadow-2xl shadow-blue-500/20">
+                      {advisoryBlock.ctaLabel || "Consult Now"} <ArrowRight size={16} />
                    </Link>
                 </div>
              </aside>

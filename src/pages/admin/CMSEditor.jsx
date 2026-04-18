@@ -839,6 +839,22 @@ const BlockForms = {
     </div>
   ),
 
+  advisory: ({ data = {}, set }) => (
+    <div className="space-y-6">
+      <SectionTitle>Sidebar Advisory Module</SectionTitle>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="Hero Icon" hint="Lucide Icon Name (e.g. Rocket)"><TextInput value={data.icon} onChange={v => set('icon', v)} /></Field>
+        <Field label="Badge Text"><TextInput value={data.badge} onChange={v => set('badge', v)} /></Field>
+      </div>
+      <Field label="Main Title (HTML allowed)"><TextArea value={data.titleHtml || data.title} onChange={v => set('titleHtml', v)} rows={2} /></Field>
+      <Field label="Supporting Subtitle"><TextArea value={data.subtitle} onChange={v => set('subtitle', v)} rows={3} /></Field>
+      <div className="grid grid-cols-2 gap-4">
+        <Field label="CTA Label"><TextInput value={data.ctaLabel} onChange={v => set('ctaLabel', v)} /></Field>
+        <Field label="CTA Destination (Path)"><TextInput value={data.ctaPath} onChange={v => set('ctaPath', v)} /></Field>
+      </div>
+    </div>
+  ),
+
   sidebar_trending: ({ data = {}, set }) => (
     <div className="space-y-4">
       <SectionTitle>Sidebar — Trending Items</SectionTitle>
