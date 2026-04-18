@@ -1,7 +1,7 @@
 // src/pages/Environments.jsx
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Wind, Sun, Leaf, ArrowUpRight, CheckCircle2, Layers, ShieldCheck, Microscope } from 'lucide-react';
+import { Sparkles, Wind, Sun, Leaf, ArrowUpRight, CheckCircle2, Layers, ShieldCheck, Microscope, ArrowRight } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
