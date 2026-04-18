@@ -42,6 +42,7 @@ const ICONS = { Leaf, Wind, Sun, Layers };
 const Environments = () => {
   const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('environments');
+  const [selectedItem, setSelectedItem] = useState(null);
   
   const d = blocks?.environments_page_content || DEFAULT_CONTENT;
   const heroData = blocks?.environments_page_content || d.hero;
