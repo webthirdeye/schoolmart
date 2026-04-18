@@ -2,7 +2,6 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles, Box, FileText } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
-import PageLoader from '../components/PageLoader';
 
 // Fallback data for slugs not yet in the CMS
 const RESOURCE_DATA = {
@@ -79,7 +78,11 @@ const ResourcePost = () => {
         }
     };
 
-    if (loading) return <PageLoader />;
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-sm">
+            Accessing Knowledge...
+        </div>
+    );
 
     return (
         <div className="bg-white flex flex-col font-sans">

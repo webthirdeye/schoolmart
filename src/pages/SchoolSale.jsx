@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { Link } from 'react-router-dom';
 import { Mail, Phone, Facebook, Linkedin, Star, MapPin, ChevronRight, Info, Award, Download, FileText, Send, Share2, Bookmark, CheckCircle2, History, Users, Scale, MessageSquare, Globe, ArrowRight, Zap, Target, Search, ChevronDown, Rocket, Building2, TrendingUp, Handshake } from 'lucide-react';
-import PageLoader from '../components/PageLoader';
 
 const PropertyListingCard = ({ item }) => {
   // Description split into bullet points (by newline or period)
@@ -107,7 +106,6 @@ const SchoolSale = () => {
   const heroBlock = blocks?.hero || blocks?.inner_page_hero || {};
   const advisoryBlock = blocks?.advisory || {};
   
-  if (loading) return <PageLoader />;
   
   // Dynamic Cities from listings + defaults
   const categoryBlock = blocks?.sidebar_categories || {};

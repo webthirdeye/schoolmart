@@ -6,7 +6,8 @@ import {
     ShieldCheck, Truck, RotateCcw, Award, CheckCircle2,
     Info, Star, Package, MapPin
 } from 'lucide-react';
-import PageLoader from '../components/PageLoader';
+    Info, Star, Package, MapPin
+} from 'lucide-react';
 
 const ProductPost = () => {
     const { slug } = useParams();
@@ -24,7 +25,11 @@ const ProductPost = () => {
         });
     }, [slug]);
 
-    if (loading) return <PageLoader />;
+    if (loading) return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-50">
+            <div className="w-12 h-12 border-4 border-sm-blue border-t-transparent rounded-full animate-spin"></div>
+        </div>
+    );
 
     if (!product) return (
         <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50 p-6 text-center">

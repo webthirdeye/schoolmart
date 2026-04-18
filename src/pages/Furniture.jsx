@@ -7,7 +7,6 @@ import { Sofa, GraduationCap, Library, FlaskConical, Building2, ArrowRight, Down
 import { handleProductClick } from '../utils/navigation';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
-import PageLoader from '../components/PageLoader';
 
 const Furniture = () => {
   const navigate = useNavigate();
@@ -42,7 +41,6 @@ const Furniture = () => {
 
 
 
-  if (loading) return <PageLoader />;
 
   return (
     <main className="min-h-screen bg-white pt-6 pb-4">

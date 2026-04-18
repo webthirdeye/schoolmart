@@ -6,7 +6,6 @@ import { useCMSPage } from '../hooks/useCMSBlock';
 import { formatImgUrl } from '../utils/formatters';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
-import PageLoader from '../components/PageLoader';
 
 const DEFAULT_CONTENT = {
   hero: {
@@ -60,7 +59,7 @@ const Guides = () => {
   const heroData = blocks?.guides_page_content || d.hero;
   const items = d.caseStudies || DEFAULT_CONTENT.caseStudies;
 
-  if (loading) return <PageLoader />;
+  // Instant loading
 
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-10">

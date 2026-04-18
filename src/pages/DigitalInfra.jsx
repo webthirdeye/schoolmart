@@ -8,7 +8,7 @@ import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
 import SidebarWidget from '../components/SidebarWidget';
-import PageLoader from '../components/PageLoader';
+import CatalogueCard from '../components/CatalogueCard';
 
 const DigitalInfra = () => {
   const navigate = useNavigate();
@@ -43,7 +43,6 @@ const DigitalInfra = () => {
   const heroImgFallback = "/images/hero_digital.png";
   const darkBlock = heroBlock.darkBlock || { title: "Metric", subtitle: "99.9% Uptime Guaranteed." };
 
-  if (loading) return <PageLoader />;
   
   return (
     <main className="min-h-screen bg-white pb-12">

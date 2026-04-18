@@ -8,7 +8,7 @@ import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
 import SidebarWidget from '../components/SidebarWidget';
-import PageLoader from '../components/PageLoader';
+import CatalogueCard from '../components/CatalogueCard';
 
 const Science = () => {
    const navigate = useNavigate();
@@ -39,8 +39,7 @@ const Science = () => {
 
 
 
-    if (loading) return <PageLoader />;
-
+  
     return (
       <main className="min-h-screen bg-white pt-6 pb-4">
          <div className="max-w-7xl mx-auto px-4">

@@ -7,7 +7,7 @@ import { Layout, Palette, Pencil, Ruler, Layers, Building, ArrowRight, ArrowUpRi
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
-import PageLoader from '../components/PageLoader';
+import CatalogueCard from '../components/CatalogueCard';
 
 const SchoolDesigns = () => {
   const navigate = useNavigate();
@@ -39,7 +39,6 @@ const SchoolDesigns = () => {
 
 
 
-  if (loading) return <PageLoader />;
 
   return (
     <main className="min-h-screen bg-gray-50 pt-6 pb-4">
