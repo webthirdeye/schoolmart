@@ -17,43 +17,53 @@ exports.register = async (req, res) => {
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
     const otpExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
+    console.log('REGISTRATION ATTEMPT:', { name, email, phone, rest: Object.keys(rest) });
+
     const user = await User.create({
-      name: name || rest.schoolName || 'Unnamed Institution',
-      email,
-      password,
-      phone: phone || rest.phone || '',
-      selectedServices: selectedServices || rest.selectedServices || [],
+      name: name || rest.schoolName || rest['School Name'] || 'Unnamed Institution',
+      email: email || rest['Email id*'] || rest.email,
+      password: password || rest['Create Password*'] || rest.password,
+      phone: phone || rest.phone || rest['Phone Number'] || '',
+      selectedServices: Array.isArray(selectedServices) ? selectedServices : (rest.selectedServices || []),
       otp,
       otpExpire,
       additionalInfo: rest
     });
 
-    // Send OTP to user
-    try {
-      await sendEmail({
-        email: user.email,
-        subject: 'Email Verification OTP - SchoolMart',
-        message: `Your verification OTP is ${otp}. It expires in 10 minutes.`,
-        html: `<h1>Verify Your Email</h1><p>Your verification OTP is <strong>${otp}</strong>. It expires in 10 minutes.</p>`
-      });
+      // 1. Send OTP to user (REQUIRED)
+      try {
+        await sendEmail({
+          email: user.email,
+          subject: 'Email Verification OTP - SchoolMart',
+          message: `Your verification OTP is ${otp}. It expires in 10 minutes.`,
+          html: `<h1>Verify Your Email</h1><p>Your verification OTP is <strong>${otp}</strong>. It expires in 10 minutes.</p>`
+        });
+      } catch (emailErr) {
+        console.error('USER OTP EMAIL FAILED:', emailErr);
+        user.otp = null;
+        user.otpExpire = null;
+        await user.save();
+        return res.status(500).json({ 
+           success: false, 
+           message: 'Failed to send verification email. Please check your email address or try again later.',
+           error: emailErr.message
+        });
+      }
 
-      // Send Notification to Admin
-      const extraDetails = Object.entries(rest).map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('');
-      await sendEmail({
-        email: process.env.ADMIN_EMAIL,
-        subject: 'New User Registration Attempt',
-        message: `A new user ${user.name} (${email}) has registered.\nDetails: ${JSON.stringify(rest)}`,
-        html: `<h1>New Registration</h1><p><strong>Name:</strong> ${user.name}</p><p><strong>Email:</strong> ${email}</p>${extraDetails}`
-      });
+      // 2. Send Notification to Admin (NON-BLOCKING)
+      try {
+        const extraDetails = Object.entries(rest).map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('');
+        await sendEmail({
+          email: process.env.ADMIN_EMAIL || 'admin@schoolmart.com',
+          subject: 'New User Registration Attempt',
+          message: `A new user ${user.name} (${email}) has registered.\nDetails: ${JSON.stringify(rest)}`,
+          html: `<h1>New Registration</h1><p><strong>Name:</strong> ${user.name}</p><p><strong>Email:</strong> ${email}</p>${extraDetails}`
+        });
+      } catch (adminEmailErr) {
+        console.warn('ADMIN NOTIFICATION EMAIL FAILED (Non-blocking):', adminEmailErr.message);
+      }
 
       res.status(200).json({ success: true, message: 'OTP sent to email' });
-    } catch (err) {
-      console.error(err);
-      user.otp = null;
-      user.otpExpire = null;
-      await user.save();
-      return res.status(500).json({ message: 'Email could not be sent' });
-    }
   } catch (error) {
     console.error('CRITICAL REGISTRATION ERROR:', error);
     res.status(500).json({ 

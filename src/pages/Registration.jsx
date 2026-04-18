@@ -76,10 +76,32 @@ const Registration = () => {
     setLoading(true);
     setError('');
     try {
-      // Send the entire formData object so new CMS fields are included
+      // Robust mapping: ensure email, name, and password are at the top level
+      const submissionData = { ...formData };
+      
+      // Attempt to recover from dynamic fields if top-level is missing
+      if (!submissionData.email || submissionData.email === '') {
+        const emailKey = Object.keys(formData).find(k => k.toLowerCase().includes('email'));
+        if (emailKey) submissionData.email = formData[emailKey];
+      }
+      if (!submissionData.schoolName || submissionData.schoolName === '') {
+        const nameKey = Object.keys(formData).find(k => k.toLowerCase().includes('name'));
+        if (nameKey) submissionData.schoolName = formData[nameKey];
+      }
+      if (!submissionData.password || submissionData.password === '') {
+        const passKey = Object.keys(formData).find(k => k.toLowerCase().includes('password'));
+        if (passKey) submissionData.password = formData[passKey];
+      }
+
+      console.log('FRONTEND SUBMITTING:', { 
+         email: submissionData.email, 
+         name: submissionData.schoolName, 
+         keys: Object.keys(formData) 
+      });
+
       const res = await register({
-        ...formData,
-        name: formData.schoolName // map schoolName to name for standard auth
+        ...submissionData,
+        name: submissionData.schoolName || 'Institution User'
       });
       if (res.error) throw new Error(res.error);
       setShowOtp(true);
