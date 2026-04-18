@@ -51,7 +51,8 @@ app.get('/api/health-check', (req, res) => {
     status: 'active',
     smtp_host: process.env.SMTP_HOST || 'EMPTY',
     smtp_port: process.env.SMTP_PORT || 'EMPTY',
-    smtp_user: process.env.SMTP_USER ? 'SET (VISIBLE)' : 'EMPTY',
+    smtp_user: process.env.SMTP_USER ? 'SET' : 'EMPTY',
+    all_keys: Object.keys(process.env).filter(k => k.includes('SMTP') || k.includes('DB') || k.includes('ENV')),
     env: process.env.NODE_ENV
   });
 });
