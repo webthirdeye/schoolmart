@@ -7,7 +7,6 @@ import { FlaskConical, Beaker, Atom, Microscope, Dna, Zap, ArrowRight, ArrowUpRi
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
-import CatalogueCard from '../components/CatalogueCard';
 
 const LabsLibraries = () => {
   const navigate = useNavigate();

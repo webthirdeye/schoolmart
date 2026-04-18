@@ -8,7 +8,6 @@ import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
 import SidebarWidget from '../components/SidebarWidget';
-import CatalogueCard from '../components/CatalogueCard';
 
 const Libraries = () => {
   const navigate = useNavigate();
