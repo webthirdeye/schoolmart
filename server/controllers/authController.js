@@ -5,7 +5,7 @@ const crypto = require('crypto');
 // Register User
 exports.register = async (req, res) => {
   try {
-    const { name, email, password, phone, selectedServices } = req.body;
+    const { name, email, password, phone, selectedServices, ...rest } = req.body;
 
     // Check if user exists
     const userExists = await User.findOne({ where: { email } });
@@ -18,13 +18,14 @@ exports.register = async (req, res) => {
     const otpExpire = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
 
     const user = await User.create({
-      name,
+      name: name || rest.schoolName || 'Unnamed Institution',
       email,
       password,
-      phone,
-      selectedServices,
+      phone: phone || rest.phone || '',
+      selectedServices: selectedServices || rest.selectedServices || [],
       otp,
-      otpExpire
+      otpExpire,
+      additionalInfo: rest
     });
 
     // Send OTP to user
@@ -37,11 +38,12 @@ exports.register = async (req, res) => {
       });
 
       // Send Notification to Admin
+      const extraDetails = Object.entries(rest).map(([k, v]) => `<p><strong>${k}:</strong> ${v}</p>`).join('');
       await sendEmail({
         email: process.env.ADMIN_EMAIL,
         subject: 'New User Registration Attempt',
-        message: `A new user ${name} (${email}) has registered.\nSelected Services: ${selectedServices.join(', ')}`,
-        html: `<h1>New Registration</h1><p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Services:</strong> ${selectedServices.join(', ')}</p>`
+        message: `A new user ${user.name} (${email}) has registered.\nDetails: ${JSON.stringify(rest)}`,
+        html: `<h1>New Registration</h1><p><strong>Name:</strong> ${user.name}</p><p><strong>Email:</strong> ${email}</p>${extraDetails}`
       });
 
       res.status(200).json({ success: true, message: 'OTP sent to email' });

@@ -126,16 +126,20 @@ const Login = () => {
                {step === 1 ? (
                  <form className="space-y-5" onSubmit={handleLogin}>
                     <div className="space-y-0.5 group">
-                       <label className="text-[12px] lg:text-sm font-bold text-gray-900 uppercase ml-4 tracking-wider transition-colors group-focus-within:text-sm-blue">Work Email</label>
+                       <label className="text-[12px] lg:text-sm font-bold text-gray-900 uppercase ml-4 tracking-wider transition-colors group-focus-within:text-sm-blue">
+                         {dFields.emailLabel || 'Work Email'}
+                       </label>
                        <div className="relative">
-                          <input type="email" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder="example@institutional.in" className="w-full bg-white px-6 lg:px-8 py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl border-2 border-gray-100 focus:border-sm-blue outline-none transition-all placeholder:text-gray-200 font-bold text-sm shadow-sm" />
+                          <input type="email" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} placeholder={dFields.emailPlaceholder || "example@institutional.in"} className="w-full bg-white px-6 lg:px-8 py-3.5 lg:py-4 rounded-2xl lg:rounded-3xl border-2 border-gray-100 focus:border-sm-blue outline-none transition-all placeholder:text-gray-200 font-bold text-sm shadow-sm" />
                           <Mail size={18} className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 text-gray-200 group-focus-within:text-sm-blue transition-colors" />
                        </div>
                     </div>
                     
                     <div className="space-y-0.5 group">
                        <div className="flex items-center justify-between px-4 mb-0.5">
-                          <label className="text-[12px] lg:text-sm font-bold text-gray-900 uppercase tracking-wider transition-colors group-focus-within:text-sm-blue">Security Key</label>
+                          <label className="text-[12px] lg:text-sm font-bold text-gray-900 uppercase tracking-wider transition-colors group-focus-within:text-sm-blue">
+                            {dFields.passwordLabel || 'Security Key'}
+                          </label>
                           <Link to="/forgot-password" className="text-[11px] font-black text-sm-blue hover:text-gray-900 uppercase tracking-widest transition-colors">Forgot?</Link>
                        </div>
                        <div className="relative">
@@ -143,7 +147,7 @@ const Login = () => {
                           <Lock size={18} className="absolute right-6 lg:right-8 top-1/2 -translate-y-1/2 text-gray-200 group-focus-within:text-sm-blue transition-colors" />
                        </div>
                     </div>
-
+ 
                     <div className="pt-2">
                        <button disabled={loading} className="w-full py-4 lg:py-5 bg-gray-900 text-white font-black rounded-2xl lg:rounded-3xl shadow-3xl hover:bg-[#004a8e] transition-all uppercase tracking-[0.3em] text-[12px] lg:text-[13px] flex items-center justify-center gap-3 active:scale-[0.98]">
                           {loading ? 'Authorizing...' : (dFields.submitLabel || 'Authorize Portal')} <ArrowRight size={18} />

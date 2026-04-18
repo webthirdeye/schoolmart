@@ -978,18 +978,33 @@ const BlockForms = {
     <div className="space-y-6">
       <SectionTitle>Select Services Checklist</SectionTitle>
       <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} placeholder="Select Services" /></Field>
-      <Field label="Service Items" hint="One service per line. Users can check/uncheck these during registration.">
-        <TextArea value={(data?.services || []).join('\n')} onChange={v => set('services', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={15} placeholder="School design architecture services green schools\nProject management planning to completion\nExisting school refurbishment redesign" />
-      </Field>
+      <SectionTitle>Services List</SectionTitle>
+      <div className="space-y-2">
+        {(data?.services || []).map((srv, i) => (
+          <div key={i} className="flex gap-2">
+            <TextInput value={srv} onChange={v => { const s = [...data.services]; s[i] = v; set('services', s); }} />
+            <button onClick={() => set('services', data.services.filter((_, j) => j !== i))} className="p-3 text-red-300 hover:text-red-500 transition-all"><Trash2 size={16}/></button>
+          </div>
+        ))}
+        <button onClick={() => set('services', [...(data?.services || []), ''])}
+          className="w-full py-4 rounded-xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Service Item</button>
+      </div>
     </div>
   ),
 
   registration_school_types: ({ data = {}, set }) => (
     <div className="space-y-4">
       <SectionTitle>School Type Dropdown Options</SectionTitle>
-      <Field label="Options" hint="One option per line. These appear in the 'Type of School' dropdown.">
-        <TextArea value={(data?.options || []).join('\n')} onChange={v => set('options', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={8} placeholder="International school\nCBSE School\nICSE School\nSTATE Board School\nCollege University\nBusiness Educational Partners" />
-      </Field>
+      <div className="space-y-2">
+        {(data?.options || []).map((opt, i) => (
+          <div key={i} className="flex gap-2">
+            <TextInput value={opt} onChange={v => { const o = [...data.options]; o[i] = v; set('options', o); }} />
+            <button onClick={() => set('options', data.options.filter((_, j) => j !== i))} className="p-3 text-red-300 hover:text-red-500 transition-all"><Trash2 size={16}/></button>
+          </div>
+        ))}
+        <button onClick={() => set('options', [...(data?.options || []), ''])}
+          className="w-full py-4 rounded-xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Option</button>
+      </div>
     </div>
   ),
 

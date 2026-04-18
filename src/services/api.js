@@ -28,11 +28,11 @@ export const login = async (email, password) => {
   return data;
 };
 
-export const register = async (name, email, password, phone, selectedServices = []) => {
+export const register = async (data) => {
   const res = await fetch(`${API_URL}/auth/register`, {
     method: 'POST',
     headers: getHeaders(),
-    body: JSON.stringify({ name, email, password, phone, selectedServices })
+    body: JSON.stringify(data)
   });
   return await res.json();
 };
