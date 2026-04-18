@@ -47,7 +47,7 @@ const User = sequelize.define('User', {
     defaultValue: 'user'
   },
   additionalInfo: {
-    type: DataTypes.JSONB,
+    type: DataTypes.JSON,
     defaultValue: {}
   }
 }, {
