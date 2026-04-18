@@ -3,6 +3,10 @@ const cors = require('cors');
 require('dotenv').config();
 const { connectDB, sequelize } = require('./config/db');
 
+console.log('--- SERVER STARTUP DEBUG ---');
+console.log('SMTP_HOST:', process.env.SMTP_HOST || 'UNDEF');
+console.log('--- END DEBUG ---');
+
 const app = express();
 
 // Middleware — explicit CORS for Vercel ↔ Railway cross-origin
