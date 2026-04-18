@@ -17,6 +17,13 @@ const LabsLibraries = () => {
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
 
+  // Priority 1: Auto-select first CMS category if available
+  useEffect(() => {
+    if (sidebarCategories.categories?.length && !selectedCat) {
+      setSelectedCat(sidebarCategories.categories[0]);
+    }
+  }, [sidebarCategories]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getProducts({ category: 'Labs' }).then(res => {
@@ -29,7 +36,8 @@ const LabsLibraries = () => {
   }, [sidebarCategories]);
   
   const cats = sidebarCategories.categories || [];
-  const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
+  // Only filter if we have items AND a selected category is set (prevents flicker)
+  const filteredItems = items.filter(p => selectedCat && (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
 
 
 
@@ -69,10 +77,7 @@ const LabsLibraries = () => {
                     <h3 style={{ color: blocks.action_strip.textColor || undefined }} className="text-[13px] font-black uppercase tracking-[0.2em]">{blocks.action_strip.title || 'Skill Lab Guide 2025.'}</h3>
                     <span style={{ color: blocks.action_strip.textColor || undefined }} className="text-[14px] font-black uppercase tracking-widest font-heading">{blocks.action_strip.subtitle || 'TECHNICAL SPECIFICATIONS'}</span>
                  </div>
-                 <span className="p-4 bg-white text-emerald-800 rounded-full shadow-lg relative z-10 transition-all group-hover:bg-emerald-100 group-hover:scale-110">
-                    <Download size={20} />
-                 </span>
-               </Link>
+                 </Link>
             </section>
          )}
 

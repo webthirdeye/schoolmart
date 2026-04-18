@@ -18,6 +18,13 @@ const Mathematics = () => {
    const heroBlock = blocks?.inner_page_hero || {};
    const sidebarCategories = blocks?.sidebar_categories || {};
 
+   // Priority 1: Auto-select first CMS category if available
+   useEffect(() => {
+      if (sidebarCategories.categories?.length && !selectedCat) {
+         setSelectedCat(sidebarCategories.categories[0]);
+      }
+   }, [sidebarCategories]);
+
    useEffect(() => {
       window.scrollTo(0, 0);
       getProducts({ category: 'Mathematics' }).then(res => {
@@ -33,7 +40,8 @@ const Mathematics = () => {
    const sidebarTrending = blocks?.sidebar_trending || {};
 
    const cats = sidebarCategories.categories || [];
-   const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
+   // Only filter if we have items AND a selected category is set (prevents flicker)
+   const filteredItems = items.filter(p => selectedCat && (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
 
 
 
@@ -73,9 +81,6 @@ const Mathematics = () => {
                         <h3 style={{ color: blocks.action_strip.textColor || undefined }} className="text-[13px] font-black uppercase tracking-[0.2em]">{blocks.action_strip.title || 'The 2025 Lookbook.'}</h3>
                         <span style={{ color: blocks.action_strip.textColor || undefined }} className="text-[14px] font-black uppercase tracking-widest font-heading">{blocks.action_strip.subtitle || 'MASTER CATALOGUE'}</span>
                      </div>
-                     <span className="p-4 bg-sm-blue text-white rounded-full shadow-lg relative z-10 transition-all group-hover:bg-white group-hover:text-sm-blue">
-                        <Download size={20} />
-                     </span>
                   </Link>
                </section>
             )}

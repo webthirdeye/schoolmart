@@ -17,6 +17,13 @@ const Science = () => {
 
    const sidebarCategories = blocks?.sidebar_categories || {};
    const heroBlock = blocks?.inner_page_hero || {};
+
+   // Priority 1: Auto-select first CMS category if available
+   useEffect(() => {
+     if (sidebarCategories.categories?.length && !selectedCat) {
+       setSelectedCat(sidebarCategories.categories[0]);
+     }
+   }, [sidebarCategories]);
    
    useEffect(() => {
     window.scrollTo(0, 0);
@@ -33,7 +40,8 @@ const Science = () => {
    const sidebarTrending = blocks?.sidebar_trending || {};
 
    const cats = sidebarCategories.categories || [];
-   const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
+   // Only filter if we have items AND a selected category is set (prevents flicker)
+   const filteredItems = items.filter(p => selectedCat && (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
 
 
 

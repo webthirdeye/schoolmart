@@ -18,6 +18,13 @@ const Libraries = () => {
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
 
+  // Priority 1: Auto-select first CMS category if available
+  useEffect(() => {
+    if (sidebarCategories.categories?.length && !selectedCat) {
+      setSelectedCat(sidebarCategories.categories[0]);
+    }
+  }, [sidebarCategories]);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     getProducts({ category: 'Libraries' }).then(res => {
@@ -39,7 +46,8 @@ const Libraries = () => {
   };
   
   const cats = sidebarCategories.categories || [];
-  const filteredItems = items.filter(p => !selectedCat || (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
+  // Only filter if we have items AND a selected category is set (prevents flicker)
+  const filteredItems = items.filter(p => selectedCat && (p.subcategory || '').toUpperCase() === selectedCat.toUpperCase());
 
 
 
