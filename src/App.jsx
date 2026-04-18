@@ -1,4 +1,4 @@
-// src/App.jsx
+// src/App.jsx - Build v1.0.1 (Cache Purge)
 import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import TopBar from './components/TopBar';
