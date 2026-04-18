@@ -64,7 +64,6 @@ import GlobalSettings from './pages/admin/GlobalSettings';
 
 const MainLayout = () => (
   <div className="min-h-screen flex flex-col">
-    <div className="bg-red-600 text-white text-center py-1 text-[10px] font-black uppercase tracking-[0.5em] z-[9999] relative">DEPLOYMENT TEST ACTIVE - v1.0.2</div>
     <TopBar />
     <Navbar />
     <div className="flex-grow">

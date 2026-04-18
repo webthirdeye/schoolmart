@@ -78,6 +78,7 @@ const Navbar = () => {
                 className="h-full w-auto block select-none"
                 style={{ clipPath: 'inset(0 14% 0 14%)', imageRendering: '-webkit-optimize-contrast' }}
               />
+              <span className="text-[8px] opacity-20 absolute bottom-0 left-0">v2.0-CLEAN</span>
             </Link>
 
             {/* Desktop Navigation */}
