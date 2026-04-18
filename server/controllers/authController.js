@@ -10,7 +10,13 @@ exports.register = async (req, res) => {
     // Check if user exists
     const userExists = await User.findOne({ where: { email } });
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      if (userExists.isVerified) {
+        return res.status(400).json({ message: 'User already exists and is verified' });
+      } else {
+        // ALLOW OVERWRITE: If user exists but is not verified, they can try again
+        console.log('UNVERIFIED USER RETRYING:', email);
+        await userExists.destroy(); // Remove the unverified user to create a fresh one
+      }
     }
 
     // Generate OTP
