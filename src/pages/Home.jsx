@@ -3,7 +3,6 @@ import ResourceTiles from '../components/ResourceTiles';
 import CTASection from '../components/CTASection';
 import ClientLogos from '../components/ClientLogos';
 import { useCMSPage } from '../hooks/useCMSBlock';
-import PageLoader from '../components/PageLoader';
 
 const Home = () => {
   return (
