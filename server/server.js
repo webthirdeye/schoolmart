@@ -46,6 +46,16 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to SchoolMart API - STORAGE_FIX_ACTIVE' });
 });
 
+app.get('/api/health-check', (req, res) => {
+  res.json({
+    status: 'active',
+    smtp_host: process.env.SMTP_HOST || 'EMPTY',
+    smtp_port: process.env.SMTP_PORT || 'EMPTY',
+    smtp_user: process.env.SMTP_USER ? 'SET (VISIBLE)' : 'EMPTY',
+    env: process.env.NODE_ENV
+  });
+});
+
 // Port
 const PORT = process.env.PORT || 5000;
 
