@@ -10,7 +10,7 @@ export const formatImgUrl = (url) => {
 
   // 1. Force all internal /uploads/ paths to use the production backend URL if not on localhost
   const isLocal = window.location.hostname === 'localhost';
-  const PRODUCTION_BACKEND = 'https://sclmart-production.up.railway.app';
+  const PRODUCTION_BACKEND = 'https://schoolmart-production.up.railway.app';
 
   if (cleanUrl.includes('/uploads/')) {
     if (!isLocal) {
