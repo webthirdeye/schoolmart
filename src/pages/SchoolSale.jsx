@@ -4,90 +4,88 @@ import { Link } from 'react-router-dom';
 import { Mail, Phone, Facebook, Linkedin, Star, MapPin, ChevronRight, Info, Award, Download, FileText, Send, Share2, Bookmark, CheckCircle2, History, Users, Scale, MessageSquare, Globe, ArrowRight, Zap, Target, Search, ChevronDown, Rocket, Building2, TrendingUp, Handshake } from 'lucide-react';
 
 const PropertyListingCard = ({ item }) => {
-  // Description split into bullets safely
-  const descriptionPoints = (item.description || "Established middle and higher primary school with a stable revenue model. Following the State Board curriculum specifically designed for holistic growth. Operates in a prime location with high enrollment potential.")
-    .split('.')
-    .filter(p => p.trim().length > 0)
-    .slice(0, 2);
+  // Description split into bullet points (by newline or period)
+  const descriptionPoints = (item.description || "")
+    .split(/[\n.]/)
+    .map(p => p.trim())
+    .filter(p => p.length > 0);
 
   return (
-    <div className="bg-white border border-gray-100 rounded-[45px] shadow-sm overflow-hidden flex flex-col group hover:shadow-2xl transition-all duration-500 relative p-4 mb-8 break-inside-avoid">
-       {/* HEADER SECTION - CATEGORY & LOCATION */}
-       <div className="flex items-center justify-between px-4 pt-4 pb-4">
-           <div className="flex items-center gap-2">
-             <div className="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse" />
-             <span className="text-[13px] font-black text-sm-blue uppercase tracking-[0.2em]">
-               {item.type || 'SALE'}
+    <div className="bg-white border border-gray-100 rounded-[40px] shadow-sm overflow-hidden flex flex-col group hover:shadow-2xl hover:-translate-y-1 transition-all duration-500 relative p-6 mb-8 break-inside-avoid">
+       {/* HEADER - BADGE & LOCATION */}
+       <div className="flex items-center justify-between mb-8">
+           <div className="px-4 py-2 bg-sm-blue/5 rounded-full border border-sm-blue/10">
+             <span className="text-[11px] font-black text-sm-blue uppercase tracking-[0.2em]">
+               {item.type || 'SALE'} MANDATE
              </span>
            </div>
-           <div className="flex items-center gap-2 px-5 py-2.5 bg-gray-50 rounded-2xl border border-gray-100 shadow-sm">
-              <MapPin size={14} className="text-red-500 fill-red-500/10" />
-              <span className="text-[12px] font-black text-gray-500 uppercase tracking-widest">{item.location || 'HYDERABAD'}</span>
+           <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 rounded-full border border-gray-100">
+              <MapPin size={12} className="text-red-500" />
+              <span className="text-[11px] font-black text-gray-500 uppercase tracking-widest">{item.location || 'HYDERABAD'}</span>
            </div>
        </div>
 
-       <div className="px-5 pb-6 flex flex-col">
-         {/* TITLE AREA */}
-         <div className="mb-8">
-            <h3 className="text-2xl lg:text-3xl font-black text-gray-900 leading-[1] tracking-tighter uppercase mb-6 pr-4">
-              {item.title || "SUPER STAR SCHOOL AT WEST HYD"}
-            </h3>
-            <div className="flex gap-4 items-center">
-               <div className="flex gap-4 text-gray-400">
-                  <Mail size={18} className="hover:text-sm-blue cursor-pointer transition-colors" />
-                  <Phone size={18} className="hover:text-sm-blue cursor-pointer transition-colors" />
-                  <Linkedin size={18} className="hover:text-sm-blue cursor-pointer transition-colors" />
-               </div>
-               <div className="h-[1px] flex-grow bg-gray-100" />
-               <div className="flex items-center gap-2">
-                  <Star size={16} className="fill-amber-400 text-amber-400" />
-                  <span className="text-[14px] font-black text-gray-900">{item.rating || '4'} Rating</span>
-               </div>
-            </div>
-         </div>
+       <div className="flex flex-col flex-1">
+          {/* TITLE & RATING */}
+          <div className="mb-6">
+             <h3 className="text-2xl font-black text-gray-900 leading-tight tracking-tighter uppercase mb-3 pr-4 group-hover:text-sm-blue transition-colors">
+               {item.title || "Institutional Asset Listing"}
+             </h3>
+             <div className="flex items-center gap-2">
+                <div className="flex items-center">
+                   {[...Array(5)].map((_, i) => (
+                      <Star key={i} size={14} className={`${i < (parseInt(item.rating) || 4) ? 'fill-amber-400 text-amber-400' : 'text-gray-200'} `} />
+                   ))}
+                </div>
+                <span className="text-[12px] font-black text-gray-400 uppercase tracking-widest">Premium Rated</span>
+             </div>
+          </div>
 
-         {/* DATA GRID */}
-         <div className="flex flex-col gap-5 mb-8">
-            <div className="bg-gray-50/30 rounded-[35px] p-6 lg:p-8 border border-gray-100/50 shadow-inner">
-               <ul className="space-y-4">
-                  {descriptionPoints.map((point, i) => (
-                     <li key={i} className="flex items-center gap-4 text-gray-600 text-[14px] font-bold uppercase tracking-tight leading-tight">
-                        <div className="p-1 bg-white rounded-full shadow-sm border border-emerald-100">
-                           <CheckCircle2 size={18} className="text-emerald-500" />
-                        </div>
-                        {point.trim()}
-                     </li>
-                  ))}
-               </ul>
-            </div>
+          {/* POINTS LIST */}
+          <div className="bg-gray-50/50 rounded-[30px] p-6 mb-8 border border-gray-100/50">
+             {descriptionPoints.length > 0 ? (
+                <ul className="space-y-4">
+                   {descriptionPoints.map((point, i) => (
+                      <li key={i} className="flex items-start gap-3">
+                         <div className="mt-1 flex-shrink-0 w-5 h-5 bg-white rounded-full shadow-sm border border-emerald-100 flex items-center justify-center">
+                            <CheckCircle2 size={12} className="text-emerald-500" />
+                         </div>
+                         <span className="text-[13px] font-bold text-gray-600 leading-snug">{point}</span>
+                      </li>
+                   ))}
+                </ul>
+             ) : (
+                <p className="text-[13px] text-gray-400 italic font-medium">No description provided...</p>
+             )}
+          </div>
 
-            <div className="grid grid-cols-2 gap-4">
-               <div className="bg-white p-6 rounded-[30px] border border-gray-100 flex flex-col shadow-sm group-hover:border-sm-blue/20 transition-all">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 opacity-60">Sales P.A</span>
-                  <span className="text-xl font-black text-gray-900 tracking-tighter uppercase">{item.runRate || "19CR"}</span>
-               </div>
-               <div className="bg-white p-6 rounded-[30px] border border-gray-100 flex flex-col shadow-sm group-hover:border-sm-blue/20 transition-all">
-                  <span className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1.5 opacity-60">Margin</span>
-                  <span className="text-xl font-black text-gray-900 tracking-tighter uppercase">{item.margin || "25%+"}</span>
-               </div>
-            </div>
-         </div>
+          {/* KEY STATS GRID */}
+          <div className="grid grid-cols-2 gap-4 mb-8">
+             <div className="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Sales P.A.</p>
+                <p className="text-lg font-black text-gray-900 tracking-tighter uppercase">{item.runRate || "TBD"}</p>
+             </div>
+             <div className="bg-white p-4 rounded-3xl border border-gray-100 shadow-sm">
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1">Profitability</p>
+                <p className="text-lg font-black text-gray-900 tracking-tighter uppercase">{item.margin || "TBD"}</p>
+             </div>
+          </div>
 
-         {/* FOOTER ACTION AREA */}
-         <div className="mt-auto pt-8 flex items-center justify-between gap-6 border-t border-gray-50">
-            <div className="flex flex-col">
-               <span className="text-[11px] font-black text-gray-400 uppercase tracking-[0.2em] mb-1.5 opacity-60">Mandate Value</span>
-               <span className="text-3xl lg:text-4xl font-black text-sm-blue tracking-tighter uppercase whitespace-nowrap">
-                 {item.price || "12cr"}
-               </span>
-            </div>
-             <Link 
-               to={item.ctaLink || "/contact-us"} 
-               className="px-10 py-5 bg-[#FFD700] text-gray-900 font-black rounded-[25px] text-[13px] uppercase tracking-widest shadow-xl shadow-amber-200 hover:bg-gray-900 hover:text-white transition-all transform hover:scale-105 active:scale-95 whitespace-nowrap"
-             >
-                {item.ctaLabel || "Contact Us"}
-             </Link>
-         </div>
+          {/* FOOTER ACTION */}
+          <div className="mt-auto pt-6 border-t border-gray-50 flex items-center justify-between gap-4">
+             <div>
+                <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-1 opacity-60">Listing Value</p>
+                <p className="text-3xl font-black text-sm-blue tracking-tighter uppercase">
+                  {item.price || "Contact"}
+                </p>
+             </div>
+              <Link 
+                to={item.ctaLink || "/contact-us"} 
+                className="px-8 py-4 bg-gray-900 text-white font-black rounded-2xl text-[12px] uppercase tracking-widest shadow-lg hover:bg-sm-blue hover:shadow-blue-200 transition-all transform hover:scale-105 active:scale-95 whitespace-nowrap"
+              >
+                 {item.ctaLabel || "View Details"}
+              </Link>
+          </div>
        </div>
     </div>
   );
