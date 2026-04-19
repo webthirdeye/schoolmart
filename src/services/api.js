@@ -36,7 +36,8 @@ export const register = async (data) => {
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || errorData.error || 'Registration failed');
+    const errorMsg = [errorData.message, errorData.error].filter(Boolean).join(' | ');
+    throw new Error(errorMsg || 'Registration failed');
   }
   return await res.json();
 };
@@ -49,7 +50,8 @@ export const verifyOtp = async (email, otp) => {
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || 'OTP verification failed');
+    const errorMsg = [errorData.message, errorData.error].filter(Boolean).join(' | ');
+    throw new Error(errorMsg || 'OTP verification failed');
   }
   const data = await res.json();
   if (data.token) localStorage.setItem('token', data.token);
@@ -71,7 +73,8 @@ export const forgotPassword = async (email) => {
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Forgot password failed');
+    const errorMsg = [errorData.message, errorData.error].filter(Boolean).join(' | ');
+    throw new Error(errorMsg || 'Forgot password failed');
   }
   return await res.json();
 };
@@ -84,7 +87,8 @@ export const resetPassword = async (email, otp, newPassword) => {
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Reset password failed');
+    const errorMsg = [errorData.message, errorData.error].filter(Boolean).join(' | ');
+    throw new Error(errorMsg || 'Reset password failed');
   }
   return await res.json();
 };
@@ -97,7 +101,8 @@ export const resendOtp = async (email) => {
   });
   if (!res.ok) {
     const errorData = await res.json().catch(() => ({}));
-    throw new Error(errorData.message || 'Resend OTP failed');
+    const errorMsg = [errorData.message, errorData.error].filter(Boolean).join(' | ');
+    throw new Error(errorMsg || 'Resend OTP failed');
   }
   return await res.json();
 };

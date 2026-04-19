@@ -11,8 +11,8 @@ const sendEmail = async (options) => {
     service: 'gmail',
     family: 4, // Force IPv4 to avoid ENETUNREACH with IPv6
     auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
+      user: process.env.SMTP_USER?.replace(/^["']|["']$/g, ''),
+      pass: process.env.SMTP_PASS?.replace(/^["']|["']$/g, ''),
     },
   });
 
