@@ -113,9 +113,9 @@ const startServer = async () => {
 };
 
 process.on('unhandledRejection', (err) => {
-  console.log('UNHANDLED REJECTION! 💥 Shutting down...');
-  console.log(err.name, err.message, err.stack);
-  process.exit(1);
+  // Log but DO NOT crash — email delivery failures from Resend/SMTP should never
+  // take down the entire server.
+  console.error('UNHANDLED REJECTION (non-fatal):', err?.name, err?.message);
 });
 
 process.on('uncaughtException', (err) => {
