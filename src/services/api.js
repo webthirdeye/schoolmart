@@ -34,6 +34,10 @@ export const register = async (data) => {
     headers: getHeaders(),
     body: JSON.stringify(data)
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || errorData.error || 'Registration failed');
+  }
   return await res.json();
 };
 
@@ -43,6 +47,10 @@ export const verifyOtp = async (email, otp) => {
     headers: getHeaders(),
     body: JSON.stringify({ email, otp })
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || 'OTP verification failed');
+  }
   const data = await res.json();
   if (data.token) localStorage.setItem('token', data.token);
   return data;
@@ -61,6 +69,10 @@ export const forgotPassword = async (email) => {
     headers: getHeaders(),
     body: JSON.stringify({ email })
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Forgot password failed');
+  }
   return await res.json();
 };
 
@@ -70,6 +82,10 @@ export const resetPassword = async (email, otp, newPassword) => {
     headers: getHeaders(),
     body: JSON.stringify({ email, otp, newPassword })
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Reset password failed');
+  }
   return await res.json();
 };
 
@@ -79,6 +95,10 @@ export const resendOtp = async (email) => {
     headers: getHeaders(),
     body: JSON.stringify({ email })
   });
+  if (!res.ok) {
+    const errorData = await res.json().catch(() => ({}));
+    throw new Error(errorData.message || 'Resend OTP failed');
+  }
   return await res.json();
 };
 
