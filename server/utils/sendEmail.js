@@ -7,9 +7,12 @@ const sendEmail = async (options) => {
     user: process.env.SMTP_USER || 'NOT SET'
   });
 
+  const port = parseInt(process.env.SMTP_PORT || '587', 10);
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
-    family: 4, // Force IPv4 to avoid ENETUNREACH with IPv6
+    host: process.env.SMTP_HOST || 'smtp.gmail.com',
+    port: port,
+    secure: port === 465, // true for 465, false for other ports
+    family: 4, // Force IPv4 to avoid ENETUNREACH parsing
     auth: {
       user: process.env.SMTP_USER?.replace(/^["']|["']$/g, ''),
       pass: process.env.SMTP_PASS?.replace(/^["']|["']$/g, ''),
