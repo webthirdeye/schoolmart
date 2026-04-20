@@ -23,13 +23,13 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
   storage,
-  limits: { fileSize: 10 * 1024 * 1024 }, // 10MB
+  limits: { fileSize: 50 * 1024 * 1024 }, // 50MB per file
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|gif|svg|pdf/;
+    const filetypes = /jpeg|jpg|png|webp|gif|svg|pdf|heic|avif|csv/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = /image\/|application\/pdf|image\/svg/.test(file.mimetype);
+    const mimetype = /image\/|application\/pdf|image\/svg|text\/csv/.test(file.mimetype) || file.mimetype.includes('heic') || file.mimetype.includes('avif') || file.mimetype === 'application/octet-stream';
     if (extname || mimetype) return cb(null, true);
-    cb(new Error('Allowed: JPG, PNG, WEBP, GIF, SVG, PDF'));
+    cb(new Error('Allowed: JPG, PNG, WEBP, GIF, SVG, PDF, CSV, HEIC, AVIF'));
   }
 });
 
