@@ -12,7 +12,7 @@ const GenericInnerPage = ({ explicitSlug }) => {
   const params = useParams();
   const slug = explicitSlug || params.slug;
   const { blocks, loading } = useCMSPage(slug);
-  const { blocks: homeBlocks } = useCMSPage('home');
+  const { blocks: homeBlocks, loading: homeLoading } = useCMSPage('home');
   const [items, setItems] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
 
@@ -87,7 +87,7 @@ const GenericInnerPage = ({ explicitSlug }) => {
     }
   }, [loading, cats, selectedCat]);
 
-  if (loading) return (
+  if (loading || homeLoading) return (
     <div className="min-h-screen bg-white flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-sm">
       Loading...
     </div>

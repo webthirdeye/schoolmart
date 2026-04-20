@@ -41,7 +41,7 @@ router.post('/', upload.single('file'), (req, res) => {
 });
 
 // Multiple Files Upload
-router.post('/bulk', upload.array('files', 20), (req, res) => {
+router.post('/bulk', upload.any(), (req, res) => {
   if (!req.files || req.files.length === 0) return res.status(400).json({ message: 'No files uploaded' });
   const urls = req.files.map(f => `/uploads/${f.filename}`);
   res.json({ urls, message: 'Bulk upload successful' });

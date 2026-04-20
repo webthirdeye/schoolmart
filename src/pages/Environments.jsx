@@ -42,6 +42,7 @@ const ICONS = { Leaf, Wind, Sun, Layers };
 const Environments = () => {
   const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('environments');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   const [selectedItem, setSelectedItem] = useState(null);
   
   const d = blocks?.environments_page_content || DEFAULT_CONTENT;

@@ -8,7 +8,7 @@ const TopBar = () => {
     email: 'info@schoolmart.in',
     phone1: '+91 9966109191',
     phone2: '+91 9866091111',
-    textColor: '#FF00FF',
+    textColor: '#FFFFFF',
     bgColor: '#0057A8',
     socials: {
       facebook: 'https://www.facebook.com/schoolmart.in',
@@ -21,7 +21,7 @@ const TopBar = () => {
   const socials = data.socials || {};
 
   return (
-    <div className="py-1.5 px-4 border-b border-white/5 relative z-[70]" style={{ backgroundColor: data.bgColor || '#0057A8', color: data.textColor || '#FF00FF' }}>
+    <div className="py-1.5 px-4 border-b border-white/5 relative z-[70]" style={{ backgroundColor: data.bgColor || '#0057A8', color: data.textColor || '#FFFFFF' }}>
       <style>{`
         #topbar-inner, #topbar-inner * { color: inherit !important; }
         #topbar-inner a:hover, #topbar-inner Link:hover { color: #FDD835 !important; }

@@ -5,6 +5,7 @@ import { Globe, ArrowRight, MessageCircle, Phone } from 'lucide-react';
 
 const Corporate = () => {
   const { blocks, loading } = useCMSPage('corporate');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
 
   const hero = blocks?.corporate_hero || {
     badge: 'Foundational Intelligence',

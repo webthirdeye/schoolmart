@@ -12,6 +12,7 @@ import SidebarWidget from '../components/SidebarWidget';
 const Mathematics = () => {
    const navigate = useNavigate();
    const { blocks, loading } = useCMSPage('mathematics');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
    const [items, setItems] = useState([]);
    const [selectedCat, setSelectedCat] = useState('');
 

@@ -94,6 +94,7 @@ const PropertyListingCard = ({ item }) => {
 
 const SchoolSale = () => {
   const { blocks, loading } = useCMSPage('school_sale');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [searchTerm, setSearchTerm] = useState('');
 

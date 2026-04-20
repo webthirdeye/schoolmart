@@ -44,6 +44,7 @@ const GuidePost = () => {
 
   // Load data from the guides listing page CMS
   const { blocks, loading } = useCMSPage('guides');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   
   // Consolidate all possible items (legacy caseStudies AND new masonry_grid)
   const legacyItems = blocks?.guides_page_content?.caseStudies || [];

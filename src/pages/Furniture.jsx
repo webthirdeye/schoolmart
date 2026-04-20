@@ -11,6 +11,7 @@ import CatalogueCard from '../components/CatalogueCard';
 const Furniture = () => {
   const navigate = useNavigate();
   const { blocks, loading } = useCMSPage('furniture');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   const heroBlock = blocks?.inner_page_hero || {};
   const sidebarCategories = blocks?.sidebar_categories || {};
   const actionStrip = blocks?.action_strip || {};

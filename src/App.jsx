@@ -62,16 +62,28 @@ import FormConfigEditor from './pages/admin/FormConfigEditor';
 import UserManager from './pages/admin/UserManager';
 import GlobalSettings from './pages/admin/GlobalSettings';
 
-const MainLayout = () => (
-  <div className="min-h-screen flex flex-col">
-    <TopBar />
-    <Navbar />
-    <div className="flex-grow">
-      <Outlet />
+import { useCMSPage } from './hooks/useCMSBlock';
+
+const MainLayout = () => {
+  const { loading } = useCMSPage('home');
+
+  if (loading) return (
+    <div className="min-h-screen bg-white flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">
+      Loading...
     </div>
-    <Footer />
-  </div>
-);
+  );
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <TopBar />
+      <Navbar />
+      <div className="flex-grow">
+        <Outlet />
+      </div>
+      <Footer />
+    </div>
+  );
+};
 
 function App() {
   return (

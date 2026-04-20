@@ -5,6 +5,7 @@ import { ArrowRight, Award, Settings } from 'lucide-react';
 
 const Manufacturing = () => {
   const { blocks, loading } = useCMSPage('manufacturing');
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
 
   const hero = blocks?.manufacturing_hero || {
     badge: 'In-House Precision',
