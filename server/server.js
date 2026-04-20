@@ -124,5 +124,15 @@ process.on('uncaughtException', (err) => {
   process.exit(1);
 });
 
+process.on('SIGTERM', () => {
+  console.log('Gracefully shutting down SIGTERM');
+  process.exit(0);
+});
+
+process.on('SIGINT', () => {
+  console.log('Gracefully shutting down SIGINT');
+  process.exit(0);
+});
+
 startServer();
 
