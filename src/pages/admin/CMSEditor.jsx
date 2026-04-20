@@ -1073,33 +1073,7 @@ const BlockForms = {
     </div>
   ),
 
-  // ── GENERIC INNER PAGE BLOCKS ─────────────────────────────────
-  page_hero: ({ data = {}, set }) => (
-    <div className="space-y-6">
-      <SectionTitle>Page Hero Section</SectionTitle>
-      <Field label="Badge Text"><TextInput value={data?.badge} onChange={v => set('badge', v)} /></Field>
-      <Field label="Title (HTML allowed)"><TextArea value={data?.titleHtml} onChange={v => set('titleHtml', v)} rows={3} /></Field>
-      <Field label="Subtitle"><TextArea value={data?.subtitle} onChange={v => set('subtitle', v)} rows={2} /></Field>
-      <Field label="Description"><TextArea value={data?.description} onChange={v => set('description', v)} rows={3} /></Field>
-      <div className="grid grid-cols-2 gap-4">
-        <ColorInput label="Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
-        <ColorInput label="Text Color" value={data?.textColor} onChange={v => set('textColor', v)} />
-      </div>
-      <MediaUpload label="Hero Image / Video" value={data?.mediaUrl} onChange={v => set('mediaUrl', v)} />
-      <ImageUpload label="Fallback Image" value={data?.img} onChange={v => set('img', v)} />
-    </div>
-  ),
-
-  page_content: ({ data = {}, set }) => (
-    <div className="space-y-6">
-      <SectionTitle>Content Section</SectionTitle>
-      <Field label="Section Heading"><TextInput value={data?.heading} onChange={v => set('heading', v)} /></Field>
-      <Field label="Body Content (HTML/Markdown)"><TextArea value={data?.content} onChange={v => set('content', v)} rows={8} /></Field>
-      <ColorInput label="Section Background Color" value={data?.bgColor} onChange={v => set('bgColor', v)} />
-      <ImageUpload label="Section Image" value={data?.image} onChange={v => set('image', v)} />
-    </div>
-  ),
-
+    // ── GENERIC INNER PAGE BLOCKS ─────────────────────────────────
   page_features: ({ data = {}, set }) => (
     <div className="space-y-6">
       <SectionTitle>Feature Cards Grid</SectionTitle>
