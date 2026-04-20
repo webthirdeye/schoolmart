@@ -54,7 +54,6 @@ const Guides = () => {
   const navigate = useNavigate();
   const [selectedItem, setSelectedItem] = useState(null);
   const { blocks, loading } = useCMSPage('guides');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   
   const d = blocks?.guides_page_content || DEFAULT_CONTENT;
   const heroData = blocks?.guides_page_content || d.hero;
@@ -62,6 +61,7 @@ const Guides = () => {
 
   // Instant loading
 
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   return (
     <main className="min-h-screen bg-[#F8FAFC] pb-10">
       <div className="max-w-7xl mx-auto px-4 lg:px-6 pt-4">

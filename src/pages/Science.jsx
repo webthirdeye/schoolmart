@@ -12,7 +12,6 @@ import SidebarWidget from '../components/SidebarWidget';
 const Science = () => {
    const navigate = useNavigate();
    const { blocks, loading } = useCMSPage('science');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
    const [items, setItems] = useState([]);
    const [selectedCat, setSelectedCat] = useState('');
 
@@ -48,6 +47,7 @@ const Science = () => {
 
 
   
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
     return (
       <main className="min-h-screen bg-white pt-6 pb-4">
          <div className="max-w-7xl mx-auto px-4">

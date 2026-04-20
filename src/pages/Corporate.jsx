@@ -5,7 +5,6 @@ import { Globe, ArrowRight, MessageCircle, Phone } from 'lucide-react';
 
 const Corporate = () => {
   const { blocks, loading } = useCMSPage('corporate');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
 
   const hero = blocks?.corporate_hero || {
     badge: 'Foundational Intelligence',
@@ -139,6 +138,7 @@ const Corporate = () => {
           <div className="lg:col-span-8 grid grid-cols-1 md:grid-cols-2 gap-4">
             {pillars.map((box, i) => {
               const Icon = getIcon(box.icon);
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
               return (
                 <div key={i} className="bg-white p-8 rounded-[30px] lg:rounded-[40px] border border-gray-100 flex flex-col justify-between group hover:border-[#004a8e] transition-all">
                   <div className="flex items-center justify-between mb-8">

@@ -5,7 +5,6 @@ import { ArrowRight, CheckCircle2, MessageCircle, Phone } from 'lucide-react';
 
 const Partnerships = () => {
   const { blocks, loading } = useCMSPage('partnerships');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   const [activeForm, setActiveForm] = useState(false);
 
   const hero = blocks?.partnerships_hero || {
@@ -151,6 +150,7 @@ const Partnerships = () => {
             <div className="lg:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-6 flex-grow">
                {rewards.rewards?.map((r, i) => {
                   const RewardIcon = getIcon(r.icon);
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
                   return (
                     <div key={i} className="p-6 bg-white border border-gray-100 rounded-2xl flex items-start gap-4 shadow-sm hover:shadow-md transition-all">
                        <div className="w-8 h-8 shrink-0 bg-sm-blue rounded-lg flex items-center justify-center text-white">

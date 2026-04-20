@@ -41,7 +41,6 @@ const ContactUs = () => {
     };
 
     const { blocks, loading } = useCMSPage('contact-us');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
     const hero = blocks?.inner_page_hero || {
        badge: 'Connect with experts',
        titleHtml: 'Let\'s Build <br /> The Future <br /> <span class="text-blue-600 italic font-serif lowercase tracking-normal px-2">Together.</span>',
@@ -50,6 +49,7 @@ const ContactUs = () => {
 
     // Instant loading
 
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
     return (
         <div className="bg-white min-h-screen font-sans selection:bg-blue-100 relative">
             {/* HERO SECTION - WHITE THEME */}

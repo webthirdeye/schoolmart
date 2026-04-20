@@ -44,7 +44,6 @@ const GuidePost = () => {
 
   // Load data from the guides listing page CMS
   const { blocks, loading } = useCMSPage('guides');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   
   // Consolidate all possible items (legacy caseStudies AND new masonry_grid)
   const legacyItems = blocks?.guides_page_content?.caseStudies || [];
@@ -147,6 +146,7 @@ const GuidePost = () => {
         <div className="mt-20 py-10 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-4">
            {guideData.summaryPoints.map((point, i) => {
               const IconComp = ICON_MAP[point.icon] || Star;
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
               return (
                 <div key={i} className="flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-[30px] border border-transparent hover:border-[#004a8e] hover:bg-white transition-all group">
                   <div className="text-gray-300 group-hover:text-[#004a8e] transition-colors"><IconComp size={20} /></div>

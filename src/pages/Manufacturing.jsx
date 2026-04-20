@@ -5,7 +5,6 @@ import { ArrowRight, Award, Settings } from 'lucide-react';
 
 const Manufacturing = () => {
   const { blocks, loading } = useCMSPage('manufacturing');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
 
   const hero = blocks?.manufacturing_hero || {
     badge: 'In-House Precision',
@@ -141,6 +140,7 @@ const Manufacturing = () => {
               <div className="lg:col-span-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
                  {quality.boxes.map((box, i) => {
                    const BoxIcon = getIcon(box.icon);
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
                    return (
                     <div key={i} className="p-8 bg-white rounded-[35px] border border-gray-100 hover:border-[#004a8e] transition-all group">
                        <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center mb-6 text-[#004a8e] group-hover:bg-[#004a8e] group-hover:text-white transition-all">

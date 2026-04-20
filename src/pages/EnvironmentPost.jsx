@@ -33,7 +33,6 @@ const EnvironmentPost = () => {
 
   // Load data from the environments listing page CMS
   const { blocks, loading } = useCMSPage('environments');
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   
   // Consolidate all possible masonry items (legacy environments_page_content AND new masonry_grid)
   const legacyItems = blocks?.environments_page_content?.masonryItems || [];
@@ -94,6 +93,7 @@ const EnvironmentPost = () => {
 
   // Instant loading
 
+  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
   return (
     <main className="min-h-screen bg-white pb-6 font-body relative">
       {/* HEADER (ULTRA COMPACT) */}
