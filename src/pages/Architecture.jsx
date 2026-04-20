@@ -11,7 +11,7 @@ import SidebarWidget from '../components/SidebarWidget';
 
 const Architecture = () => {
   const navigate = useNavigate();
-  const { blocks, loading } = useCMSPage('architecture');
+  const { blocks, loading } = useCMSPage('school-building-design');
   const [items, setItems] = useState([]);
   const [selectedCat, setSelectedCat] = useState('');
 
