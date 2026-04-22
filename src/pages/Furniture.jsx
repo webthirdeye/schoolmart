@@ -124,7 +124,7 @@ const Furniture = () => {
 
            {/* MAIN PRODUCT GRID */}
             <div className="flex-1 min-w-0">
-              <div id="product-grid" className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-start scroll-mt-[200px] relative">
+              <div id="product-grid" className="columns-1 md:columns-2 lg:columns-3 gap-6 scroll-mt-[200px] relative">
                  {filteredItems.map((work, i) => (
                     <CatalogueCard 
                       key={i}

@@ -6,7 +6,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
   const isNonRoutable = work.ctaLink?.toLowerCase() === 'none';
 
   return (
-    <div className={`group ${isNonRoutable ? '' : 'cursor-pointer'}`}>
+    <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
       <div 
         className={`relative overflow-hidden rounded-[30px] border border-gray-100 group aspect-[4/5] transition-all duration-500 bg-white ${isSelected ? `ring-4 ${ringColor} shadow-2xl scale-[1.02]` : 'hover:scale-[1.01] hover:shadow-lg'}`}
         onClick={isNonRoutable ? undefined : onClick}
