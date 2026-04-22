@@ -108,7 +108,7 @@ const SchoolSale = () => {
   
   
   // Dynamic Cities from listings + defaults
-  const categoryBlock = blocks?.sidebar_categories || {};
+  const categoryBlock = blocks?.sidebar_categories || blocks?.SIDEBAR_CATEGORIES || {};
   const cmsCities = (categoryBlock.categories || []).map(c => c.toUpperCase());
   
   // Combine CMS categories with listing cities as fallback
