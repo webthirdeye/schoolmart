@@ -109,7 +109,7 @@ const DigitalInfra = () => {
         
         {/* PAGE DESCRIPTION EXTENSION */}
         {heroBlock.pageDescription && (
-           <section className="py-8 mb-4 border-b border-gray-100 max-w-5xl">
+           <section className="pb-6 border-b border-gray-100 max-w-5xl">
               <p className="text-gray-600 font-medium text-[14px] md:text-[15px] leading-relaxed whitespace-pre-wrap">
                  {heroBlock.pageDescription}
               </p>
