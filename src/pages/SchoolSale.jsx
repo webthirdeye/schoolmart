@@ -93,7 +93,7 @@ const PropertyListingCard = ({ item }) => {
 
 
 const SchoolSale = () => {
-  const { blocks, loading } = useCMSPage('school_sale');
+  const { blocks, loading } = useCMSPage('school-sale');
   const [selectedCity, setSelectedCity] = useState('All Cities');
   const [searchTerm, setSearchTerm] = useState('');
 
