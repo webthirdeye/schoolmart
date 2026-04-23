@@ -56,16 +56,16 @@ const SchoolDesigns = () => {
                   fallbackImg={heroBlock.img}
                   className="w-full h-full object-cover"
                 />
-                {/* Overlay so text remains readable */}
-                <div className="absolute inset-0 bg-white/55" />
+                {/* Overlay - minimal so image shows clearly */}
+                <div className="absolute inset-0 bg-white/20" />
               </div>
 
               <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/5 rounded-full blur-3xl -mr-16 -mt-16" />
-              <div className="px-3 py-1 bg-gray-900 text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
+              <div className="px-3 py-1 bg-white/80 text-gray-900 font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
                  <Stars size={12} className="inline mr-2" /> {heroBlock.badge || "Design Studio 2024"}
               </div>
-              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl md:text-6xl font-black font-heading leading-[0.9] mb-6 tracking-tighter uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Advanced <br/> Design." }} />
-              <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose relative z-10 ${heroBlock.textColor ? 'opacity-80' : 'text-gray-500'}`}>
+              <h1 style={{ color: heroBlock.textColor || '#ffffff' }} className="text-4xl md:text-6xl font-black font-heading leading-[0.9] mb-6 tracking-tighter uppercase relative z-10 drop-shadow-md" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Advanced <br/> Design." }} />
+              <p style={{ color: heroBlock.textColor || '#ffffff' }} className="text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose relative z-10 opacity-90 drop-shadow-sm">
                  {heroBlock.subtitle || "Configure your design parameters."}
               </p>
            </div>
