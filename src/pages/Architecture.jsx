@@ -57,7 +57,7 @@ const Architecture = () => {
         {/* MODERN BESPOKE HERO - SPLIT */}
         <section className="pt-4 pb-6 flex flex-col lg:flex-row gap-4 items-stretch">
            {/* TEXT BLOCK - LEFT */}
-           <div className="flex-1 bg-white rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px]">
+           <div className="flex-1 bg-white rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[400px]" style={{ backgroundColor: heroBlock.bgColor || '#ffffff' }}>
               <div className="absolute top-0 right-0 w-32 h-32 bg-sm-blue/5 rounded-full blur-3xl -mr-16 -mt-16" />
               <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[13px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
                  <Stars size={12} className="inline mr-2" /> {heroBlock.badge || "Global Studio 2025"}
