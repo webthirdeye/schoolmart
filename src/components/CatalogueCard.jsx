@@ -6,6 +6,8 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
   // If ctaLink is missing, empty, or 'none', the card is static.
   const isNonRoutable = !work.ctaLink || work.ctaLink.trim() === '' || work.ctaLink.toLowerCase() === 'none';
   const hasTitle = Boolean((work.name && work.name.trim() !== '' && work.name !== 'Unnamed Card') || (work.title && work.title.trim() !== '' && work.title !== 'Unnamed Card'));
+  const hasDescription = Boolean(work.description && work.description.trim() !== '');
+  const hasContentArea = hasTitle || hasDescription || work.subcategory || actionText || (showExplore && !isNonRoutable);
 
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
@@ -31,7 +33,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
         </div>
         
         {/* Content Area - Grows dynamically with text */}
-        {hasTitle && (
+        {hasContentArea && (
           <div className="px-6 pb-6 pt-4 flex flex-col justify-between bg-white border-t border-gray-50/50 flex-grow">
              <div className="flex flex-col mb-4">
                 {work.subcategory && (
@@ -40,7 +42,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
                   </span>
                 )}
                 {/* Ignore 'Unnamed Card' if it has a description to match purely descriptive layouts */}
-                {!(work.name === 'Unnamed Card' && work.description) && (
+                {hasTitle && (
                   <h3 className={`text-[13px] lg:text-[15px] font-black text-gray-900 uppercase tracking-tighter leading-tight transition-colors mb-2 shrink-0 ${isNonRoutable ? '' : 'group-hover:text-sm-blue'}`}>
                     {work.name || work.title}
                   </h3>
