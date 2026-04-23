@@ -12,7 +12,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
       <div 
-        className={`relative overflow-hidden rounded-[30px] border border-gray-100 group transition-all duration-500 bg-white flex flex-col ${isSelected ? `ring-4 ${ringColor} shadow-2xl` : 'hover:shadow-lg'}`}
+        className={`relative overflow-hidden rounded-[30px] border border-black group transition-all duration-500 bg-white flex flex-col ${isSelected ? `ring-4 ${ringColor} shadow-2xl` : 'hover:shadow-lg'}`}
         onClick={isNonRoutable ? undefined : onClick}
       >
         {/* Image Container - Locked Aspect Ratio */}
