@@ -5,6 +5,7 @@ import { formatImgUrl } from '../utils/formatters';
 const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeColor = 'bg-[#004a8e]', ringColor = 'ring-blue-500', textColor = 'text-[#004a8e]', showExplore = true }) => {
   // If ctaLink is missing, empty, or 'none', the card is static.
   const isNonRoutable = !work.ctaLink || work.ctaLink.trim() === '' || work.ctaLink.toLowerCase() === 'none';
+  const hasTitle = Boolean((work.name && work.name.trim() !== '') || (work.title && work.title.trim() !== ''));
 
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
@@ -30,47 +31,49 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
         </div>
         
         {/* Content Area - Grows dynamically with text */}
-        <div className="px-6 pb-6 pt-4 flex flex-col justify-between bg-white border-t border-gray-50/50 flex-grow">
-           <div className="flex flex-col mb-4">
-              {work.subcategory && (
-                <span className={`text-[11px] font-black tracking-[0.15em] uppercase block mb-1 leading-tight text-emerald-500 shrink-0`}>
-                  {work.subcategory}
-                </span>
-              )}
-              {/* Ignore 'Unnamed Card' if it has a description to match purely descriptive layouts */}
-              {!(work.name === 'Unnamed Card' && work.description) && (
-                <h3 className={`text-[13px] lg:text-[15px] font-black text-gray-900 uppercase tracking-tighter leading-tight transition-colors mb-2 shrink-0 ${isNonRoutable ? '' : 'group-hover:text-sm-blue'}`}>
-                  {work.name || work.title}
-                </h3>
-              )}
-              {/* Descriptive Text Fallback */}
-              {work.description && (
-                <p className="text-gray-600 font-medium text-[12px] lg:text-[14px] leading-relaxed">
-                  {work.description}
-                </p>
-              )}
-           </div>
-             
-             <div className="flex items-center justify-between gap-2 shrink-0 mt-4">
-                {actionText && (
-                   <button 
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       onAction && onAction(e);
-                     }}
-                     className={`px-5 py-2.5 ${themeColor} text-white rounded-lg text-[11px] font-black uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all shadow-md`}
-                   >
-                     {actionText}
-                   </button>
+        {hasTitle && (
+          <div className="px-6 pb-6 pt-4 flex flex-col justify-between bg-white border-t border-gray-50/50 flex-grow">
+             <div className="flex flex-col mb-4">
+                {work.subcategory && (
+                  <span className={`text-[11px] font-black tracking-[0.15em] uppercase block mb-1 leading-tight text-emerald-500 shrink-0`}>
+                    {work.subcategory}
+                  </span>
                 )}
-                
-                {showExplore && !isNonRoutable && (
-                   <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1 shrink-0 ml-auto">
-                      Explore <ArrowRight size={10} className="text-gray-300" />
-                   </span>
+                {/* Ignore 'Unnamed Card' if it has a description to match purely descriptive layouts */}
+                {!(work.name === 'Unnamed Card' && work.description) && (
+                  <h3 className={`text-[13px] lg:text-[15px] font-black text-gray-900 uppercase tracking-tighter leading-tight transition-colors mb-2 shrink-0 ${isNonRoutable ? '' : 'group-hover:text-sm-blue'}`}>
+                    {work.name || work.title}
+                  </h3>
+                )}
+                {/* Descriptive Text Fallback */}
+                {work.description && (
+                  <p className="text-gray-600 font-medium text-[12px] lg:text-[14px] leading-relaxed">
+                    {work.description}
+                  </p>
                 )}
              </div>
-          </div>
+               
+               <div className="flex items-center justify-between gap-2 shrink-0 mt-4">
+                  {actionText && (
+                     <button 
+                       onClick={(e) => {
+                         e.stopPropagation();
+                         onAction && onAction(e);
+                       }}
+                       className={`px-5 py-2.5 ${themeColor} text-white rounded-lg text-[11px] font-black uppercase tracking-widest flex items-center gap-2 hover:brightness-110 transition-all shadow-md`}
+                     >
+                       {actionText}
+                     </button>
+                  )}
+                  
+                  {showExplore && !isNonRoutable && (
+                     <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1 shrink-0 ml-auto">
+                        Explore <ArrowRight size={10} className="text-gray-300" />
+                     </span>
+                  )}
+               </div>
+            </div>
+        )}
         
       </div>
     </div>

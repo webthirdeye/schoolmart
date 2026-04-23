@@ -248,6 +248,7 @@ const CSVProductImporter = ({ fixedPage, onImport, availableSubcategories = [] }
 export default function ProductManager({ fixedPage, liveCategories }) {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
   const [editing, setEditing] = useState(null);
   const [search, setSearch] = useState('');
   const [filterCat, setFilterCat] = useState('');
@@ -304,11 +305,19 @@ export default function ProductManager({ fixedPage, liveCategories }) {
 
   const handleSave = async (e) => {
     e.preventDefault();
-    const pId = editing.id || editing.id;
-    if (pId) await updateProduct(pId, editing);
-    else await createProduct(editing);
-    setEditing(null);
-    load();
+    if (isSaving) return;
+    setIsSaving(true);
+    try {
+      const pId = editing.id || editing.id;
+      if (pId) await updateProduct(pId, editing);
+      else await createProduct(editing);
+      setEditing(null);
+      load();
+    } catch (err) {
+      alert('Error saving card: ' + err.message);
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const remove = async (id) => {
@@ -364,8 +373,8 @@ export default function ProductManager({ fixedPage, liveCategories }) {
       <form onSubmit={handleSave} className="p-6 space-y-5">
         <div className="grid grid-cols-2 gap-5">
           <div className="col-span-2 space-y-1">
-            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Card Name *</label>
-            <input required value={editing.name || ''} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. STEM Hub Setup" />
+            <label className="text-[10px] font-black uppercase tracking-widest text-gray-400">Card Name (Optional)</label>
+            <input value={editing.name || ''} onChange={e => setEditing({ ...editing, name: e.target.value })} className="w-full px-4 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="e.g. STEM Hub Setup" />
           </div>
 
           <div className="col-span-2 space-y-1">
@@ -538,7 +547,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
         </div>
 
         <div className="pt-5 border-t border-gray-100 flex justify-end">
-          <button type="submit" className="px-6 py-2.5 bg-blue-600 text-white text-sm font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-lg shadow-blue-500/30">
+          <button type="submit" disabled={isSaving} className={`px-6 py-2.5 ${isSaving ? 'bg-blue-400 cursor-not-allowed' : 'bg-blue-600 hover:bg-blue-700'} text-white text-sm font-bold rounded-xl transition-colors shadow-lg shadow-blue-500/30`}>
             Save Card
           </button>
         </div>
