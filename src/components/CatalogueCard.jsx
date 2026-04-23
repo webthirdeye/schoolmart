@@ -7,7 +7,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
   const isNonRoutable = !work.ctaLink || work.ctaLink.trim() === '' || work.ctaLink.toLowerCase() === 'none';
   const hasTitle = Boolean((work.name && work.name.trim() !== '' && work.name !== 'Unnamed Card') || (work.title && work.title.trim() !== '' && work.title !== 'Unnamed Card'));
   const hasDescription = Boolean(work.description && work.description.trim() !== '');
-  const hasContentArea = hasTitle || hasDescription || work.subcategory || actionText || (showExplore && !isNonRoutable);
+  const hasContentArea = hasTitle || hasDescription || actionText || (showExplore && !isNonRoutable);
 
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
