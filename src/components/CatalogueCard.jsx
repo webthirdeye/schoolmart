@@ -12,7 +12,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
       <div 
-        className={`relative overflow-hidden rounded-[30px] border border-gray-100 group transition-all duration-500 bg-white flex flex-col ${isSelected ? `ring-4 ${ringColor} shadow-2xl scale-[1.02]` : 'hover:scale-[1.01] hover:shadow-lg'}`}
+        className={`relative overflow-hidden rounded-[30px] border border-gray-100 group transition-all duration-500 bg-white flex flex-col ${isSelected ? `ring-4 ${ringColor} shadow-2xl` : 'hover:shadow-lg'}`}
         onClick={isNonRoutable ? undefined : onClick}
       >
         {/* Image Container - Locked Aspect Ratio */}
@@ -20,7 +20,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
           <img 
             src={formatImgUrl(work.image || work.images?.[0] || work.img || "")} 
             alt={work.name || work.title} 
-            className={`w-full h-full object-cover transition-all duration-700 ${isNonRoutable ? '' : 'group-hover:scale-110'}`} 
+            className={`w-full h-full object-cover transition-all duration-700`} 
           />
           {/* FLOATING ACTION ICON */}
           {!isNonRoutable && (
@@ -69,8 +69,8 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
                   )}
                   
                   {showExplore && !isNonRoutable && (
-                     <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1 shrink-0 ml-auto">
-                        Explore <ArrowRight size={10} className="text-gray-300" />
+                     <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest transition-colors flex items-center gap-1 shrink-0 ml-auto group-hover:text-sm-blue">
+                        Explore <ArrowRight size={10} className="text-gray-300 group-hover:text-sm-blue transition-colors" />
                      </span>
                   )}
                </div>
