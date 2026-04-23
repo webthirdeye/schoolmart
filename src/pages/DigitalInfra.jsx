@@ -56,7 +56,7 @@ const DigitalInfra = () => {
     <main className="min-h-screen bg-white pb-12">
       <div className="max-w-7xl mx-auto px-4">
         {/* MODERN TECH HERO */}
-        <section className="pt-6 pb-2 grid grid-cols-1 lg:grid-cols-12 gap-4 h-auto lg:h-[360px]">
+        <section className="pt-6 pb-2 grid grid-cols-1 lg:grid-cols-12 gap-4 items-stretch">
            <div className="lg:col-span-8 rounded-[30px] overflow-hidden relative shadow-lg group border border-gray-100 min-h-[300px] lg:h-full bg-gray-50">
               <CMSMedia 
                 mediaType={heroBlock.mediaType} 
