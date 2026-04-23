@@ -82,13 +82,13 @@ const Sports = () => {
                   className={`flex-1 rounded-[40px] p-8 flex flex-col justify-between group overflow-hidden relative shadow-sm border ${i === 0 ? 'border-gray-800 shadow-2xl' : 'border-gray-100'}`}>
                   {i === 0 ? (
                     <>
-                      <h3 className="text-[13px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed text-sm-blue" dangerouslySetInnerHTML={{ __html: (card.title || 'Schedule Site Survey.').replace(/\n/g, '<br/>') }} />
+                      <h3 style={{ color: card.textColor || undefined }} className={`text-[13px] font-black uppercase tracking-[0.2em] relative z-10 leading-relaxed ${card.textColor ? '' : 'text-sm-blue'}`} dangerouslySetInnerHTML={{ __html: (card.title || 'Schedule Site Survey.').replace(/\n/g, '<br/>') }} />
                       <ArrowUpRight className="self-end text-white/20 group-hover:text-sm-blue transition-colors" size={32} />
                     </>
                   ) : (
                     <>
                       <Shield className="text-emerald-300" size={24} />
-                      <h3 className="text-[12px] font-black uppercase tracking-[0.1em] z-10 leading-relaxed text-emerald-600 group-hover:text-emerald-700" dangerouslySetInnerHTML={{ __html: (card.title || 'Safety Compliance Gold Certified.').replace(/\n/g, '<br/>') }} />
+                      <h3 style={{ color: card.textColor || undefined }} className={`text-[12px] font-black uppercase tracking-[0.1em] z-10 leading-relaxed ${card.textColor ? '' : 'text-emerald-600 group-hover:text-emerald-700'}`} dangerouslySetInnerHTML={{ __html: (card.title || 'Safety Compliance Gold Certified.').replace(/\n/g, '<br/>') }} />
                     </>
                   )}
                 </Link>

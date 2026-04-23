@@ -515,8 +515,9 @@ const BlockForms = {
         {(data.cards || []).map((c, i) => (
           <div key={i} className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm relative group">
             <button onClick={() => set('cards', data.cards.filter((_, j) => j !== i))} className="absolute top-4 right-4 text-red-300 hover:text-red-500"><Trash2 size={16}/></button>
-            <div className="grid grid-cols-2 gap-4 mb-4">
+            <div className="grid grid-cols-3 gap-4 mb-4">
               <ColorInput label="Card DNA Color" value={c.bgColor} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], bgColor: v }; set('cards', t); }} />
+              <ColorInput label="Card Text Color" value={c.textColor} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], textColor: v }; set('cards', t); }} />
               <Field label="Redirection Route"><TextInput value={c.link} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], link: v }; set('cards', t); }} /></Field>
             </div>
             <Field label="Card Display Label (HTML allowed)"><TextArea value={c.title} onChange={v => { const t = [...data.cards]; t[i] = { ...t[i], title: v }; set('cards', t); }} rows={2} /></Field>
