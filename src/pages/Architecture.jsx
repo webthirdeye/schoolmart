@@ -62,8 +62,8 @@ const Architecture = () => {
               <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[13px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
                  <Stars size={12} className="inline mr-2" /> {heroBlock.badge || "Global Studio 2025"}
               </div>
-              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl md:text-6xl font-black font-heading leading-tight mb-6 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'School <br /> Building <br /> Design' }} />
-              <p className="text-gray-400 text-[13px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10">
+              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl md:text-6xl font-black font-heading leading-tight mb-6 tracking-tighter uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'School <br /> Building <br /> Design' }} />
+              <p style={{ color: heroBlock.textColor || undefined }} className={`text-[13px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10 ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                  {heroBlock.subtitle || "NEP-READY CAMPUS PLANNING BY EXPERT ARCHITECTS"}
               </p>
            </div>

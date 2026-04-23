@@ -54,13 +54,13 @@ const Science = () => {
 
             <section className="pt-4 pb-6 grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-4 items-stretch">
                {/* TEXT BLOCK */}
-               <div className="lg:col-span-5 bg-white rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[300px] lg:min-h-[400px]">
+               <div className="lg:col-span-5 rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group min-h-[300px] lg:min-h-[400px]" style={{ backgroundColor: heroBlock.bgColor || ( 'bg-white' === 'bg-white' ? '#ffffff' : '#f9fafb' ) }}>
                   <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-50 rounded-full -mr-16 -mt-16 blur-3xl" />
                   <div className="px-3 py-1 bg-emerald-50 text-emerald-600 font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-6 w-fit border border-emerald-100 relative z-10">
                      <Activity size={12} className="inline mr-2 animate-pulse" /> {heroBlock.badge || "Experimental Discovery 2025"}
                   </div>
-                  <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl lg:text-6xl font-black font-heading leading-[0.9] mb-8 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Science <br/> <span class=\"text-emerald-500 italic font-serif lowercase tracking-normal\">is</span> <br/> Pure Fun." }} />
-                  <p className="text-gray-400 text-[12px] lg:text-[13px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10">
+                  <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl lg:text-6xl font-black font-heading leading-[0.9] mb-8 tracking-tighter uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Science <br/> <span class=\"text-emerald-500 italic font-serif lowercase tracking-normal\">is</span> <br/> Pure Fun." }} />
+                  <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] lg:text-[13px] font-bold uppercase tracking-widest max-w-sm leading-loose relative z-10 ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                      {heroBlock.subtitle || "From periodic tables to precision workbenches, we create spaces where curiosity triggers action."}
                   </p>
                </div>

@@ -75,12 +75,12 @@ const Furniture = () => {
            </div>
 
            <div className="lg:col-span-5 flex flex-col gap-3">
-              <div className="flex-grow bg-gray-50 rounded-[40px] p-8 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group">
+              <div className="flex-grow rounded-[40px] p-8 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group" style={{ backgroundColor: heroBlock.bgColor || ( 'bg-gray-50' === 'bg-white' ? '#ffffff' : '#f9fafb' ) }}>
                  <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[13px] uppercase tracking-[0.2em] mb-4 w-fit scale-90">
                     <Sofa size={12} className="inline mr-2" /> {heroBlock.badge || "2025 Collection"}
                  </div>
-                 <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl font-black font-heading leading-tight mb-4 tracking-tighter text-gray-900 uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'School <br/> <span className="text-sm-blue italic font-serif lowercase tracking-normal">Furniture</span> <br/> Solutions.' }} />
-                  <p className="text-gray-400 text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose">
+                 <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl font-black font-heading leading-tight mb-4 tracking-tighter uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'School <br/> <span className="text-sm-blue italic font-serif lowercase tracking-normal">Furniture</span> <br/> Solutions.' }} />
+                  <p style={{ color: heroBlock.textColor || undefined }} className={`text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                      {heroBlock.subtitle || "1200+ ergonomic products designed for inspiring spaces."}
                   </p>
                </div>

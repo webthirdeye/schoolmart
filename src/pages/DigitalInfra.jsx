@@ -85,7 +85,7 @@ const DigitalInfra = () => {
                     <Zap size={14} className="inline mr-2" /> {heroBlock.badge || "Digital Transformation 2025"}
                  </div>
                  <h1 className="text-3xl lg:text-4xl font-black font-heading leading-tight mb-4 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'Future <br/> Digital.' }} />
-                 <p className="text-gray-400 text-[12px] font-bold uppercase tracking-widest max-w-xs leading-relaxed relative z-10">
+                 <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] font-bold uppercase tracking-widest max-w-xs leading-relaxed relative z-10 ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                     {heroBlock.subtitle || "Cutting-edge Ed-Tech and campus-wide smart infrastructure."}
                  </p>
               </div>

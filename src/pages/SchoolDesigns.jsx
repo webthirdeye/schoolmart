@@ -65,8 +65,8 @@ const SchoolDesigns = () => {
               <div className="px-3 py-1 bg-gray-900 text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-6 w-fit scale-90 relative z-10">
                  <Stars size={12} className="inline mr-2" /> {heroBlock.badge || "Design Studio 2024"}
               </div>
-              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl md:text-6xl font-black font-heading leading-[0.9] mb-6 tracking-tighter text-gray-900 uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Imagine <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">the</span> <br/> Infinite." }} />
-              <p className="text-gray-400 text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose relative z-10">
+              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl md:text-6xl font-black font-heading leading-[0.9] mb-6 tracking-tighter uppercase relative z-10" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || "Imagine <br/> <span class=\"text-sm-blue italic font-serif lowercase tracking-normal\">the</span> <br/> Infinite." }} />
+              <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose relative z-10 ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                  {heroBlock.subtitle || "We create non-linear, adaptive spaces where students explore, discover, and flourish."}
               </p>
            </div>

@@ -52,12 +52,12 @@ const Sports = () => {
         
         <section className="pt-4 pb-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-stretch">
            {/* COLUMN 1 - STORY (SPAN 5) */}
-           <div className="md:col-span-5 bg-white rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group">
+           <div className="md:col-span-5 rounded-[40px] p-8 lg:p-14 flex flex-col justify-center border border-gray-100 shadow-sm relative overflow-hidden group" style={{ backgroundColor: heroBlock.bgColor || ( 'bg-white' === 'bg-white' ? '#ffffff' : '#f9fafb' ) }}>
               <div className="px-3 py-1 bg-sm-blue text-white font-black rounded-full text-[8px] uppercase tracking-[0.2em] mb-4 w-fit scale-90">
                  <Zap size={12} className="inline mr-2" /> {heroBlock.badge || "Performance 2025"}
               </div>
-              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl lg:text-5xl font-black font-heading leading-[0.9] mb-4 tracking-tighter text-gray-900 uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'Built <br/> <span class="text-sm-blue italic font-serif lowercase tracking-normal">for</span> <br/> Champions.' }} />
-              <p className="text-gray-400 text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose">
+              <h1 style={{ color: heroBlock.textColor || undefined }} className="text-4xl lg:text-5xl font-black font-heading leading-[0.9] mb-4 tracking-tighter uppercase" dangerouslySetInnerHTML={{ __html: heroBlock.titleHtml || 'Built <br/> <span class="text-sm-blue italic font-serif lowercase tracking-normal">for</span> <br/> Champions.' }} />
+              <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] md:text-[13px] font-bold uppercase tracking-widest max-w-xs leading-loose ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                  {heroBlock.subtitle || "Engineering high-performance athletic surfaces for the next generation of athletes."}
               </p>
            </div>
@@ -162,7 +162,7 @@ const Sports = () => {
             
            <div className="bg-white p-12 lg:p-16 rounded-[40px] shadow-sm border border-gray-100">
               <h2 className="text-3xl lg:text-5xl font-black text-gray-900 font-heading mb-8 leading-[0.9] uppercase tracking-tighter" dangerouslySetInnerHTML={{ __html: blocks?.info_split_grid?.heading || 'High <span class="text-sm-blue italic font-serif lowercase tracking-normal">Impact</span> Performance.' }} />
-              <p className="text-gray-400 text-[12px] font-bold uppercase tracking-widest mb-10 leading-relaxed">
+              <p style={{ color: heroBlock.textColor || undefined }} className={`text-[12px] font-bold uppercase tracking-widest mb-10 leading-relaxed ${heroBlock.textColor ? 'opacity-80' : 'text-gray-400'}`}>
                  {blocks?.info_split_grid?.description || 'Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability.'}
               </p>
               <div className="grid grid-cols-2 gap-4">
