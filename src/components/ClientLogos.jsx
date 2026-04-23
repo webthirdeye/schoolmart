@@ -30,11 +30,13 @@ const ClientLogos = () => {
   const { data } = useCMSBlock('home', 'partners', DEFAULTS);
   const d = { ...DEFAULTS, ...data };
 
-  const clients = (d.clients || DEFAULTS.clients).map((c, i) => ({
-    ...c,
-    icon: ICON_MAP[c.icon] || ICONS_LIST[i % ICONS_LIST.length],
-    color: c.color || COLORS[i % COLORS.length],
-  }));
+  const clients = (d.clients || DEFAULTS.clients)
+    .filter(c => c && c.name && c.name.trim() !== '')
+    .map((c, i) => ({
+      ...c,
+      icon: ICON_MAP[c.icon] || ICONS_LIST[i % ICONS_LIST.length],
+      color: c.color || COLORS[i % COLORS.length],
+    }));
 
   // Ensure enough items to fill the marquee (at least 20 entries for smooth scroll)
   const minItems = 20;

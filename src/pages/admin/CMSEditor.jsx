@@ -855,7 +855,7 @@ const BlockForms = {
       
       <SectionTitle>Partner School Names (Ticker)</SectionTitle>
       <Field label="School Names" hint="One school name per line. These scroll in the marquee ticker.">
-        <TextArea value={(data?.clients || []).map(c => typeof c === 'string' ? c : c.name).join('\n')} onChange={v => set('clients', v.split('\n').map(s => s.trim()).filter(Boolean).map(name => ({ name })))} rows={8} placeholder="AVN Vida International School\nDRS International School\nDelhi Public School" />
+        <TextArea value={(data?.clients || []).map(c => typeof c === 'string' ? c : c.name).join('\n')} onChange={v => set('clients', v.split('\n').map(s => s.trimEnd()).map(name => ({ name })))} rows={8} placeholder="AVN Vida International School\nDRS International School\nDelhi Public School" />
       </Field>
     </div>
   ),
