@@ -20,7 +20,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
           <img 
             src={formatImgUrl(work.image || work.images?.[0] || work.img || "")} 
             alt={work.name || work.title} 
-            className={`w-full h-full object-cover transition-all duration-700`} 
+            className={`w-full h-full object-cover transition-all duration-700 ${isNonRoutable ? '' : 'group-hover:scale-110'}`} 
           />
           {/* FLOATING ACTION ICON */}
           {!isNonRoutable && (
@@ -69,8 +69,8 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
                   )}
                   
                   {showExplore && !isNonRoutable && (
-                     <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest transition-colors flex items-center gap-1 shrink-0 ml-auto group-hover:text-sm-blue">
-                        Explore <ArrowRight size={10} className="text-gray-300 group-hover:text-sm-blue transition-colors" />
+                     <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1 shrink-0 ml-auto">
+                        Explore <ArrowRight size={10} className="text-gray-300" />
                      </span>
                   )}
                </div>
