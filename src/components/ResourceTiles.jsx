@@ -167,7 +167,7 @@ const ResourceTiles = () => {
                       </div>
                       
                       {/* Overlay Content */}
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent flex flex-col justify-end p-5">
+                      <div className="absolute inset-0 flex flex-col justify-end p-5">
                         <h3 className="text-white font-black text-[18px] font-heading leading-tight uppercase tracking-wide mb-1 group-hover:text-sm-yellow transition-colors duration-300">
                           {tile.title}
                         </h3>
