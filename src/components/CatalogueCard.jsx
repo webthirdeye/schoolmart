@@ -3,7 +3,8 @@ import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { formatImgUrl } from '../utils/formatters';
 
 const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeColor = 'bg-[#004a8e]', ringColor = 'ring-blue-500', textColor = 'text-[#004a8e]', showExplore = true }) => {
-  const isNonRoutable = work.ctaLink?.toLowerCase() === 'none';
+  // If ctaLink is missing, empty, or 'none', the card is static.
+  const isNonRoutable = !work.ctaLink || work.ctaLink.trim() === '' || work.ctaLink.toLowerCase() === 'none';
 
   return (
     <div className={`group break-inside-avoid mb-6 ${isNonRoutable ? '' : 'cursor-pointer'}`}>
@@ -63,7 +64,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
                    </button>
                 )}
                 
-                {showExplore && !isNonRoutable && (
+                {showExplore && (
                    <span className="text-[11px] text-gray-300 font-black uppercase tracking-widest group-hover:translate-x-1 transition-transform flex items-center gap-1 shrink-0 ml-auto">
                       Explore <ArrowRight size={10} className="text-gray-300" />
                    </span>
