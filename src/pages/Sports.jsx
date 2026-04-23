@@ -166,7 +166,7 @@ const Sports = () => {
                  {blocks?.info_split_grid?.description || 'Shock-absorption technology for elite safety and performance. Our surfaces are tested in professional athletic labs to ensure long-term durability.'}
               </p>
               <div className="grid grid-cols-2 gap-4">
-                 {(blocks?.info_split_grid?.points || ['FIBA Compliant', 'Anti-Skid', 'Heat Proof', '10 Yr Warranty']).map((item, i) => (
+                 {(blocks?.info_split_grid?.points || ['FIBA Compliant', 'Anti-Skid', 'Heat Proof', '10 Yr Warranty']).filter(p => (typeof p === 'string' ? p : p.text)).map((item, i) => (
                     <div key={i} className="flex items-center gap-3 text-[12px] font-black text-gray-900 uppercase tracking-widest bg-gray-50 p-4 rounded-2xl border border-transparent hover:border-sm-blue/20 transition-all">
                        <CheckCircle2 size={16} className="text-sm-blue" />
                        {typeof item === 'string' ? item : item.text}

@@ -544,7 +544,7 @@ const BlockForms = {
       <Field label="Points (One per line)" hint="These map to the grid blocks with checkmarks.">
         <TextArea 
           value={(data?.points || []).map(p => typeof p === 'string' ? p : p.text).join('\n')} 
-          onChange={v => set('points', v.split('\n').map(s => s.trim()).filter(Boolean))} 
+          onChange={v => set('points', v.split('\n').map(s => s.trimEnd()))} 
           rows={4} 
         />
       </Field>
