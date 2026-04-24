@@ -24,12 +24,24 @@ exports.submitInquiry = async (req, res) => {
 
     // Notify Admin (Optional but recommended)
     try {
-      if (process.env.ADMIN_EMAIL) {
+      if (process.env.ADMIN_EMAIL || process.env.SMTP_USER) {
         await sendEmail({
-          email: process.env.ADMIN_EMAIL,
+          email: process.env.ADMIN_EMAIL || process.env.SMTP_USER,
           subject: subject || 'New Quote Request - SchoolMart',
-          message: `New inquiry from ${displayName}.\nPhone: ${phone}\nPin Code: ${pinCode || 'N/A'}\nMessage: ${message}`,
-          html: `<h1>New Quote Request</h1><p><strong>School:</strong> ${displayName}</p><p><strong>Phone:</strong> ${phone}</p><p><strong>Pin Code:</strong> ${pinCode || 'N/A'}</p><p><strong>Message:</strong> ${message}</p>`
+          message: `New inquiry from ${displayName}. Phone: ${phone}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; border: 1px solid #eee; padding: 20px;">
+              <h2 style="color: #004aad;">New Quote Request</h2>
+              <table style="width: 100%; border-collapse: collapse;">
+                <tr><td style="padding: 10px; border-bottom: 1px solid #eee; background: #f9f9f9;"><strong>School/Name</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee; background: #f9f9f9;">${displayName}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Email</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${email || 'N/A'}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Phone</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${phone}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Pin Code</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${pinCode || 'N/A'}</td></tr>
+                <tr><td style="padding: 10px; border-bottom: 1px solid #eee;"><strong>Message</strong></td><td style="padding: 10px; border-bottom: 1px solid #eee;">${message}</td></tr>
+              </table>
+              <p style="margin-top: 20px; font-size: 12px; color: #666;">Source: ${subject || 'Direct Inquiry'}</p>
+            </div>
+          `
         });
       }
     } catch (emailErr) {
