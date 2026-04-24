@@ -24,29 +24,34 @@ const sendEmail = async (options) => {
     return;
   }
 
-  // ── [2] Gmail API via OAuth2 (HTTPS Port 443) ──
+  // ── [2] Pure Gmail REST API (HTTPS Port 443) ──
   if (process.env.GMAIL_CLIENT_ID && process.env.GMAIL_CLIENT_SECRET && process.env.GMAIL_REFRESH_TOKEN) {
-    console.log('[sendEmail] Using Nodemailer OAuth2 (HTTPS)');
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: process.env.SMTP_USER.replace(/^["']|["']$/g, ''),
-        clientId: process.env.GMAIL_CLIENT_ID.replace(/^["']|["']$/g, ''),
-        clientSecret: process.env.GMAIL_CLIENT_SECRET.replace(/^["']|["']$/g, ''),
-        refreshToken: process.env.GMAIL_REFRESH_TOKEN.replace(/^["']|["']$/g, ''),
-      },
-    });
+    console.log('[sendEmail] Using PURE Gmail REST API (Port 443)');
+    const OAuth2 = google.auth.OAuth2;
+    const oauth2Client = new OAuth2(
+      process.env.GMAIL_CLIENT_ID.replace(/^["']|["']$/g, ''),
+      process.env.GMAIL_CLIENT_SECRET.replace(/^["']|["']$/g, ''),
+      "https://developers.google.com/oauthplayground"
+    );
+    oauth2Client.setCredentials({ refresh_token: process.env.GMAIL_REFRESH_TOKEN.replace(/^["']|["']$/g, '') });
 
-    const info = await transporter.sendMail({
-      from: `"${fromName}" <${process.env.SMTP_USER.replace(/^["']|["']$/g, '')}>`,
-      to: options.email,
-      subject: options.subject,
-      text: options.message,
-      html: options.html || options.message,
-    });
+    const gmail = google.gmail({ version: 'v1', auth: oauth2Client });
+    
+    // Build raw email compliant with RFC 2822
+    const str = [
+      `Content-Type: text/html; charset=utf-8`,
+      `MIME-Version: 1.0`,
+      `To: ${options.email}`,
+      `From: ${fromName} <${process.env.SMTP_USER.replace(/^["']|["']$/g, '')}>`,
+      `Subject: =?utf-8?B?${Buffer.from(options.subject).toString('base64')}?=`,
+      '',
+      options.html || options.message
+    ].join('\n');
 
-    console.log('[sendEmail] Gmail OAuth2 delivered:', info.messageId);
+    const encodedMail = Buffer.from(str).toString('base64').replace(/\+/g, '-').replace(/\//g, '_').replace(/=+$/, '');
+    
+    const res = await gmail.users.messages.send({ userId: 'me', requestBody: { raw: encodedMail } });
+    console.log('[sendEmail] Pure Gmail REST API delivered:', res.data.id);
     return;
   }
 
