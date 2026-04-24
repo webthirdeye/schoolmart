@@ -29,7 +29,8 @@ const ContactUs = () => {
             const res = await submitContact({
                 schoolName: formData.schoolName,
                 phone: formData.phone,
-                message: `${formData.message} (City: ${formData.city})`,
+                pinCode: formData.city, // Using city as pinCode field for consistency in contact model
+                message: formData.message,
                 subject: 'Inquiry from Contact Us Page'
             });
             if (res.error) throw new Error(res.error);

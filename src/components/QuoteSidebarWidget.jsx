@@ -12,7 +12,9 @@ const QuoteSidebarWidget = ({ sourcePage = 'Website' }) => {
       await submitQuote({
         name: quoteForm.schoolName,
         phone: quoteForm.phone,
-        message: `PIN: ${quoteForm.pinCode}\nRequirements: ${quoteForm.requirements}\nSource: ${sourcePage} Page`
+        pinCode: quoteForm.pinCode,
+        message: quoteForm.requirements,
+        subject: `Quote Request from ${sourcePage} Page`
       });
       setQuoteStatus('success');
       setQuoteForm({ schoolName: '', phone: '', pinCode: '', requirements: '' });
