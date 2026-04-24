@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { getProducts } from '../services/api';
 import { Link, useNavigate } from 'react-router-dom';
-import { Sofa, GraduationCap, Library, FlaskConical, Building2, ArrowRight, Download, Filter, ChevronDown, CheckCircle2, Award, FileText, Stars } from 'lucide-react';
+import { Sofa, GraduationCap, Library, FlaskConical, Building2, ArrowRight, Download, Filter, ChevronDown, CheckCircle2, Award, FileText, Stars, Calculator } from 'lucide-react';
 import { handleProductClick } from '../utils/navigation';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
@@ -130,6 +130,19 @@ const Furniture = () => {
                         </button>
                      ))}
                   </div>
+                </div>
+                {/* GET A QUOTE BOX */}
+                <div className="bg-gray-900 rounded-2xl p-6 flex flex-col items-center text-center shadow-xl mt-8">
+                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4">
+                      <Calculator size={20} className="text-white" />
+                   </div>
+                   <h4 className="text-white text-[13px] font-black uppercase tracking-[0.1em] mb-2">Need a Custom Quote?</h4>
+                   <p className="text-gray-400 text-[11px] uppercase tracking-widest leading-relaxed mb-6">
+                      Get personalized pricing for bulk furniture orders and institutional setups.
+                   </p>
+                   <Link to="/contact-us" className="w-full py-3 bg-sm-blue text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-colors shadow-lg shadow-blue-500/20 block">
+                      Request Quote
+                   </Link>
                 </div>
            </div>
 
