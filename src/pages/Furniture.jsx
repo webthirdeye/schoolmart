@@ -132,16 +132,19 @@ const Furniture = () => {
                   </div>
                 </div>
                 {/* GET A QUOTE BOX */}
-                <div className="bg-gray-900 rounded-2xl p-6 flex flex-col items-center text-center shadow-xl mt-8">
-                   <div className="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mb-4">
-                      <Calculator size={20} className="text-white" />
+                <div className="bg-[#2d6a26] rounded-2xl p-6 flex flex-col items-start text-left shadow-xl mt-8 relative overflow-hidden">
+                   <div className="absolute -top-4 -right-4 opacity-10">
+                      <Calculator size={100} className="text-white" />
                    </div>
-                   <h4 className="text-white text-[13px] font-black uppercase tracking-[0.1em] mb-2">Need a Custom Quote?</h4>
-                   <p className="text-gray-400 text-[11px] uppercase tracking-widest leading-relaxed mb-6">
+                   <h4 className="text-white/90 text-[10px] font-black uppercase tracking-widest mb-3 relative z-10">Furniture Solutions</h4>
+                   <h3 className="text-white text-2xl font-serif font-black uppercase tracking-tight mb-4 leading-none relative z-10">
+                      NEED A CUSTOM QUOTE?
+                   </h3>
+                   <p className="text-white/80 text-[13px] font-medium leading-relaxed mb-6 relative z-10">
                       Get personalized pricing for bulk furniture orders and institutional setups.
                    </p>
-                   <Link to="/contact-us" className="w-full py-3 bg-sm-blue text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-gray-900 transition-colors shadow-lg shadow-blue-500/20 block">
-                      Request Quote
+                   <Link to="/contact-us" className="px-6 py-3 bg-[#af8c43] text-white rounded-xl text-[11px] font-black uppercase tracking-widest hover:bg-white hover:text-[#2d6a26] transition-colors flex items-center gap-2 relative z-10">
+                      REQUEST QUOTE <ArrowRight size={14} />
                    </Link>
                 </div>
            </div>
