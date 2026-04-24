@@ -72,7 +72,7 @@ const Libraries = () => {
            </div>
            
             <div className="md:col-span-4 flex flex-col gap-3">
-               <div className="bg-white rounded-[40px] overflow-hidden relative shadow-sm group border border-gray-100 flex-grow">
+               <div className="bg-white rounded-[40px] overflow-hidden relative shadow-sm group border border-gray-100 h-[200px] lg:h-[240px]">
                   <CMSMedia 
                      mediaType={heroBlock.mediaType} 
                      mediaUrl={heroBlock.mediaUrl} 
