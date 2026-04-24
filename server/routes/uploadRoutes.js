@@ -85,4 +85,30 @@ router.get('/export', (req, res) => {
   });
 });
 
+// Admin Restore Route: Upload a .tar.gz backup and extract it into uploads
+router.post('/import', upload.single('backup'), (req, res) => {
+  const { exec } = require('child_process');
+  
+  if (!req.file) {
+    return res.status(400).json({ message: 'No backup file provided' });
+  }
+
+  const tarballPath = req.file.path;
+
+  // Extract the tarball into the upload directory
+  exec(`tar -xzf "${tarballPath}" -C "${uploadDir}"`, (error, stdout, stderr) => {
+    // Delete the uploaded tarball after extraction
+    fs.unlink(tarballPath, (err) => {
+      if (err) console.error('Failed to delete temporary tarball:', err);
+    });
+
+    if (error) {
+      console.error(`tar extraction error: ${error.message}`);
+      return res.status(500).json({ message: 'Failed to extract backup' });
+    }
+
+    res.json({ message: 'Uploads successfully restored!' });
+  });
+});
+
 module.exports = router;
