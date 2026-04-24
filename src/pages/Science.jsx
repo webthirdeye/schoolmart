@@ -7,6 +7,7 @@ import { FlaskConical, Beaker, Atom, Microscope, Dna, Zap, ArrowRight, ArrowUpRi
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 import SidebarWidget from '../components/SidebarWidget';
 
 const Science = () => {
@@ -135,6 +136,9 @@ const Science = () => {
                      ))}
                   </div>
                 </div>
+
+                  <QuoteSidebarWidget sourcePage="Science" />
+
                </div>
 
                {/* MAIN CONTENT GALLERY */}

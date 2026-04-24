@@ -7,6 +7,7 @@ import { Laptop, Monitor, Wifi, Cpu, Globe, ArrowRight, ArrowUpRight, ShieldChec
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 import SidebarWidget from '../components/SidebarWidget';
 
 const DigitalInfra = () => {
@@ -145,6 +146,9 @@ const DigitalInfra = () => {
                      ))}
                   </div>
                 </div>
+
+              <QuoteSidebarWidget sourcePage="Digital Infra" />
+
            </div>
 
            {/* MAIN CONTENT GALLERY */}

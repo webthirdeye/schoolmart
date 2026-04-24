@@ -7,6 +7,7 @@ import { Compass, Box, Layers, Calculator, Square, PieChart, ArrowRight, ArrowUp
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 import SidebarWidget from '../components/SidebarWidget';
 
 const Mathematics = () => {
@@ -126,6 +127,9 @@ const Mathematics = () => {
                         ))}
                      </div>
                   </div>
+
+                  <QuoteSidebarWidget sourcePage="Mathematics" />
+
                </div>
 
                {/* MAIN CONTENT GALLERY */}

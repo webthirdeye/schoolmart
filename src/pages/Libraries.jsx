@@ -8,6 +8,7 @@ import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
 import SidebarWidget from '../components/SidebarWidget';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 
 const Libraries = () => {
   const navigate = useNavigate();
@@ -136,6 +137,7 @@ const Libraries = () => {
                      ))}
                   </div>
                </div>
+               <QuoteSidebarWidget sourcePage="Libraries" />
            </div>
 
            {/* MAIN CONTENT GALLERY */}

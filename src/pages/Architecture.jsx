@@ -7,6 +7,7 @@ import { Building2, Compass, Pencil, Lightbulb, Layout, ArrowRight, ArrowUpRight
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 import SidebarWidget from '../components/SidebarWidget';
 
 const Architecture = () => {
@@ -119,6 +120,9 @@ const Architecture = () => {
                      ))}
                   </div>
                </div>
+
+              <QuoteSidebarWidget sourcePage="Architecture" />
+
            </div>
 
            {/* MAIN CONTENT GALLERY */}

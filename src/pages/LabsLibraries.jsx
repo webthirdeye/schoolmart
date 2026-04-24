@@ -7,6 +7,7 @@ import { FlaskConical, Beaker, Atom, Microscope, Dna, Zap, ArrowRight, ArrowUpRi
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 
 const LabsLibraries = () => {
   const navigate = useNavigate();
@@ -122,6 +123,9 @@ const LabsLibraries = () => {
                      ))}
                   </div>
                </div>
+
+              <QuoteSidebarWidget sourcePage="Labs & Libraries" />
+
            </div>
 
            {/* MAIN CONTENT GALLERY */}

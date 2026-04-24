@@ -7,6 +7,7 @@ import { Layout, Palette, Pencil, Ruler, Layers, Building, ArrowRight, ArrowUpRi
 import CMSMedia from '../components/ui/CMSMedia';
 import { handleProductClick } from '../utils/navigation';
 import CatalogueCard from '../components/CatalogueCard';
+import QuoteSidebarWidget from '../components/QuoteSidebarWidget';
 
 const SchoolDesigns = () => {
   const navigate = useNavigate();
@@ -126,6 +127,7 @@ const SchoolDesigns = () => {
                      ))}
                   </div>
                </div>
+               <QuoteSidebarWidget sourcePage="School Designs" />
            </div>
 
            {/* MAIN CONTENT GALLERY */}
