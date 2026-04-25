@@ -34,10 +34,38 @@ const upload = multer({
 });
 
 // Single File Upload
-router.post('/', upload.single('file'), (req, res) => {
-  if (!req.file) return res.status(400).json({ message: 'No file uploaded' });
+router.post('/', (req, res, next) => {
+  console.log('Upload request received');
+  console.log('Headers:', req.headers);
+  next();
+}, upload.single('file'), (req, res) => {
+  if (!req.file) {
+    console.error('No file in request');
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+  console.log('File uploaded successfully:', req.file.filename);
   const url = `/uploads/${req.file.filename}`;
   res.json({ url, filename: req.file.filename, message: 'Upload successful' });
+});
+
+// Debug Route to check directory status
+router.get('/status', (req, res) => {
+  try {
+    const isWritable = fs.accessSync(uploadDir, fs.constants.W_OK) === undefined;
+    res.json({
+      uploadDir,
+      exists: fs.existsSync(uploadDir),
+      writable: true,
+      env: process.env.UPLOAD_DIR || 'not set'
+    });
+  } catch (err) {
+    res.json({
+      uploadDir,
+      exists: fs.existsSync(uploadDir),
+      writable: false,
+      error: err.message
+    });
+  }
 });
 
 // Multiple Files Upload
