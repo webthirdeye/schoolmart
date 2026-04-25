@@ -98,15 +98,12 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   await connectDB();
   
-  // Sync database (updates tables to match models)
+  // Sync database - disabled 'alter' in production for speed
   try {
-    await sequelize.sync({ alter: true });
+    await sequelize.sync(); // Fast sync
     console.log('Database synced');
   } catch (err) {
-    console.warn('⚠️  sync({ alter: true }) failed:', err.message);
-    console.log('Retrying with safe sync (no alter)...');
-    await sequelize.sync();
-    console.log('Database synced (safe mode)');
+    console.error('Database sync failed:', err.message);
   }
 
   app.listen(PORT, () => {

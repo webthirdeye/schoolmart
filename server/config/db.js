@@ -21,8 +21,8 @@ const sequelize = process.env.DATABASE_URL
         dialect: process.env.DB_DIALECT || 'postgres',
         logging: false,
         pool: {
-          max: 5,
-          min: 0,
+          max: 20,
+          min: 2,
           acquire: 30000,
           idle: 10000
         }
