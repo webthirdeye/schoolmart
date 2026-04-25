@@ -27,6 +27,8 @@ exports.getProducts = async (req, res) => {
       limit: limit ? parseInt(limit) : undefined,
       order: [['createdAt', 'DESC']]
     });
+    // Set Cache-Control for Vercel/Browser caching (1 min fresh, 10 min stale-while-revalidate)
+    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=600');
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });

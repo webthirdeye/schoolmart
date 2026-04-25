@@ -64,6 +64,8 @@ exports.getPageContent = async (req, res) => {
       };
     });
 
+    // Set Cache-Control for Vercel/Browser caching (1 min fresh, 10 min stale-while-revalidate)
+    res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=600');
     res.json({ page, blocks: blockMap });
   } catch (err) {
     res.status(500).json({ message: err.message });
