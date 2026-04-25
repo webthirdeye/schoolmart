@@ -1,11 +1,13 @@
 const express = require('express');
 const cors = require('cors');
+const compression = require('compression');
 require('dotenv').config();
 const dns = require('dns');
 dns.setDefaultResultOrder('ipv4first');
 const { connectDB, sequelize } = require('./config/db');
 
 const app = express();
+app.use(compression()); // Optimize response sizes
 
 // Middleware — explicit CORS for Vercel ↔ Railway cross-origin
 const allowedOrigins = [

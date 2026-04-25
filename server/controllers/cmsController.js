@@ -15,28 +15,16 @@ const CANONICAL_SLUGS = new Set([
 // Get all pages — returns all registered pages in the database
 exports.getAllPages = async (req, res) => {
   try {
-    const pages = await CMSPage.findAll({ order: [['title', 'ASC']] });
-    
-    // Attach blocks to each page
-    const allBlocks = await CMSBlock.findAll({ order: [['order', 'ASC']] });
-    const blocksByPage = {};
-    allBlocks.forEach(b => {
-      if (!blocksByPage[b.pageSlug]) blocksByPage[b.pageSlug] = [];
-      blocksByPage[b.pageSlug].push({
-        id: b.id,
-        key: b.key,
-        type: b.type,
-        data: b.data,
-        isVisible: b.isVisible
-      });
+    // Only fetch metadata for the main list to keep response size small
+    const pages = await CMSPage.findAll({ 
+      attributes: ['slug', 'title'],
+      order: [['title', 'ASC']] 
     });
-
-    const result = pages.map(p => ({
-      ...p.toJSON(),
-      blocks: blocksByPage[p.slug] || []
-    }));
-
-    res.json(result);
+    
+    // We don't need to attach all blocks and all data here.
+    // The CMSEditor only needs the list of pages. 
+    // Data for a specific page is fetched when selected via getPageContent.
+    res.json(pages);
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

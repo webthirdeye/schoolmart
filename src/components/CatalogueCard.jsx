@@ -21,6 +21,7 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
             src={formatImgUrl(work.image || work.images?.[0] || work.img || "")} 
             alt={work.name || work.title} 
             className="w-full h-full object-cover transition-all duration-700" 
+            loading="lazy"
           />
           {/* FLOATING ACTION ICON */}
           {!isNonRoutable && (

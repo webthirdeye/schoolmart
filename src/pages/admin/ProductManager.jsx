@@ -611,7 +611,7 @@ export default function ProductManager({ fixedPage, liveCategories }) {
               {/* Image Area */}
               <div className="aspect-square bg-gray-50 p-3 relative flex items-center justify-center">
                 {p.images?.[0] ? (
-                  <img src={formatImgUrl(p.images[0])} alt={p.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" onError={e => e.target.src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800'} />
+                  <img src={formatImgUrl(p.images[0])} alt={p.name} className="w-full h-full object-contain group-hover:scale-105 transition-transform duration-500" loading="lazy" onError={e => e.target.src = 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=800'} />
                 ) : (
                   <Package size={40} className="text-gray-200" />
                 )}
