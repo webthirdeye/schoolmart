@@ -1792,6 +1792,21 @@ export default function CMSEditor() {
                                  <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest">MODULE ARCHETYPE: {block.type}</p>
                                </div>
                             </div>
+                            <button
+                              onClick={async () => {
+                                if (!window.confirm(`Delete block "${block.key || block.type}"? This cannot be undone.`)) return;
+                                try {
+                                  await deleteBlock(block.id);
+                                  setContent(content.filter(b => b.id !== block.id));
+                                } catch (err) {
+                                  alert('Delete failed: ' + err.message);
+                                }
+                              }}
+                              className="w-10 h-10 rounded-xl bg-red-50 text-red-400 flex items-center justify-center hover:bg-red-500 hover:text-white transition-all shadow-sm"
+                              title="Delete Block"
+                            >
+                              <Trash2 size={16} />
+                            </button>
                          </div>
                          <div className="p-10 bg-white">
                             {isValidForm ? (
