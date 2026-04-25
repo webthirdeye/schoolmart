@@ -23,7 +23,7 @@ export default function ImageUpload({ value, onChange, label = "Image" }) {
       const res = await uploadFile(file);
       onChange(res.url);
     } catch (err) {
-      setError('Upload failed');
+      setError(err.message || 'Upload failed');
     } finally {
       setUploading(false);
     }

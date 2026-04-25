@@ -20,11 +20,10 @@ export const formatImgUrl = (url) => {
 
   if (cleanUrl.includes('/uploads/') || cleanUrl.includes('localhost:5000')) {
     if (!isLocal) {
-       // On Vercel, always force images to Railway HTTPS
-       // Extract filename if it's a full URL or just the path
+       // On Vercel, use relative path which is handled by vercel.json rewrites
        const parts = cleanUrl.split('/uploads/');
        const filename = parts[parts.length - 1];
-       return encodeURI(`${PRODUCTION_BACKEND}/uploads/${filename}`);
+       return encodeURI(`/uploads/${filename}`);
     } else {
        // On Local, ensure it points to local backend (port 5000)
        if (cleanUrl.startsWith('/uploads/')) {

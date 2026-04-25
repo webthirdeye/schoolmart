@@ -1,5 +1,5 @@
 // src/services/api.js
-const API_URL = import.meta.env.VITE_API_URL
+export const API_URL = import.meta.env.VITE_API_URL
   || (window.location.hostname === 'localhost' ? 'http://localhost:5000/api' : '/api');
 
 const getHeaders = () => {
@@ -246,6 +246,12 @@ export const uploadFile = async (file) => {
     headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
     body: formData
   });
+  if (!res.ok) {
+    const text = await res.text();
+    let msg = 'Upload failed';
+    try { msg = JSON.parse(text).message || msg; } catch {}
+    throw new Error(msg);
+  }
   return await res.json();
 };
 
@@ -259,7 +265,9 @@ export const bulkUploadFiles = async (files) => {
   });
   if (!res.ok) {
     const text = await res.text();
-    try { const j = JSON.parse(text); throw new Error(j.message || 'Upload failed'); } catch(e) { if (e.message) throw e; throw new Error('Upload failed (server error)'); }
+    let msg = 'Bulk upload failed';
+    try { msg = JSON.parse(text).message || msg; } catch {}
+    throw new Error(msg);
   }
   return await res.json();
 };
