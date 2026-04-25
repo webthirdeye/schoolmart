@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, X, Loader2, Play, Image as ImageIcon } from 'lucide-react';
 import { uploadFile } from '../../services/api';
+import { formatImgUrl } from '../../utils/formatters';
 
 export default function MediaUpload({ value, onChange, label = "Media" }) {
   const [uploading, setUploading] = useState(false);
@@ -53,13 +54,13 @@ export default function MediaUpload({ value, onChange, label = "Media" }) {
           <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50 flex items-center justify-center">
             {isVideo(value) ? (
               <div className="w-full h-full bg-black flex items-center justify-center">
-                <video src={value} className="max-w-full max-h-full" muted />
+                <video src={formatImgUrl(value)} className="max-w-full max-h-full" muted />
                 <div className="absolute inset-0 flex items-center justify-center bg-black/20">
                   <Play size={32} className="text-white opacity-70" />
                 </div>
               </div>
             ) : (
-              <img src={value} alt="Preview" className="w-full h-full object-contain" />
+              <img src={formatImgUrl(value)} alt="Preview" className="w-full h-full object-contain" />
             )}
             
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">

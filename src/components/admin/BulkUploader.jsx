@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, X, Loader2, Copy, Check, FileText } from 'lucide-react';
 import { bulkUploadFiles } from '../../services/api';
+import { formatImgUrl } from '../../utils/formatters';
 
 export default function BulkUploader() {
   const [uploading, setUploading] = useState(false);
@@ -104,7 +105,7 @@ export default function BulkUploader() {
                   <tr key={idx} className="group hover:bg-gray-50/50 transition-colors">
                     <td className="py-4">
                       <div className="w-12 h-12 rounded-lg overflow-hidden border border-gray-100 bg-gray-50">
-                        <img src={res.url} alt="Uploaded" className="w-full h-full object-cover" />
+                        <img src={formatImgUrl(res.url)} alt="Uploaded" className="w-full h-full object-cover" />
                       </div>
                     </td>
                     <td className="py-4 text-xs font-bold text-gray-700">{res.originalName}</td>

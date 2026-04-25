@@ -17,14 +17,15 @@ export const formatImgUrl = (url) => {
     cleanUrl = cleanUrl.replace('http://', 'https://');
   }
 
-  if (cleanUrl.includes('/uploads/')) {
+  if (cleanUrl.includes('/uploads/') || cleanUrl.includes('localhost:5000')) {
     if (!isLocal) {
        // On Vercel, always force images to Railway HTTPS
        const filename = cleanUrl.split('/uploads/').pop();
        return `${PRODUCTION_BACKEND}/uploads/${filename}`;
-    } else if (cleanUrl.startsWith('/uploads/')) {
-       // If relative path on local, prefix with localhost:5000
-       return `http://localhost:5000${cleanUrl}`;
+    } else if (cleanUrl.startsWith('/uploads/') || cleanUrl.includes('localhost:5000')) {
+       // If relative path or hardcoded localhost on local, ensure it uses local 5000
+       if (cleanUrl.startsWith('/uploads/')) return `http://localhost:5000${cleanUrl}`;
+       return cleanUrl.replace('https://', 'http://').replace('http://', 'http://'); // just ensure it's http for local
     }
   }
 

@@ -1,6 +1,7 @@
 import { useState, useRef } from 'react';
 import { Upload, Image as ImageIcon, X, Loader2 } from 'lucide-react';
 import { uploadFile } from '../../services/api';
+import { formatImgUrl } from '../../utils/formatters';
 
 export default function ImageUpload({ value, onChange, label = "Image" }) {
   const [uploading, setUploading] = useState(false);
@@ -46,7 +47,7 @@ export default function ImageUpload({ value, onChange, label = "Image" }) {
       <div className="relative group">
         {value ? (
           <div className="relative aspect-video rounded-xl overflow-hidden border border-gray-100 shadow-sm bg-gray-50">
-            <img src={value} alt="Preview" className="w-full h-full object-contain" />
+            <img src={formatImgUrl(value)} alt="Preview" className="w-full h-full object-contain" />
             <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
               <button 
                 type="button"

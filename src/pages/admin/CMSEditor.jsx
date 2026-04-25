@@ -1,6 +1,7 @@
 // src/pages/admin/CMSEditor.jsx
 import { useEffect, useState } from 'react';
 import { getAllPages, getPage, updateBlock, addBlock, deleteBlock, deletePage, uploadFile, bulkRenameSubcategory, createPage } from '../../services/api';
+import { formatImgUrl } from '../../utils/formatters';
 import { clearCMSCache } from '../../hooks/useCMSBlock';
 import { 
   ChevronDown, ChevronRight, Trash2, Plus, Eye, EyeOff, Save, GripVertical, 
@@ -125,7 +126,7 @@ const TileEditor = ({ t, i, data, set }) => {
         className="w-full flex items-center gap-4 p-5 hover:bg-indigo-50/30 transition-all text-left group"
       >
         <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-[10px] font-black text-indigo-600 shrink-0">{i + 1}</div>
-        {t.img && <img src={t.img} alt="" className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0" />}
+        {t.img && <img src={formatImgUrl(t.img)} alt="" className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0" />}
         <div className="flex-1 min-w-0">
           <p className="text-[12px] font-black text-gray-900 uppercase tracking-widest truncate">{t.title || 'Untitled Tile'}</p>
           {t.subtitle && <p className="text-[10px] text-gray-400 font-medium truncate">{t.subtitle}</p>}

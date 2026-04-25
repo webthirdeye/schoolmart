@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getProducts } from '../services/api';
+import { formatImgUrl } from '../utils/formatters';
 import { 
     ArrowLeft, ShoppingCart, MessageSquare, Download, Share2, 
     ShieldCheck, Truck, RotateCcw, Award, CheckCircle2,
@@ -59,7 +60,7 @@ const ProductPost = () => {
                     <div className="space-y-6">
                         <div className="aspect-square rounded-[40px] overflow-hidden bg-gray-50 border border-gray-100 shadow-xl relative group">
                             <img 
-                                src={product.image} 
+                                src={formatImgUrl(product.image)} 
                                 alt={product.name} 
                                 className="w-full h-full object-contain p-12 group- transition-transform duration-700"
                             />
@@ -72,7 +73,7 @@ const ProductPost = () => {
                         <div className="grid grid-cols-4 gap-4">
                             {[1,2,3,4].map(i => (
                                 <div key={i} className="aspect-square rounded-2xl bg-gray-50 border border-gray-100 p-4 opacity-40 hover:opacity-100 transition-opacity cursor-pointer">
-                                    <img src={product.image} className="w-full h-full object-contain" alt="" />
+                                    <img src={formatImgUrl(product.image)} className="w-full h-full object-contain" alt="" />
                                 </div>
                             ))}
                         </div>

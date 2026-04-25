@@ -6,6 +6,7 @@ import { submitQuote } from '../services/api';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import ProductCarousel from './ProductCarousel';
 import SidebarWidget from './SidebarWidget';
+import { formatImgUrl } from '../utils/formatters';
 
 const tiles = [
   {
@@ -152,7 +153,7 @@ const ResourceTiles = () => {
                   >
                     <div className={`${tile.height} relative overflow-hidden bg-gray-50`}>
                       <img
-                        src={tile.img}
+                        src={formatImgUrl(tile.img)}
                         alt={tile.title}
                         className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-"
                         onError={(e) => {

@@ -2,6 +2,7 @@ import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles, Box, FileText } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
+import { formatImgUrl } from '../utils/formatters';
 
 // Fallback data for slugs not yet in the CMS
 const RESOURCE_DATA = {
@@ -155,7 +156,7 @@ const ResourcePost = () => {
                          
                          <div className="w-full h-full rounded-[60px] overflow-hidden shadow-[0_32px_64px_-16px_rgba(0,0,0,0.1)] border-[12px] border-white relative group">
                             <img 
-                                src={resource.image} 
+                                src={formatImgUrl(resource.image)} 
                                 alt={resource.title} 
                                 className="w-full h-full object-cover transition-transform duration-[2s] group-"
                                 onError={(e) => { e.target.src = 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200&q=80'; }}
