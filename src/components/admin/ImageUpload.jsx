@@ -12,8 +12,8 @@ export default function ImageUpload({ value, onChange, label = "Image" }) {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      setError('File too large (max 5MB)');
+    if (file.size > 10 * 1024 * 1024) {
+      setError('File too large (max 10MB)');
       return;
     }
 
@@ -74,7 +74,7 @@ export default function ImageUpload({ value, onChange, label = "Image" }) {
                 </div>
                 <div className="text-center px-4">
                   <p className="text-xs font-bold">Click to upload image</p>
-                  <p className="text-[9px] font-medium opacity-60">JPG, PNG or WEBP (Max 5MB)</p>
+                  <p className="text-[9px] font-medium opacity-60">JPG, PNG or WEBP (Max 10MB)</p>
                 </div>
               </>
             )}
