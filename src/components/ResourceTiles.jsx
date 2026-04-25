@@ -195,7 +195,22 @@ const ResourceTiles = () => {
                 <MessageSquare size={16} />
                 <span className="uppercase tracking-wider text-[13px]">Discussion Forum</span>
               </Link>
-                        {/* Get a Quote Form — Highlighted */}
+
+              {/* Trending SidebarWidget moved here */}
+              <SidebarWidget 
+                 title="TRENDING" 
+                 type="trending" 
+                 items={sidebarTrending?.items?.length ? sidebarTrending.items : [
+                   "Schools for Sale / Lease",
+                   "Fundraising",
+                   "Partnerships",
+                   "Workshops",
+                   "Job Openings",
+                   "Join as Influencers"
+                 ]} 
+              />
+
+              {/* Get a Quote Form — Moved below Trending */}
               <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                 <div className="px-5 py-4 border-b border-gray-100 bg-sm-blue">
                   <h3 className="text-sm font-black text-white uppercase tracking-widest text-center">GET A QUOTE</h3>
@@ -215,19 +230,6 @@ const ResourceTiles = () => {
             </div>
 
             <div className="space-y-6">
-               <SidebarWidget 
-                  title="TRENDING" 
-                  type="trending" 
-                  items={sidebarTrending?.items?.length ? sidebarTrending.items : [
-                    "Schools for Sale / Lease",
-                    "Fundraising",
-                    "Partnerships",
-                    "Workshops",
-                    "Job Openings",
-                    "Join as Influencers"
-                  ]} 
-               />
-               
                <div className="relative rounded-2xl overflow-hidden shadow-sm h-40">
                   <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=400&q=80" alt="Consultation" className="absolute inset-0 w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-white/90 p-5 flex flex-col items-center justify-center text-gray-900 text-center">
