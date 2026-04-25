@@ -29,7 +29,7 @@ app.use((req, res, next) => {
   }
   next();
 });
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '5mb' }));
 
 // Routes
 app.use('/api/products', require('./routes/productRoutes'));

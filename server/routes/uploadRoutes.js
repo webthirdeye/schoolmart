@@ -23,13 +23,25 @@ const storage = multer.diskStorage({
 
 const upload = multer({ 
   storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB limit for images/files
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png|webp|gif|svg|pdf|heic|avif|csv/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = /image\/|application\/pdf|image\/svg|text\/csv/.test(file.mimetype) || file.mimetype.includes('heic') || file.mimetype.includes('avif');
+    if (extname || mimetype) return cb(null, true);
+    cb(new Error('Allowed: JPG, PNG, WEBP, GIF, SVG, PDF, CSV, HEIC, AVIF'));
+  }
+});
+
+// Separate uploader for system backups (used in /import)
+const backupUpload = multer({
+  storage,
   limits: { fileSize: 500 * 1024 * 1024 }, // 500MB for backups
   fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png|webp|gif|svg|pdf|heic|avif|csv|tar|gz/;
+    const filetypes = /tar|gz/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-    const mimetype = /image\/|application\/pdf|image\/svg|text\/csv|application\/x-gzip|application\/octet-stream/.test(file.mimetype) || file.mimetype.includes('heic') || file.mimetype.includes('avif');
-    if (extname || mimetype) return cb(null, true);
-    cb(new Error('Allowed: JPG, PNG, WEBP, GIF, SVG, PDF, CSV, HEIC, AVIF, TAR.GZ'));
+    if (extname) return cb(null, true);
+    cb(new Error('Allowed: .tar.gz backups only'));
   }
 });
 
@@ -114,7 +126,7 @@ router.get('/export', (req, res) => {
 });
 
 // Admin Restore Route: Upload a .tar.gz backup and extract it into uploads
-router.post('/import', upload.single('backup'), (req, res) => {
+router.post('/import', backupUpload.single('backup'), (req, res) => {
   const { exec } = require('child_process');
   
   if (!req.file) {
