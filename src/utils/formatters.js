@@ -9,7 +9,8 @@ export const formatImgUrl = (url) => {
   let cleanUrl = url.trim().replace(/^["']|["']$/g, '');
 
   // 1. Force all internal /uploads/ paths to use the production backend URL if not on localhost
-  const isLocal = window.location.hostname === 'localhost';
+  const hostname = window.location.hostname;
+  const isLocal = hostname === 'localhost' || hostname === '127.0.0.1' || hostname.startsWith('192.168.') || hostname.endsWith('.local');
   const PRODUCTION_BACKEND = 'https://schoolmart-production.up.railway.app';
 
   // Fix: Force all railway.app links to HTTPS regardless of where they come from
@@ -20,12 +21,19 @@ export const formatImgUrl = (url) => {
   if (cleanUrl.includes('/uploads/') || cleanUrl.includes('localhost:5000')) {
     if (!isLocal) {
        // On Vercel, always force images to Railway HTTPS
-       const filename = cleanUrl.split('/uploads/').pop();
+       // Extract filename if it's a full URL or just the path
+       const parts = cleanUrl.split('/uploads/');
+       const filename = parts[parts.length - 1];
        return encodeURI(`${PRODUCTION_BACKEND}/uploads/${filename}`);
-    } else if (cleanUrl.startsWith('/uploads/') || cleanUrl.includes('localhost:5000')) {
-       // If relative path or hardcoded localhost on local, ensure it uses local 5000
-       if (cleanUrl.startsWith('/uploads/')) return encodeURI(`http://localhost:5000${cleanUrl}`);
-       return encodeURI(cleanUrl.replace('https://', 'http://')); 
+    } else {
+       // On Local, ensure it points to local backend (port 5000)
+       if (cleanUrl.startsWith('/uploads/')) {
+         return encodeURI(`http://localhost:5000${cleanUrl}`);
+       }
+       // If it's already an absolute URL but maybe wrong host/protocol
+       if (cleanUrl.includes('localhost:5000') || cleanUrl.includes('127.0.0.1:5000')) {
+         return encodeURI(cleanUrl.replace('https://', 'http://'));
+       }
     }
   }
 
