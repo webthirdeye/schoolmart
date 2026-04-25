@@ -151,11 +151,11 @@ const ResourceTiles = () => {
                     {...wrapperProps}
                     className={`block break-inside-avoid bg-white rounded-2xl overflow-hidden relative group shadow-sm transition-all duration-300 mb-4 ${tile.featured ? 'border-2 border-sm-yellow shadow-sm-yellow/20 ring-4 ring-sm-yellow/5' : 'border border-gray-200'} h-full`}
                   >
-                    <div className={`${tile.height} relative overflow-hidden bg-gray-50`}>
+                    <div className="relative overflow-hidden bg-white">
                       <img
                         src={formatImgUrl(tile.img)}
                         alt={tile.title}
-                        className="absolute inset-0 w-full h-full object-contain bg-white transition-transform duration-500 group-"
+                        className="w-full h-auto block transition-transform duration-500 group-hover:scale-105"
                         onError={(e) => {
                           e.target.src = 'https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=80';
                         }}
