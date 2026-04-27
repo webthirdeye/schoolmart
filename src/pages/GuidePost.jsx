@@ -65,7 +65,7 @@ const GuidePost = () => {
     title: matchedItem?.t || heroBlock.title || (slug || '').replace(/-/g, ' ').toUpperCase(),
     badge: matchedItem?.badge || heroBlock.badge || DEFAULT_DATA.badge,
     mainImg: matchedItem?.img || heroBlock.img || heroBlock.mediaUrl || DEFAULT_DATA.mainImg,
-    intro: matchedItem?.intro || heroBlock.subtitle || DEFAULT_DATA.intro,
+    intro: matchedItem?.intro || matchedItem?.description || heroBlock.subtitle || DEFAULT_DATA.intro,
     steps: matchedItem?.steps?.length ? matchedItem.steps : (pageBlocks?.guide_steps?.steps || DEFAULT_DATA.steps),
     summaryPoints: matchedItem?.summaryPoints?.length ? matchedItem.summaryPoints : (pageBlocks?.summary_points?.points || DEFAULT_DATA.summaryPoints),
     content: contentBlock.content || contentBlock.body || ''

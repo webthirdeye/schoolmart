@@ -6,6 +6,8 @@ import { useCMSPage } from '../hooks/useCMSBlock';
 import { formatImgUrl } from '../utils/formatters';
 import CMSMedia from '../components/ui/CMSMedia';
 import CatalogueCard from '../components/CatalogueCard';
+import GuideCard from '../components/GuideCard';
+
 
 const DEFAULT_CONTENT = {
   hero: {
@@ -37,14 +39,78 @@ const DEFAULT_CONTENT = {
   },
   // Mapping the environments style cards
   caseStudies: [
-    { t: 'Digital Transformation', c: 'Technology', img: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=800&q=80' },
-    { t: 'Color Psychology', c: 'Interiors', img: 'https://images.unsplash.com/photo-1541829070764-84a7d30dee62?w=800&q=80' },
-    { t: 'Sustainable Labs', c: 'Science', img: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=800&q=80' },
-    { t: 'Inclusive Play', c: 'Sports', img: 'https://images.unsplash.com/photo-1541367777708-7905fe3296c0?w=800&q=80' },
-    { t: 'Library Re-imagined', c: 'Design', img: 'https://images.unsplash.com/photo-1521587760476-6c12a4b040da?w=800&q=80' },
-    { t: 'Campus Safety 2025', c: 'Protocol', img: 'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=800&q=80' },
-    { t: 'Marketing Roadmap', c: 'Enrollment', img: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=800&q=80' },
-    { t: 'Innovation Hubs', c: 'Growth', img: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=800&q=80' },
+    { 
+      t: 'Ultimate Guide to Building a Legendary School Brand in India', 
+      c: 'Branding', 
+      cardDescription: 'Master the art of institutional branding to stand out in India\'s competitive education landscape.',
+      description: 'School leaders: There is more to developing a legendary brand than being unique in this day and age of hyper-competition. This comprehensive guide explores the psychological and strategic layers of brand building.',
+      visualText: 'the ultimate guide to building a legendary school brand.',
+      visualColor: 'bg-[#8B5CF6]',
+      accentColor: 'bg-[#FACC15]'
+    },
+    { 
+      t: 'Digital Transformation Roadmap 2025', 
+      c: 'Technology', 
+      cardDescription: 'A strategic framework for schools transitioning to hybrid learning environments.',
+      description: 'A comprehensive framework for schools to transition from traditional to hybrid learning environments effectively, focusing on infrastructure, pedagogy, and teacher training.',
+      visualText: 'the roadmap to digital excellence in education.',
+      visualColor: 'bg-[#0ea5e9]',
+      accentColor: 'bg-[#fbbf24]'
+    },
+    { 
+      t: 'Color Psychology in Learning Spaces', 
+      c: 'Interiors', 
+      cardDescription: 'Leverage environmental design to enhance student focus and emotional well-being.',
+      description: 'How to use environmental design and color theory to enhance student focus and emotional well-being. Explore the science behind palette selection in classrooms.',
+      visualText: 'mastering color psychology in schools.',
+      visualColor: 'bg-[#f43f5e]',
+      accentColor: 'bg-[#10b981]'
+    },
+    { 
+      t: 'Sustainable Labs & Scientific Inquiry', 
+      c: 'Science', 
+      cardDescription: 'Designing safe and sustainable laboratories for high-impact hands-on learning.',
+      description: 'Designing high-impact science laboratories that prioritize safety, sustainability, and hands-on learning for the next generation of scientists.',
+      visualText: 'building the labs of the future.',
+      visualColor: 'bg-[#10b981]',
+      accentColor: 'bg-[#fbbf24]'
+    },
+    { 
+      t: 'Inclusive Play: Sports Infrastructure', 
+      c: 'Sports', 
+      cardDescription: 'Best practices for creating accessible and engaging sports facilities.',
+      description: 'Best practices for creating accessible and engaging sports facilities that cater to diverse student needs and promote physical literacy.',
+      visualText: 'the guide to inclusive sports design.',
+      visualColor: 'bg-[#f97316]',
+      accentColor: 'bg-[#0ea5e9]'
+    },
+    { 
+      t: 'Library Re-imagined: Media Centers', 
+      c: 'Design', 
+      cardDescription: 'Transforming traditional libraries into vibrant multi-media collaboration hubs.',
+      description: 'Transforming traditional libraries into vibrant multi-media centers for research and collaboration, moving beyond books to interactive learning.',
+      visualText: 're-imagining the school library.',
+      visualColor: 'bg-[#6366f1]',
+      accentColor: 'bg-[#facc15]'
+    },
+    { 
+      t: 'Campus Safety & Protocol 2025', 
+      c: 'Protocol', 
+      cardDescription: 'A strategic approach to school security and emergency response frameworks.',
+      description: 'A strategic approach to school security, emergency response, and student safety frameworks in an increasingly complex world.',
+      visualText: 'the complete guide to campus safety.',
+      visualColor: 'bg-[#475569]',
+      accentColor: 'bg-[#f43f5e]'
+    },
+    { 
+      t: 'Marketing Roadmap for New Schools', 
+      c: 'Enrollment', 
+      cardDescription: 'A step-by-step marketing strategy to ensure full enrollment from day one.',
+      description: 'A step-by-step marketing strategy for new school launches to ensure full enrollment from day one, covering digital reach and community engagement.',
+      visualText: 'the enrollment marketing masterplan.',
+      visualColor: 'bg-[#ec4899]',
+      accentColor: 'bg-[#fbbf24]'
+    },
   ],
 };
 
@@ -85,7 +151,7 @@ const Guides = () => {
                     mediaType={heroData?.mediaType} 
                     mediaUrl={heroData?.mediaUrl} 
                     fallbackImg={d.heroImage} 
-                    className="w-full h-full object-cover transition-all duration-1000 group-"
+                    className="w-full h-full object-cover transition-all duration-1000 group-hover:scale-105"
                  />
 
               </div>
@@ -115,16 +181,17 @@ const Guides = () => {
            </div>
            <div className="columns-1 sm:columns-2 lg:columns-4 gap-4 space-y-4">
               {items.map((work, i) => (
-                 <CatalogueCard 
+                 <GuideCard 
                    key={i}
-                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.cardDescription || work.intro || work.description }} 
-                   isSelected={selectedItem?.t === work.t} 
-                   onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)} 
-                   onAction={() => navigate(`/guides/${work.t.toLowerCase().replace(/\s+/g, '-')}`)}
-                   actionText="Read More"
-                   themeColor="bg-[#004a8e]"
-                   ringColor="ring-blue-100"
-                   textColor="text-[#004a8e]"
+                   title={work.t}
+                   category={work.c}
+                   description={work.description}
+                   cardDescription={work.cardDescription}
+                   image={work.img}
+                   visualText={work.visualText}
+                   visualColor={work.visualColor}
+                   accentColor={work.accentColor}
+                   onClick={() => navigate(`/guides/${work.t.toLowerCase().replace(/\s+/g, '-')}`)}
                  />
               ))}
            </div>
@@ -134,7 +201,7 @@ const Guides = () => {
         <section className="my-10">
            <div className="bg-white rounded-[40px] overflow-hidden shadow-sm border border-gray-100 flex flex-col lg:flex-row min-h-[500px] group">
               <div className="flex-1 relative overflow-hidden">
-                 <img src={d.featured?.img} alt="Featured" className="w-full h-full object-cover transition-transform duration-1000 group-" />
+                 <img src={d.featured?.img} alt="Featured" className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105" />
                  <div className="absolute top-6 left-6 flex gap-2">
                     {(d.featured?.tags || []).map((tag, i) => (
                        <span key={i} className="px-3 py-1 bg-white/90 backdrop-blur-sm text-[#004a8e] font-black rounded-full text-[8px] uppercase tracking-widest shadow-sm">

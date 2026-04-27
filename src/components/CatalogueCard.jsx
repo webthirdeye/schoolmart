@@ -2,7 +2,7 @@ import React from 'react';
 import { ArrowUpRight, ArrowRight } from 'lucide-react';
 import { formatImgUrl } from '../utils/formatters';
 
-const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeColor = 'bg-[#004a8e]', ringColor = 'ring-blue-500', textColor = 'text-[#004a8e]', showExplore = true }) => {
+const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeColor = 'bg-[#004a8e]', ringColor = 'ring-blue-500', textColor = 'text-[#004a8e]', showExplore = true, aspectRatio = 'aspect-[5/4]' }) => {
   // If ctaLink is missing, empty, or 'none', the card is static.
   const isNonRoutable = !work.ctaLink || work.ctaLink.trim() === '' || work.ctaLink.toLowerCase() === 'none';
   const hasTitle = Boolean((work.name && work.name.trim() !== '' && work.name !== 'Unnamed Card') || (work.title && work.title.trim() !== '' && work.title !== 'Unnamed Card'));
@@ -16,11 +16,11 @@ const CatalogueCard = ({ work, isSelected, onClick, onAction, actionText, themeC
         onClick={isNonRoutable ? undefined : onClick}
       >
         {/* Image Container - Locked Aspect Ratio */}
-        <div className="w-full aspect-[5/4] bg-gray-50 relative overflow-hidden flex items-center justify-center shrink-0">
+        <div className={`w-full ${aspectRatio} bg-gray-50 relative overflow-hidden flex items-center justify-center shrink-0`}>
           <img 
             src={formatImgUrl(work.image || work.images?.[0] || work.img || "")} 
             alt={work.name || work.title} 
-            className="w-full h-full object-cover transition-all duration-700" 
+            className={`w-full ${aspectRatio === 'aspect-auto' ? 'h-auto' : 'h-full object-cover'} transition-all duration-700`} 
             loading="lazy"
           />
           {/* FLOATING ACTION ICON */}
