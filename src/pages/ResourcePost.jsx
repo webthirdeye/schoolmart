@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles, Box, FileText } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Share2, MapPin, MessageSquare, Download, Sparkles, Box, FileText, Award } from 'lucide-react';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { formatImgUrl } from '../utils/formatters';
 
@@ -381,6 +381,41 @@ const ResourcePost = () => {
                                 ))}
                             </div>
                         </div>
+
+                        {/* CASE STUDIES SECTION (Dynamic from CMS) */}
+                        {blocks?.case_studies?.items && blocks.case_studies.items.length > 0 && (
+                            <div className="mt-20 pt-20 border-t border-gray-100 animate-in fade-in slide-in-from-bottom-10 duration-1000">
+                                <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+                                    <div>
+                                        <span className="text-[10px] font-black text-sm-blue uppercase tracking-[0.4em] mb-4 block underline underline-offset-8 decoration-sm-yellow decoration-4">Implementation</span>
+                                        <h2 className="text-3xl lg:text-4xl font-black text-gray-900 uppercase tracking-tighter leading-none">Real-World <br/> Impact.</h2>
+                                    </div>
+                                    <p className="max-w-md text-gray-500 text-[13px] font-bold uppercase tracking-widest leading-relaxed">
+                                        Verified outcomes and strategic milestones achieved through specialized advisory.
+                                    </p>
+                                </div>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {blocks.case_studies.items.map((cs, i) => (
+                                        <div key={i} className="bg-gray-50 p-10 rounded-[40px] border border-gray-100 group hover:border-sm-blue hover:bg-white hover:shadow-2xl hover:shadow-sm-blue/5 transition-all flex flex-col h-full">
+                                            <div className="flex justify-between items-start mb-8">
+                                                <div className="px-4 py-2 bg-white rounded-2xl border border-gray-100 group-hover:border-sm-blue/20 transition-colors">
+                                                    <span className="text-[10px] font-black text-gray-400 group-hover:text-sm-blue uppercase tracking-widest">{cs.focus || 'Case Study'}</span>
+                                                </div>
+                                                <Award size={24} className="text-sm-yellow transition-transform group-hover:scale-110" />
+                                            </div>
+                                            <h4 className="text-xl font-black text-gray-900 uppercase tracking-tight mb-3 flex-grow">{cs.title}</h4>
+                                            <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-10 flex items-center gap-2"><MapPin size={12} className="text-sm-blue" /> {cs.location}</p>
+                                            <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-100/50">
+                                                <p className="text-emerald-600 font-black text-[20px] uppercase tracking-tighter">{cs.outcome}</p>
+                                                <Link to={`/p/${cs.slug || cs.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}`} className="text-sm-blue hover:translate-x-1 transition-transform text-[11px] font-black uppercase tracking-widest flex items-center gap-2">
+                                                    Analysis <ArrowRight size={14} />
+                                                </Link>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* Sidebar */}
