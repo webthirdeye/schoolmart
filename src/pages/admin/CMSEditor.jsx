@@ -2100,7 +2100,7 @@ export default function CMSEditor() {
                            className="px-4 py-3 bg-gray-50 border border-gray-100 rounded-xl text-[10px] font-black uppercase tracking-widest outline-none focus:ring-2 focus:ring-indigo-100"
                          >
                            {Object.keys(BlockForms).sort().map(type => (
-                             <option key={type} value={type}>{type.replace(/_/g, ' ')}</option>
+                             <option key={type} value={type}>{type.toUpperCase().replace(/_/g, ' ')}</option>
                            ))}
                          </select>
                          <button 
@@ -2109,7 +2109,7 @@ export default function CMSEditor() {
                              if (!type) return;
                              try {
                                const newBlock = await addBlock(selectedPage, type, type, {});
-                               setContent([...content, { ...newBlock, data: {}, isDirty: false }]);
+                               setContent([...content, { ...newBlock, type, data: {}, isDirty: false }]);
                                setActiveBlockId(newBlock.id);
                                setTimeout(() => document.getElementById(`block-${newBlock.id}`)?.scrollIntoView({ behavior: 'smooth' }), 100);
                              } catch (err) {
