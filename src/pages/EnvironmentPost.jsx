@@ -31,12 +31,13 @@ const EnvironmentPost = () => {
 
   const user = JSON.parse(localStorage.getItem('user') || 'null');
 
-  // Load data from the environments listing page CMS
-  const { blocks, loading } = useCMSPage('environments');
+  // Load data from the listing page AND the dedicated sub-page
+  const { blocks: listBlocks, loading: listLoading } = useCMSPage('environments');
+  const { blocks: pageBlocks, loading: pageLoading } = useCMSPage(`environment-${slug}`);
   
-  // Consolidate all possible masonry items (legacy environments_page_content AND new masonry_grid)
-  const legacyItems = blocks?.environments_page_content?.masonryItems || [];
-  const dynamicItems = blocks?.masonry_grid?.items || [];
+  // Consolidate all possible masonry items from the parent page
+  const legacyItems = listBlocks?.environments_page_content?.masonryItems || [];
+  const dynamicItems = listBlocks?.masonry_grid?.items || [];
   const allItems = [...legacyItems, ...dynamicItems];
 
   // Find the matching item by slug
@@ -45,14 +46,22 @@ const EnvironmentPost = () => {
     return title.toLowerCase().replace(/\s+/g, '-') === slug;
   });
 
+  // Dedicated page blocks (if user edited the sub-page directly)
+  const heroBlock = pageBlocks?.page_hero || pageBlocks?.inner_page_hero || {};
+  const contentBlock = pageBlocks?.page_content || pageBlocks?.text_content || {};
+  const specsBlock = pageBlocks?.resource_specs || pageBlocks?.technical_specs || {};
+
   const postData = {
-    title: matchedItem?.t || (slug || '').replace(/-/g, ' ').toUpperCase(),
-    badge: matchedItem?.badge || DEFAULT_DATA.badge,
-    mainImg: matchedItem?.img || DEFAULT_DATA.mainImg,
-    description: matchedItem?.description || `Engineering the specific sensory and structural environment for ${slug?.replace(/-/g, ' ')}.`,
-    specs: matchedItem?.specs?.length ? matchedItem.specs : DEFAULT_DATA.specs,
-    technicalDetails: matchedItem?.technicalDetails?.length ? matchedItem.technicalDetails : DEFAULT_DATA.technicalDetails,
+    title: matchedItem?.t || heroBlock.title || (slug || '').replace(/-/g, ' ').toUpperCase(),
+    badge: matchedItem?.badge || heroBlock.badge || DEFAULT_DATA.badge,
+    mainImg: matchedItem?.img || heroBlock.img || heroBlock.mediaUrl || DEFAULT_DATA.mainImg,
+    description: matchedItem?.description || heroBlock.subtitle || `Engineering the specific sensory and structural environment for ${slug?.replace(/-/g, ' ')}.`,
+    specs: (matchedItem?.specs && matchedItem.specs.length) ? matchedItem.specs : (specsBlock.specs || DEFAULT_DATA.specs),
+    technicalDetails: (matchedItem?.technicalDetails && matchedItem.technicalDetails.length) ? matchedItem.technicalDetails : (specsBlock.technicalDetails || DEFAULT_DATA.technicalDetails),
+    content: contentBlock.content || contentBlock.body || ''
   };
+
+  const loading = listLoading && pageLoading;
 
   const handleFormInteraction = () => {
     if (!user) {
@@ -130,6 +139,13 @@ const EnvironmentPost = () => {
                        {postData.description}
                     </p>
                  </div>
+
+                 {postData.content && (
+                    <div 
+                       className="prose prose-sm lg:prose-base prose-slate max-w-none prose-headings:font-black prose-headings:uppercase prose-p:text-gray-500 prose-p:font-medium"
+                       dangerouslySetInnerHTML={{ __html: postData.content }}
+                    />
+                 )}
 
                  {/* TECHNICAL GRID */}
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

@@ -1371,7 +1371,23 @@ const BlockForms = {
             </div>
           );
         })}
-        <button onClick={() => set('masonryItems', [...items, { t: '', c: '', img: '', badge: '', description: '', specs: [], technicalDetails: [] }])} className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Case Study Card</button>
+        <button 
+          onClick={async () => {
+            const name = prompt('Environment Case Study Title:');
+            if (!name) return;
+            const safeSlug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+            const finalCmsSlug = `environment-${safeSlug}`;
+            
+            try {
+              await createPage(finalCmsSlug, name);
+              set('masonryItems', [...items, { t: name, c: '', img: '', badge: 'Case Study 2025', description: '', specs: [], technicalDetails: [] }]);
+              alert(`Card added and page "${finalCmsSlug}" created!`);
+            } catch (err) {
+              alert('Failed to initialize environment page: ' + err.message);
+            }
+          }} 
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all"
+        >+ Add New Case Study & Auto-Create Page</button>
       </div>
     );
   },
@@ -1455,7 +1471,23 @@ const BlockForms = {
             </div>
           );
         })}
-        <button onClick={() => set('caseStudies', [...items, { t: '', c: '', img: '', badge: '', intro: '', mainImg: '', steps: [], summaryPoints: [] }])} className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Guide Card</button>
+        <button 
+          onClick={async () => {
+            const name = prompt('Strategic Guide Title:');
+            if (!name) return;
+            const safeSlug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+            const finalCmsSlug = `guide-${safeSlug}`;
+            
+            try {
+              await createPage(finalCmsSlug, name);
+              set('caseStudies', [...items, { t: name, c: '', img: '', badge: 'Strategic Guide 2025', intro: '', mainImg: '', steps: [], summaryPoints: [] }]);
+              alert(`Card added and page "${finalCmsSlug}" created!`);
+            } catch (err) {
+              alert('Failed to initialize guide page: ' + err.message);
+            }
+          }} 
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all"
+        >+ Add New Guide & Auto-Create Page</button>
       </div>
     );
   },

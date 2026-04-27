@@ -42,12 +42,13 @@ const GuidePost = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
 
-  // Load data from the guides listing page CMS
-  const { blocks, loading } = useCMSPage('guides');
+  // Load data from the listing page AND the dedicated sub-page
+  const { blocks: listBlocks, loading: listLoading } = useCMSPage('guides');
+  const { blocks: pageBlocks, loading: pageLoading } = useCMSPage(`guide-${slug}`);
   
-  // Consolidate all possible items (legacy caseStudies AND new masonry_grid)
-  const legacyItems = blocks?.guides_page_content?.caseStudies || [];
-  const dynamicItems = blocks?.masonry_grid?.items || [];
+  // Consolidate all possible items from the parent page
+  const legacyItems = listBlocks?.guides_page_content?.caseStudies || [];
+  const dynamicItems = listBlocks?.masonry_grid?.items || [];
   const allItems = [...legacyItems, ...dynamicItems];
 
   // Find the matching item by slug
@@ -56,14 +57,21 @@ const GuidePost = () => {
     return title.toLowerCase().replace(/\s+/g, '-') === slug;
   });
 
+  // Dedicated page blocks
+  const heroBlock = pageBlocks?.page_hero || pageBlocks?.inner_page_hero || {};
+  const contentBlock = pageBlocks?.page_content || pageBlocks?.text_content || {};
+
   const guideData = {
-    title: matchedItem?.t || DEFAULT_DATA.title,
-    badge: matchedItem?.badge || DEFAULT_DATA.badge,
-    mainImg: matchedItem?.img || DEFAULT_DATA.mainImg,
-    intro: matchedItem?.intro || DEFAULT_DATA.intro,
-    steps: matchedItem?.steps?.length ? matchedItem.steps : DEFAULT_DATA.steps,
-    summaryPoints: matchedItem?.summaryPoints?.length ? matchedItem.summaryPoints : DEFAULT_DATA.summaryPoints,
+    title: matchedItem?.t || heroBlock.title || (slug || '').replace(/-/g, ' ').toUpperCase(),
+    badge: matchedItem?.badge || heroBlock.badge || DEFAULT_DATA.badge,
+    mainImg: matchedItem?.img || heroBlock.img || heroBlock.mediaUrl || DEFAULT_DATA.mainImg,
+    intro: matchedItem?.intro || heroBlock.subtitle || DEFAULT_DATA.intro,
+    steps: matchedItem?.steps?.length ? matchedItem.steps : (pageBlocks?.guide_steps?.steps || DEFAULT_DATA.steps),
+    summaryPoints: matchedItem?.summaryPoints?.length ? matchedItem.summaryPoints : (pageBlocks?.summary_points?.points || DEFAULT_DATA.summaryPoints),
+    content: contentBlock.content || contentBlock.body || ''
   };
+
+  const loading = listLoading && pageLoading;
 
   // Instant loading
 
@@ -97,9 +105,16 @@ const GuidePost = () => {
         </div>
 
         {/* MAIN FEATURE IMAGE */}
-        <div className="rounded-[40px] overflow-hidden mb-16 shadow-2xl border border-gray-100 h-[300px] lg:h-[450px]">
+        <div className="rounded-[40px] overflow-hidden mb-12 shadow-2xl border border-gray-100 h-[300px] lg:h-[450px]">
            <img src={guideData.mainImg} alt="Guide Hero" className="w-full h-full object-cover" />
         </div>
+
+        {guideData.content && (
+           <div 
+              className="prose prose-lg prose-slate max-w-none mb-16 prose-headings:font-black prose-headings:uppercase prose-p:text-gray-500 prose-p:font-medium"
+              dangerouslySetInnerHTML={{ __html: guideData.content }}
+           />
+        )}
 
         {/* STEP-BY-STEP CONTENT */}
         <div className="space-y-16">
@@ -146,7 +161,6 @@ const GuidePost = () => {
         <div className="mt-20 py-10 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-4">
            {guideData.summaryPoints.map((point, i) => {
               const IconComp = ICON_MAP[point.icon] || Star;
-  if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center font-black uppercase tracking-widest text-sm-blue text-[12px]">Loading...</div>;
               return (
                 <div key={i} className="flex flex-col items-center gap-4 p-6 bg-gray-50 rounded-[30px] border border-transparent hover:border-[#004a8e] hover:bg-white transition-all group">
                   <div className="text-gray-300 group-hover:text-[#004a8e] transition-colors"><IconComp size={20} /></div>
