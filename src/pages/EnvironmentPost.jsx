@@ -135,7 +135,7 @@ const EnvironmentPost = () => {
                     <h1 className="text-3xl lg:text-5xl font-black font-heading leading-[0.9] tracking-tighter uppercase mb-4 text-gray-900">
                        {postData.title}
                     </h1>
-                    <p className="text-sm lg:text-base text-gray-400 font-bold uppercase tracking-tight leading-relaxed max-w-2xl">
+                    <p className="text-sm lg:text-base text-gray-500 font-medium leading-relaxed max-w-3xl whitespace-pre-wrap">
                        {postData.description}
                     </p>
                  </div>

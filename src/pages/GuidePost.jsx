@@ -99,7 +99,7 @@ const GuidePost = () => {
            <h1 className="text-3xl lg:text-5xl font-black font-heading leading-[1.1] tracking-tighter uppercase mb-8 text-gray-900 border-b-2 border-gray-100 pb-8">
               {guideData.title}
            </h1>
-           <p className="text-base lg:text-lg text-gray-500 font-bold uppercase tracking-tight leading-relaxed max-w-2xl mx-auto">
+           <p className="text-base lg:text-lg text-gray-500 font-medium leading-relaxed max-w-2xl mx-auto">
               {guideData.intro}
            </p>
         </div>
