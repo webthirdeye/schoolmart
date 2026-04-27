@@ -99,6 +99,7 @@ const EnvironmentEditor = ({ item, i, items, set }) => {
                   </div>
                   <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Case Study 2025" /></Field>
                   <Field label="Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                  <ImageUpload label="Main Hero Image (Detail Page)" value={item.mainImg} onChange={v => upd('mainImg', v)} />
                 </div>
 
                 <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4">
@@ -165,6 +166,7 @@ const CaseStudyEditor = ({ item, i, items, set }) => {
                   <Field label="Focus Area"><TextInput value={item.focus} onChange={v => upd('focus', v)} placeholder="Yield Opt" /></Field>
                 </div>
                 <Field label="Project Slug / Link" hint="links to /p/slug"><TextInput value={item.slug} onChange={v => upd('slug', v)} /></Field>
+                <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
               </>
             )}
 
@@ -177,6 +179,7 @@ const CaseStudyEditor = ({ item, i, items, set }) => {
                   </div>
                   <Field label="Badge Overide"><TextInput value={item.badge} onChange={v => upd('badge', v)} /></Field>
                   <Field label="Description Override"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                  <ImageUpload label="Hero Image (Detail Page)" value={item.heroImg} onChange={v => upd('heroImg', v)} />
                 </div>
 
                 <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
