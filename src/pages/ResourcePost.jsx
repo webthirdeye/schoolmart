@@ -23,7 +23,151 @@ const RESOURCE_DATA = {
     'order-rejection-policy': { title: 'Order Rejection & Dispute Resolution', subtitle: 'Protecting your interests throughout the delivery process.', image: 'https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">Guidelines for rejecting shipments at the time of delivery due to visible damage or mismatch.</p>`, specs: ['Delivery Inspection', 'Immediate Reporting', 'Resolution Timelines'], tags: ['Policy', 'Support', 'Quality'] },
     'immersive-learning': { title: 'Immersive Learning: VR & AR in Education', subtitle: 'Transforming classrooms into infinite worlds of discovery.', image: 'https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">Virtual and Augmented Reality are powerful pedagogical tools reshaping how students interact with complex information.</p>`, specs: ['VR Headsets', 'AR Content Library', 'Teacher Training'], tags: ['Technology', 'STEM', 'Innovation'] },
     'kindergarten-design': { title: 'Kindergarten Design: Playful Learning Spaces', subtitle: 'Designing spaces that nurture curiosity, creativity, and joy.', image: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">Early childhood environments play a critical role in a child's development.</p>`, specs: ['Ergonomic Seating', 'Sensory Zones', 'Flexible Layouts'], tags: ['Interiors', 'Design', 'Early Years'] },
-    'skill-labs': { title: 'Composite Skill Labs: Future-Ready Education', subtitle: 'Preparing students for the challenges of tomorrow.', image: 'https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">Our Composite Skill Labs are designed as multi-disciplinary hubs where Science, Technology, Engineering, and Art converge.</p>`, specs: ['Modular Workbenches', 'Robotics Kits', 'Safety Equipment'], tags: ['STEM', 'Innovation', 'Laboratories'] },
+    'skill-labs': { 
+        title: 'Composite Skill Labs: Future-Ready Education', 
+        subtitle: 'Preparing students for the challenges of tomorrow with NEP 2026 compliant lab ecosystems.', 
+        image: '/images/discovery-pod.png', 
+        content: `
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">Our Composite Skill Labs are designed as multi-disciplinary hubs where Science, Technology, Engineering, and Art converge. These labs are fully compliant with NEP 2026 and CBSE standards, providing a "Discovery Pod" environment for hands-on learning.</p>
+            
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">Available Lab Packages</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
+                <div class="p-6 bg-blue-50 rounded-2xl border border-blue-100">
+                    <h3 class="font-black text-sm-blue mb-2">BASIC PACKAGE</h3>
+                    <p class="text-xs font-bold text-gray-500 mb-4">₹2L - ₹5L</p>
+                    <ul class="text-xs space-y-2 text-gray-600 font-medium">
+                        <li>• Basic Electronics & Robotics</li>
+                        <li>• 3D Printing Starter Kit</li>
+                        <li>• Basic Life Skills Tools</li>
+                        <li>• 4-6 Workstations</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-yellow-50 rounded-2xl border border-yellow-100">
+                    <h3 class="font-black text-gray-900 mb-2">ADVANCED PACKAGE</h3>
+                    <p class="text-xs font-bold text-gray-500 mb-4">₹3.5L - ₹6.5L</p>
+                    <ul class="text-xs space-y-2 text-gray-600 font-medium">
+                        <li>• Advanced AI & Coding Kits</li>
+                        <li>• Prototyping & CAD Basics</li>
+                        <li>• Digital Design Tools</li>
+                        <li>• 8-10 Desktop Systems</li>
+                    </ul>
+                </div>
+                <div class="p-6 bg-teal-50 rounded-2xl border border-teal-100">
+                    <h3 class="font-black text-teal-700 mb-2">COMPREHENSIVE</h3>
+                    <p class="text-xs font-bold text-gray-500 mb-4">₹9L - ₹17L</p>
+                    <ul class="text-xs space-y-2 text-gray-600 font-medium">
+                        <li>• Full Robotics & Drone Lab</li>
+                        <li>• Interactive Smart Panels</li>
+                        <li>• High-End Workstations</li>
+                        <li>• Complete Furniture Layout</li>
+                    </ul>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">Core Curriculum Areas</h2>
+            <p class="text-gray-600 mb-6">Our labs cover essential skill domains including Electronics, 3D Printing, Prototyping, AI/ML basics, Design Thinking, and even practical life skills like electrical and plumbing basics.</p>
+            
+            <div class="grid grid-cols-2 gap-4 mb-10">
+                <img src="https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=600&q=80" class="rounded-2xl shadow-sm border border-gray-100" />
+                <img src="https://images.unsplash.com/photo-1563986768609-322da13575f3?w=600&q=80" class="rounded-2xl shadow-sm border border-gray-100" />
+            </div>
+        `, 
+        specs: ['NEP 2026 Compliant', 'CBSE Standardized', 'Modular Layouts'], 
+        tags: ['STEM', 'Innovation', 'Laboratories'] 
+    },
+    'ai-classroom': {
+        title: '20+ AI Tools for Classrooms',
+        subtitle: 'The era of AI is here. Transform your pedagogy with cutting-edge tools.',
+        image: 'https://images.unsplash.com/photo-1518133910546-b6c2fb7d79e3?w=1200&q=80',
+        content: `
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">Artificial Intelligence is no longer a future concept; it is actively reshaping how students learn and teachers manage classrooms. We provide a curated selection of 20+ AI tools designed for modern institutions.</p>
+            
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">Personalized Learning & Automation</h2>
+            <p class="text-gray-600 mb-8">From AI-powered virtual tutors to automated grading systems, these tools allow teachers to focus more on student interaction and less on administrative tasks.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-10">
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-sm-blue text-white rounded-lg flex items-center justify-center font-black shrink-0">01</div>
+                    <div>
+                        <h4 class="font-black text-gray-900 uppercase text-[11px] mb-1">MagicSchool AI</h4>
+                        <p class="text-[11px] text-gray-500 leading-tight">Automated lesson planning and IEP generation for overworked teachers.</p>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-sm-blue text-white rounded-lg flex items-center justify-center font-black shrink-0">02</div>
+                    <div>
+                        <h4 class="font-black text-gray-900 uppercase text-[11px] mb-1">Canva Magic Studio</h4>
+                        <p class="text-[11px] text-gray-500 leading-tight">AI-driven design tools for creating stunning classroom visuals in seconds.</p>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-sm-blue text-white rounded-lg flex items-center justify-center font-black shrink-0">03</div>
+                    <div>
+                        <h4 class="font-black text-gray-900 uppercase text-[11px] mb-1">Curipod</h4>
+                        <p class="text-[11px] text-gray-500 leading-tight">Interactive AI lessons that adapt to student feedback in real-time.</p>
+                    </div>
+                </div>
+                <div class="p-4 bg-gray-50 rounded-xl border border-gray-100 flex items-start gap-4">
+                    <div class="w-10 h-10 bg-sm-blue text-white rounded-lg flex items-center justify-center font-black shrink-0">04</div>
+                    <div>
+                        <h4 class="font-black text-gray-900 uppercase text-[11px] mb-1">Quillbot</h4>
+                        <p class="text-[11px] text-gray-500 leading-tight">Advanced paraphrasing and grammar support for student writing improvement.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">The 2026 AI Roadmap</h2>
+            <p class="text-gray-600 mb-10">We help schools implement a multi-phase AI adoption strategy, including teacher training, ethics guidelines, and secure data infrastructure.</p>
+
+            <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=1200&q=80" class="w-full rounded-3xl shadow-lg border-8 border-white mb-10" />
+        `,
+        specs: ['Teacher Training', 'API Integrations', 'Privacy Compliant'],
+        tags: ['Technology', 'AI', 'Future']
+    },
+    'furniture-planning': {
+        title: 'Furniture Design & Planning',
+        subtitle: 'Revolutionizing Classroom Comfort with 1200+ ergonomic solutions.',
+        image: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?w=1200&q=80',
+        content: `
+            <p class="text-lg text-gray-700 leading-relaxed mb-6">Classroom comfort is directly linked to student performance. Research shows that ergonomic seating can increase attention spans by up to 27%.</p>
+            
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">Design-to-Execution Services</h2>
+            <p class="text-gray-600 mb-8">We don't just sell furniture; we plan your entire campus infrastructure. With a catalog of 1200+ models, we cover every corner of your school.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-10">
+                <div class="p-6 bg-gray-50 rounded-[32px] border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=80" class="w-full h-40 object-cover rounded-2xl mb-4" />
+                    <h4 class="font-black text-gray-900 uppercase text-[12px] mb-2">Kindergarten Fun</h4>
+                    <p class="text-[11px] text-gray-500">Soft-edge designs and vibrant colors for early years.</p>
+                </div>
+                <div class="p-6 bg-gray-50 rounded-[32px] border border-gray-100">
+                    <img src="https://images.unsplash.com/photo-1596496181871-9681eacf9764?w=600&q=80" class="w-full h-40 object-cover rounded-2xl mb-4" />
+                    <h4 class="font-black text-gray-900 uppercase text-[12px] mb-2">Modular Labs</h4>
+                    <p class="text-[11px] text-gray-500">Chemical-resistant surfaces and mobile storage units.</p>
+                </div>
+            </div>
+
+            <h2 class="text-2xl font-black text-gray-900 mb-4 uppercase tracking-tight">The "Ergo-Smart" Series</h2>
+            <p class="text-gray-600 mb-6">Our signature chairs are designed to support the lumbar spine, reducing fatigue during long study sessions. Available in 16+ institutional shades.</p>
+            
+            <div class="bg-sm-blue/5 p-8 rounded-[40px] border border-sm-blue/10 mb-10">
+                <div class="flex items-center gap-4 mb-4">
+                    <div class="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-sm-blue shadow-sm">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 13l5 5 10-10M2 12l5 5 2-2"/></svg>
+                    </div>
+                    <h3 class="font-black text-gray-900 uppercase tracking-tight">Institutional Durability</h3>
+                </div>
+                <p class="text-[13px] text-gray-600 leading-relaxed font-medium">Every piece undergoes a 12-point stress test to ensure it survives the rigors of a school environment for decades.</p>
+            </div>
+        `,
+        specs: ['1200+ Models', 'Ergonomic Certified', '5-Year Warranty'],
+        gallery: [
+            'https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?w=600&q=80',
+            'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=600&q=80',
+            'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=600&q=80'
+        ],
+        tags: ['Furniture', 'Design', 'Infrastructure']
+    },
     'library-innovations': { title: 'Library Innovations: Modern Reading Spaces', subtitle: 'From quiet zones to collaborative digital hubs.', image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">The modern school library is no longer just a warehouse for books.</p>`, specs: ['Acoustic Seating', 'Digital Catalogs', 'Quiet Pods'], tags: ['Interiors', 'Reading', 'Digital'] },
     'interactive-panels': { title: '16 Latest Interactive Panels for Classrooms', subtitle: 'The ultimate tool for the modern educator.', image: 'https://images.unsplash.com/photo-1548544149-4835e62ee5b3?w=1200&q=80', content: `<p class="text-lg text-gray-700 leading-relaxed mb-6">Interactive panels are the centerpiece of the smart classroom.</p>`, specs: ['4K UHD Display', 'Multi-touch Tech', 'Android/Windows OS'], tags: ['Technology', 'EdTech', 'Classroom'] },
 };
@@ -67,7 +211,8 @@ const ResourcePost = () => {
         btn1Path: innerData.btn1Path || heroBlock.btn1Path || '#',
         btn2Label: innerData.btn2Label || heroBlock.btn2Label || 'SHARE',
         btn2Path: innerData.btn2Path || heroBlock.btn2Path || '#',
-        cardLabel: innerData.cardLabel || heroBlock.cardLabel || 'Verified Ready'
+        cardLabel: innerData.cardLabel || heroBlock.cardLabel || 'Verified Ready',
+        gallery: innerData.gallery || blocks?.page_gallery?.images || blocks?.gallery?.images || fallback.gallery || []
     };
 
     const handleShare = () => {
@@ -87,37 +232,37 @@ const ResourcePost = () => {
 
     return (
         <div className="bg-white flex flex-col font-sans">
-            <section className="pt-8 pb-16 bg-gray-50/50">
+            <section className="pt-4 pb-8 bg-gray-50/50">
                 <div className="max-w-7xl mx-auto px-6 lg:px-12">
                    {/* Back Navigation */}
                    <button 
                        onClick={() => navigate(-1)}
-                       className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-12 animate-in fade-in slide-in-from-left-4 duration-700"
+                       className="group flex items-center gap-3 text-gray-400 hover:text-sm-blue transition-all mb-6 animate-in fade-in slide-in-from-left-4 duration-700"
                    >
-                       <div className="w-10 h-10 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center group- group-hover:border-sm-blue transition-all">
-                           <ArrowLeft size={18} />
+                       <div className="w-8 h-8 rounded-full bg-white border border-gray-100 shadow-sm flex items-center justify-center group- group-hover:border-sm-blue transition-all">
+                           <ArrowLeft size={16} />
                        </div>
-                       <span className="text-[11px] font-black uppercase tracking-[0.3em]">Institutional Hub</span>
+                       <span className="text-[10px] font-black uppercase tracking-[0.3em]">Institutional Hub</span>
                    </button>
 
-                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                   <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
                       {/* TEXT CONTENT */}
                       <div className="animate-in fade-in slide-in-from-bottom-8 duration-1000">
-                         <div className="inline-flex items-center gap-3 px-4 py-2 bg-sm-blue/5 rounded-2xl border border-sm-blue/10 mb-8">
-                             <Sparkles size={16} className="text-sm-blue" />
-                             <span className="text-[11px] font-black text-sm-blue uppercase tracking-[0.2em]">
+                         <div className="inline-flex items-center gap-3 px-4 py-1.5 bg-sm-blue/5 rounded-2xl border border-sm-blue/10 mb-4">
+                             <Sparkles size={14} className="text-sm-blue" />
+                             <span className="text-[10px] font-black text-sm-blue uppercase tracking-[0.2em]">
                                  {resource.badge}
                              </span>
                          </div>
 
                          <h1 
-                             className="text-4xl lg:text-6xl font-black text-gray-900 leading-[1.1] mb-8 uppercase tracking-tight font-heading"
+                             className="text-3xl lg:text-5xl font-black text-gray-900 leading-[1.1] mb-4 uppercase tracking-tight font-heading"
                              dangerouslySetInnerHTML={{ __html: resource.title }} 
                          />
 
-                         <div className="w-20 h-1.5 bg-sm-blue rounded-full mb-10" />
+                         <div className="w-16 h-1 bg-sm-blue rounded-full mb-6" />
 
-                         <p className="text-lg lg:text-xl text-gray-500 font-medium leading-relaxed mb-12 max-w-xl">
+                         <p className="text-base lg:text-lg text-gray-500 font-medium leading-relaxed mb-6 max-w-xl">
                              {resource.subtitle}
                          </p>
 
@@ -181,8 +326,8 @@ const ResourcePost = () => {
             </section>
 
             {/* Main Content Body */}
-            <main className="max-w-7xl mx-auto px-4 lg:px-12 py-20">
-                <div className="flex flex-col lg:flex-row gap-20">
+            <main className="max-w-7xl mx-auto px-4 lg:px-12 py-10">
+                <div className="flex flex-col lg:flex-row gap-10">
                     {/* Content Column */}
                     <div className="flex-1">
                         <div 
@@ -190,11 +335,38 @@ const ResourcePost = () => {
                             dangerouslySetInnerHTML={{ __html: resource.content }}
                         />
                         
+                        {/* Gallery Section */}
+                        {resource.gallery && resource.gallery.length > 0 && (
+                            <div className="mt-16">
+                                <h3 className="text-xl font-black text-gray-900 uppercase tracking-tight mb-8">Visual Reference Gallery</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                                    {resource.gallery.map((img, idx) => {
+                                        const url = typeof img === 'string' ? img : img.url;
+                                        const caption = typeof img === 'string' ? `Gallery ${idx}` : (img.caption || `Gallery ${idx}`);
+                                        return (
+                                            <div key={idx} className="aspect-square rounded-2xl overflow-hidden bg-gray-100 group relative">
+                                                <img 
+                                                    src={formatImgUrl(url)} 
+                                                    alt={caption} 
+                                                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" 
+                                                />
+                                                {typeof img !== 'string' && img.caption && (
+                                                    <div className="absolute inset-x-0 bottom-0 p-3 bg-black/50 backdrop-blur-sm text-white text-[9px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-opacity">
+                                                        {img.caption}
+                                                    </div>
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            </div>
+                        )}
+
                         {/* Specs Grid */}
-                        <div className="mt-20 pt-16 border-t border-gray-100">
-                            <div className="flex items-center gap-4 mb-10">
+                        <div className="mt-10 pt-10 border-t border-gray-100">
+                            <div className="flex items-center gap-4 mb-6">
                                 <div className="h-px bg-gray-100 flex-1" />
-                                <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.3em] whitespace-nowrap">Technical Parameters</h3>
+                                <h3 className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] whitespace-nowrap">Technical Parameters</h3>
                                 <div className="h-px bg-gray-100 flex-1" />
                             </div>
                             

@@ -102,6 +102,7 @@ const TileEditor = ({ t, i, data, set }) => {
             btn2Path:    inner.btn2Path    || cta.btn2Path     || hero.btn2Path  || '',
             specs:       inner.specs       || indexed?.resource_specs?.specs || [],
             tags:        inner.tags        || indexed?.resource_specs?.tags  || [],
+            gallery:     inner.gallery     || (indexed?.page_gallery?.images || []).map(im => typeof im === 'string' ? im : im.url) || [],
           }
         };
         set('tiles', x);
@@ -190,6 +191,7 @@ const TileEditor = ({ t, i, data, set }) => {
                   <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Technical specs & Taxonomy</h6>
                   <Field label="Specifications (separated by comma)" hint="e.g. Multi-touch, 4K resolution"><TextInput value={(inner.specs || []).join(', ')} onChange={v => updateInner('specs', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
                   <Field label="Categories (separated by comma)" hint="e.g. Technology, Digital"><TextInput value={(inner.tags || []).join(', ')} onChange={v => updateInner('tags', v.split(',').map(s => s.trim()).filter(Boolean))} /></Field>
+                  <Field label="Gallery Images (comma separated URLs)" hint="Unsplash or uploaded image links"><TextArea value={(inner.gallery || []).join(', ')} onChange={v => updateInner('gallery', v.split(',').map(s => s.trim()).filter(Boolean))} rows={2} /></Field>
                 </div>
 
                 <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
@@ -800,6 +802,7 @@ const BlockForms = {
                 content: '', 
                 specs: [], 
                 tags: [],
+                gallery: [],
                 btn1Label: 'DOWNLOAD GUIDE',
                 btn1Path: '',
                 btn2Label: 'SHARE',
