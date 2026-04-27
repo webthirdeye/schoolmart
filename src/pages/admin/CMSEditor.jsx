@@ -51,6 +51,240 @@ const SectionTitle = ({ children }) => (
 );
 
 // ── Tile Accordion Editor ───────────────────────────────────────────────────
+const EnvironmentEditor = ({ item, i, items, set }) => {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('card');
+  const upd = (k, v) => { const it = [...items]; it[i] = { ...it[i], [k]: v }; set('masonryItems', it); };
+  const updSpec = (j, k, v) => { const it = [...items]; if (!it[i].specs) it[i].specs = []; it[i].specs[j] = { ...it[i].specs[j], [k]: v }; set('masonryItems', it); };
+  
+  const innerSlug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+  return (
+    <div className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden bg-white mb-4">
+      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center gap-4 p-5 hover:bg-indigo-50/30 transition-all text-left">
+        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-[10px] font-black text-indigo-600 shrink-0">{i + 1}</div>
+        {item.img && <img src={formatImgUrl(item.img)} alt="" className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0" />}
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-black text-gray-900 uppercase tracking-widest truncate">{item.t || 'Untitled Case Study'}</p>
+          <p className="text-[10px] text-gray-400 font-medium truncate">{item.c || 'No Category'}</p>
+        </div>
+        <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <button onClick={e => { e.stopPropagation(); set('masonryItems', items.filter((_, j) => j !== i)); }} className="ml-2 text-red-300 hover:text-red-500"><Trash2 size={15}/></button>
+      </button>
+
+      {open && (
+        <div className="border-t border-gray-50">
+          <div className="flex gap-2 p-4 bg-gray-50/50 border-b border-gray-100">
+            <button onClick={() => setTab('card')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'card' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-indigo-200'}`}>🃏 Card Fields</button>
+            <button onClick={() => setTab('inner')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'inner' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-blue-200'}`}>📄 Inner Page Fields</button>
+          </div>
+
+          <div className="p-6 space-y-5">
+            {tab === 'card' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)} /></Field>
+                  <Field label="Category Tag"><TextInput value={item.c} onChange={v => upd('c', v)} placeholder="Sound, Nature…" /></Field>
+                </div>
+                <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
+              </>
+            )}
+
+            {tab === 'inner' && (
+              <div className="space-y-6">
+                <div className="p-6 bg-blue-50/40 rounded-3xl border border-blue-100/50 space-y-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h6 className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center gap-2"><Sparkles size={12}/> Inner Page Identity</h6>
+                    <button onClick={() => window.open(`/admin/cms?page=environment-${innerSlug}`, '_blank')} className="px-3 py-1 bg-white border border-blue-100 text-blue-600 text-[8px] font-black uppercase rounded-full hover:bg-blue-50">Deep Edit Sub-Page</button>
+                  </div>
+                  <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Case Study 2025" /></Field>
+                  <Field label="Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                </div>
+
+                <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4">
+                  <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Technical specs & Taxonomy</h6>
+                  {(item.specs || []).map((spec, j) => (
+                    <div key={j} className="grid grid-cols-2 gap-2 items-start bg-white p-3 rounded-xl border border-gray-100 relative">
+                      <button onClick={() => { const it = [...items]; it[i].specs = it[i].specs.filter((_, k) => k !== j); set('masonryItems', it); }} className="absolute top-1 right-1 text-red-200 hover:text-red-400"><X size={10}/></button>
+                      <Field label="Spec Title"><TextInput value={spec.t} onChange={v => updSpec(j, 't', v)} /></Field>
+                      <Field label="Spec Description"><TextInput value={spec.d} onChange={v => updSpec(j, 'd', v)} /></Field>
+                    </div>
+                  ))}
+                  <button onClick={() => { const it = [...items]; if (!it[i].specs) it[i].specs = []; it[i].specs.push({ t: '', d: '' }); set('masonryItems', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Spec</button>
+                  <Field label="Technical Details" hint="One per line"><TextArea value={(item.technicalDetails || []).join('\n')} onChange={v => upd('technicalDetails', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={3} /></Field>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                   <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2"><FileText size={12}/> Main Document Content (HTML)</h6>
+                   <TextArea value={item.content} onChange={v => upd('content', v)} rows={8} placeholder="Extra content for the detail page..." />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const CaseStudyEditor = ({ item, i, items, set }) => {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('card');
+  const upd = (k, v) => { const it = [...items]; it[i] = { ...it[i], [k]: v }; set('items', it); };
+  
+  const innerSlug = item.slug || item.title.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+  return (
+    <div className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden bg-white mb-4">
+      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center gap-4 p-5 hover:bg-indigo-50/30 transition-all text-left">
+        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-[10px] font-black text-indigo-600 shrink-0">{i + 1}</div>
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-black text-gray-900 uppercase tracking-widest truncate">{item.title || 'Untitled Project'}</p>
+          <p className="text-[10px] text-gray-400 font-medium truncate">{item.location || 'No Location'}</p>
+        </div>
+        <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <button onClick={e => { e.stopPropagation(); set('items', items.filter((_, j) => j !== i)); }} className="ml-2 text-red-300 hover:text-red-500"><Trash2 size={15}/></button>
+      </button>
+
+      {open && (
+        <div className="border-t border-gray-50">
+          <div className="flex gap-2 p-4 bg-gray-50/50 border-b border-gray-100">
+            <button onClick={() => setTab('card')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'card' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-indigo-200'}`}>🃏 Card Fields</button>
+            <button onClick={() => setTab('inner')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'inner' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-blue-200'}`}>📄 Inner Page Fields</button>
+          </div>
+
+          <div className="p-6 space-y-5">
+            {tab === 'card' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="Project Title"><TextInput value={item.title} onChange={v => upd('title', v)} /></Field>
+                  <Field label="Location"><TextInput value={item.location} onChange={v => upd('location', v)} /></Field>
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="Outcome"><TextInput value={item.outcome} onChange={v => upd('outcome', v)} placeholder="30% Enrollment Growth" /></Field>
+                  <Field label="Focus Area"><TextInput value={item.focus} onChange={v => upd('focus', v)} placeholder="Yield Opt" /></Field>
+                </div>
+                <Field label="Project Slug / Link" hint="links to /p/slug"><TextInput value={item.slug} onChange={v => upd('slug', v)} /></Field>
+              </>
+            )}
+
+            {tab === 'inner' && (
+              <div className="space-y-6">
+                <div className="p-6 bg-blue-50/40 rounded-3xl border border-blue-100/50 space-y-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h6 className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center gap-2"><Sparkles size={12}/> Inner Page Identity</h6>
+                    <button onClick={() => window.open(`/admin/cms?page=resource-${innerSlug}`, '_blank')} className="px-3 py-1 bg-white border border-blue-100 text-blue-600 text-[8px] font-black uppercase rounded-full hover:bg-blue-50">Deep Edit Sub-Page</button>
+                  </div>
+                  <Field label="Badge Overide"><TextInput value={item.badge} onChange={v => upd('badge', v)} /></Field>
+                  <Field label="Description Override"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                   <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2"><FileText size={12}/> Main Document Content (HTML)</h6>
+                   <TextArea value={item.content} onChange={v => upd('content', v)} rows={8} placeholder="Extra content for the project detail page..." />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const GuideEditor = ({ item, i, items, set }) => {
+  const [open, setOpen] = useState(false);
+  const [tab, setTab] = useState('card');
+  const upd = (k, v) => { const it = [...items]; it[i] = { ...it[i], [k]: v }; set('caseStudies', it); };
+  const updStep = (j, k, v) => { const it = [...items]; if (!it[i].steps) it[i].steps = []; it[i].steps[j] = { ...it[i].steps[j], [k]: v }; set('caseStudies', it); };
+  const updSum = (j, k, v) => { const it = [...items]; if (!it[i].summaryPoints) it[i].summaryPoints = []; it[i].summaryPoints[j] = { ...it[i].summaryPoints[j], [k]: v }; set('caseStudies', it); };
+  
+  const innerSlug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-');
+
+  return (
+    <div className="rounded-3xl border border-gray-100 shadow-sm overflow-hidden bg-white mb-4">
+      <button onClick={() => setOpen(o => !o)} className="w-full flex items-center gap-4 p-5 hover:bg-indigo-50/30 transition-all text-left">
+        <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center text-[10px] font-black text-indigo-600 shrink-0">{i + 1}</div>
+        {item.img && <img src={formatImgUrl(item.img)} alt="" className="w-12 h-12 rounded-xl object-cover border border-gray-100 shrink-0" />}
+        <div className="flex-1 min-w-0">
+          <p className="text-[12px] font-black text-gray-900 uppercase tracking-widest truncate">{item.t || 'Untitled Guide'}</p>
+          <p className="text-[10px] text-gray-400 font-medium truncate">{item.c || 'No Category'}</p>
+        </div>
+        <ChevronDown size={16} className={`text-gray-400 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <button onClick={e => { e.stopPropagation(); set('caseStudies', items.filter((_, j) => j !== i)); }} className="ml-2 text-red-300 hover:text-red-500"><Trash2 size={15}/></button>
+      </button>
+
+      {open && (
+        <div className="border-t border-gray-50">
+          <div className="flex gap-2 p-4 bg-gray-50/50 border-b border-gray-100">
+            <button onClick={() => setTab('card')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'card' ? 'bg-indigo-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-indigo-200'}`}>🃏 Card Fields</button>
+            <button onClick={() => setTab('inner')} className={`px-5 py-2 rounded-xl text-[10px] font-black uppercase tracking-widest transition-all ${tab === 'inner' ? 'bg-blue-600 text-white shadow-lg' : 'bg-white text-gray-400 border border-gray-100 hover:border-blue-200'}`}>📄 Inner Page Fields</button>
+          </div>
+
+          <div className="p-6 space-y-5">
+            {tab === 'card' && (
+              <>
+                <div className="grid grid-cols-2 gap-4">
+                  <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)} /></Field>
+                  <Field label="Category"><TextInput value={item.c} onChange={v => upd('c', v)} /></Field>
+                </div>
+                <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
+              </>
+            )}
+
+            {tab === 'inner' && (
+              <div className="space-y-6">
+                <div className="p-6 bg-blue-50/40 rounded-3xl border border-blue-100/50 space-y-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <h6 className="text-[9px] font-black text-blue-600 uppercase tracking-[0.2em] flex items-center gap-2"><Sparkles size={12}/> Inner Page Identity</h6>
+                    <button onClick={() => window.open(`/admin/cms?page=guide-${innerSlug}`, '_blank')} className="px-3 py-1 bg-white border border-blue-100 text-blue-600 text-[8px] font-black uppercase rounded-full hover:bg-blue-50">Deep Edit Sub-Page</button>
+                  </div>
+                  <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Strategic Guide 2025" /></Field>
+                  <Field label="Intro Paragraph"><TextArea value={item.intro} onChange={v => upd('intro', v)} rows={2} /></Field>
+                  <ImageUpload label="Main Hero Image" value={item.mainImg} onChange={v => upd('mainImg', v)} />
+                </div>
+
+                <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4">
+                  <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Strategic Steps</h6>
+                  {(item.steps || []).map((step, j) => (
+                    <div key={j} className="bg-white p-4 rounded-2xl border border-gray-100 relative space-y-2">
+                      <button onClick={() => { const it = [...items]; it[i].steps = it[i].steps.filter((_, k) => k !== j); set('caseStudies', it); }} className="absolute top-2 right-2 text-red-200 hover:text-red-400"><Trash2 size={12}/></button>
+                      <Field label={`Step ${j+1} Title`}><TextInput value={step.title} onChange={v => updStep(j, 'title', v)} /></Field>
+                      <Field label="Content"><TextArea value={step.content} onChange={v => updStep(j, 'content', v)} rows={2} /></Field>
+                      <Field label="Insight (quote)"><TextInput value={step.insight} onChange={v => updStep(j, 'insight', v)} /></Field>
+                      <Field label="Action Point"><TextInput value={step.action} onChange={v => updStep(j, 'action', v)} /></Field>
+                    </div>
+                  ))}
+                  <button onClick={() => { const it = [...items]; if (!it[i].steps) it[i].steps = []; it[i].steps.push({ title: '', content: '', insight: '', action: '' }); set('caseStudies', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Step</button>
+                </div>
+
+                <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100 space-y-4">
+                  <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2">Summary Points</h6>
+                  <div className="grid grid-cols-2 gap-3">
+                    {(item.summaryPoints || []).map((sp, j) => (
+                      <div key={j} className="bg-white p-3 rounded-xl border border-gray-100 relative">
+                        <button onClick={() => { const it = [...items]; it[i].summaryPoints = it[i].summaryPoints.filter((_, k) => k !== j); set('caseStudies', it); }} className="absolute top-1 right-1 text-red-200 hover:text-red-400"><X size={10}/></button>
+                        <Field label="Label"><TextInput value={sp.t} onChange={v => updSum(j, 't', v)} /></Field>
+                        <Field label="Icon Name"><TextInput value={sp.icon} onChange={v => updSum(j, 'icon', v)} placeholder="ShieldCheck" /></Field>
+                      </div>
+                    ))}
+                  </div>
+                  <button onClick={() => { const it = [...items]; if (!it[i].summaryPoints) it[i].summaryPoints = []; it[i].summaryPoints.push({ t: '', icon: 'Star' }); set('caseStudies', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Summary Point</button>
+                </div>
+
+                <div className="bg-white p-6 rounded-3xl border border-gray-100 shadow-sm space-y-4">
+                   <h6 className="text-[9px] font-black text-gray-400 uppercase tracking-[0.2em] mb-2 flex items-center gap-2"><FileText size={12}/> Main Document Content (HTML)</h6>
+                   <TextArea value={item.content} onChange={v => upd('content', v)} rows={8} placeholder="Extra content for the guide detail page..." />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+    </div>
+  );
+};
+
 const TileEditor = ({ t, i, data, set }) => {
   const [open, setOpen] = useState(false);
   const [tab, setTab] = useState('card');
@@ -1275,31 +1509,11 @@ const BlockForms = {
   case_studies: ({ data = {}, set }) => (
     <div className="space-y-4">
       <SectionTitle>Case Studies</SectionTitle>
-      {(data?.items || []).map((c, i) => (
-        <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 space-y-3 relative">
-          <button onClick={() => set('items', (data.items||[]).filter((_,j)=>j!==i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Project Title"><TextInput value={c.title} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],title:v}; set('items',it); }}/></Field>
-            <Field label="Location"><TextInput value={c.location} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],location:v}; set('items',it); }}/></Field>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Outcome"><TextInput value={c.outcome} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],outcome:v}; set('items',it); }} placeholder="30% Enrollment Growth"/></Field>
-            <Field label="Focus Area"><TextInput value={c.focus} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],focus:v}; set('items',it); }} placeholder="Yield Opt"/></Field>
-          </div>
-          <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 space-y-3">
-             <div className="flex justify-between items-center">
-                <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Detail Page Mapping</p>
-                <button 
-                  onClick={() => { const slug = c.slug || c.title.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=resource-${slug}`, '_blank'); }}
-                  className="px-3 py-1 bg-white border border-indigo-100 text-indigo-400 text-[8px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all"
-                >Deep Edit Sub-Page</button>
-             </div>
-             <Field label="Project Slug / Link" hint="e.g. smart-classroom (links to /p/smart-classroom)"><TextInput value={c.slug} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],slug:v}; set('items',it); }}/></Field>
-             <Field label="Badge Overide"><TextInput value={c.badge} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],badge:v}; set('items',it); }}/></Field>
-             <Field label="Description Override"><TextArea value={c.description} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],description:v}; set('items',it); }} rows={2}/></Field>
-          </div>
-        </div>
-      ))}
+      <div className="space-y-4">
+        {items.map((item, i) => (
+          <CaseStudyEditor key={i} item={item} i={i} items={items} set={set} />
+        ))}
+      </div>
       <button 
         onClick={async () => {
           const name = prompt('Case Study Project Title:');
@@ -1370,41 +1584,13 @@ const BlockForms = {
         </div>
         <SectionTitle>Case Study Cards (Masonry Grid)</SectionTitle>
         <p className="text-[11px] text-gray-400">These cards appear in the grid AND power the individual detail pages at <code>/environments/:slug</code>.</p>
-        {items.map((item, i) => {
-          const upd = (k, v) => { const it = JSON.parse(JSON.stringify(items)); it[i][k] = v; set('masonryItems', it); };
-          const updSpec = (j, k, v) => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].specs) it[i].specs = []; it[i].specs[j] = { ...it[i].specs[j], [k]: v }; set('masonryItems', it); };
-          return (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 space-y-4 relative">
-              <button onClick={() => set('masonryItems', items.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
-              <p className="text-[10px] font-black text-sm-blue uppercase tracking-widest">Card #{i + 1}</p>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)}/></Field>
-                <Field label="Category Tag"><TextInput value={item.c} onChange={v => upd('c', v)} placeholder="Sound, Nature…"/></Field>
-              </div>
-              <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)}/>
-              <div className="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-4">
-                <div className="flex justify-between items-center">
-                   <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Sub-Page Override Fields</p>
-                   <button 
-                     onClick={() => { const slug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=environment-${slug}`, '_blank'); }}
-                     className="px-4 py-1.5 bg-white border border-indigo-100 text-indigo-400 text-[9px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all shadow-sm"
-                   >Deep Edit Sub-Page</button>
-                </div>
-                <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Case Study 2025"/></Field>
-                <Field label="Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2}/></Field>
-                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Specs Grid</p>
-                {(item.specs || []).map((spec, j) => (
-                  <div key={j} className="grid grid-cols-2 gap-2 items-start">
-                    <Field label="Spec Title"><TextInput value={spec.t} onChange={v => updSpec(j, 't', v)}/></Field>
-                    <Field label="Spec Description"><TextInput value={spec.d} onChange={v => updSpec(j, 'd', v)}/></Field>
-                  </div>
-                ))}
-                <button onClick={() => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].specs) it[i].specs = []; it[i].specs.push({ t: '', d: '' }); set('masonryItems', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Spec</button>
-                <Field label="Technical Details" hint="One per line"><TextArea value={(item.technicalDetails || []).join('\n')} onChange={v => upd('technicalDetails', v.split('\n').map(s => s.trim()).filter(Boolean))} rows={3}/></Field>
-              </div>
-            </div>
-          );
-        })}
+        
+        <div className="space-y-4">
+          {items.map((item, i) => (
+            <EnvironmentEditor key={i} item={item} i={i} items={items} set={set} />
+          ))}
+        </div>
+
         <button 
           onClick={async () => {
             const name = prompt('Environment Case Study Title:');
@@ -1461,56 +1647,13 @@ const BlockForms = {
         </div>
         <SectionTitle>Strategy Guide Cards</SectionTitle>
         <p className="text-[11px] text-gray-400">These cards appear in the masonry grid AND power the detail pages at <code>/guides/:slug</code>.</p>
-        {items.map((item, i) => {
-          const upd = (k, v) => { const it = JSON.parse(JSON.stringify(items)); it[i][k] = v; set('caseStudies', it); };
-          const updStep = (j, k, v) => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].steps) it[i].steps = []; it[i].steps[j] = { ...it[i].steps[j], [k]: v }; set('caseStudies', it); };
-          const updSum = (j, k, v) => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].summaryPoints) it[i].summaryPoints = []; it[i].summaryPoints[j] = { ...it[i].summaryPoints[j], [k]: v }; set('caseStudies', it); };
-          return (
-            <div key={i} className="bg-white border border-gray-100 rounded-2xl p-5 space-y-4 relative">
-              <button onClick={() => set('caseStudies', items.filter((_, j) => j !== i))} className="absolute top-3 right-3 text-red-300 hover:text-red-500"><Trash2 size={14}/></button>
-              <p className="text-[10px] font-black text-sm-blue uppercase tracking-widest">Guide Card #{i + 1}</p>
-              <div className="grid grid-cols-2 gap-3">
-                <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)}/></Field>
-                <Field label="Category"><TextInput value={item.c} onChange={v => upd('c', v)}/></Field>
-              </div>
-              <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)}/>
-              <div className="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-4">
-                <div className="flex justify-between items-center">
-                   <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Sub-Page Override Fields</p>
-                   <button 
-                     onClick={() => { const slug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=guide-${slug}`, '_blank'); }}
-                     className="px-4 py-1.5 bg-white border border-indigo-100 text-indigo-400 text-[9px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all shadow-sm"
-                   >Deep Edit Sub-Page</button>
-                </div>
-                <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Strategic Guide 2025"/></Field>
-                <Field label="Intro Paragraph"><TextArea value={item.intro} onChange={v => upd('intro', v)} rows={2}/></Field>
-                <ImageUpload label="Main Hero Image" value={item.mainImg} onChange={v => upd('mainImg', v)}/>
-                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Steps</p>
-                {(item.steps || []).map((step, j) => (
-                  <div key={j} className="bg-gray-50 rounded-xl p-3 space-y-2">
-                    <div className="flex justify-between items-center mb-1">
-                      <span className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Step {j+1}</span>
-                      <button onClick={() => { const it = JSON.parse(JSON.stringify(items)); it[i].steps = it[i].steps.filter((_, k) => k !== j); set('caseStudies', it); }} className="text-red-300 hover:text-red-500"><Trash2 size={11}/></button>
-                    </div>
-                    <Field label="Step Title"><TextInput value={step.title} onChange={v => updStep(j, 'title', v)}/></Field>
-                    <Field label="Content"><TextArea value={step.content} onChange={v => updStep(j, 'content', v)} rows={2}/></Field>
-                    <Field label="Insight (quote)"><TextInput value={step.insight} onChange={v => updStep(j, 'insight', v)}/></Field>
-                    <Field label="Action Point"><TextInput value={step.action} onChange={v => updStep(j, 'action', v)}/></Field>
-                  </div>
-                ))}
-                <button onClick={() => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].steps) it[i].steps = []; it[i].steps.push({ title: '', content: '', insight: '', action: '' }); set('caseStudies', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Step</button>
-                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest mt-2">Summary Points</p>
-                {(item.summaryPoints || []).map((sp, j) => (
-                  <div key={j} className="grid grid-cols-2 gap-2">
-                    <Field label="Label"><TextInput value={sp.t} onChange={v => updSum(j, 't', v)}/></Field>
-                    <Field label="Icon Name"><TextInput value={sp.icon} onChange={v => updSum(j, 'icon', v)} placeholder="ShieldCheck"/></Field>
-                  </div>
-                ))}
-                <button onClick={() => { const it = JSON.parse(JSON.stringify(items)); if (!it[i].summaryPoints) it[i].summaryPoints = []; it[i].summaryPoints.push({ t: '', icon: 'Star' }); set('caseStudies', it); }} className="text-[9px] font-black text-indigo-400 uppercase tracking-widest hover:text-indigo-600">+ Add Summary Point</button>
-              </div>
-            </div>
-          );
-        })}
+        
+        <div className="space-y-4">
+          {items.map((item, i) => (
+            <GuideEditor key={i} item={item} i={i} items={items} set={set} />
+          ))}
+        </div>
+
         <button 
           onClick={async () => {
             const name = prompt('Strategic Guide Title:');
