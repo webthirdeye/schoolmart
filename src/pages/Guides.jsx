@@ -113,11 +113,11 @@ const Guides = () => {
               <h2 className="text-[13px] font-black text-gray-900 uppercase tracking-[0.2em] font-heading">Institutional Strategy Guides</h2>
               <div className="h-[1px] flex-grow mx-8 bg-gray-100" />
            </div>
-           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+           <div className="columns-1 sm:columns-2 lg:columns-4 gap-4 space-y-4">
               {items.map((work, i) => (
                  <CatalogueCard 
                    key={i}
-                   work={{ name: work.t, subcategory: work.c, image: work.img }} 
+                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.intro || work.description }} 
                    isSelected={selectedItem?.t === work.t} 
                    onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)} 
                    onAction={() => navigate(`/guides/${work.t.toLowerCase().replace(/\s+/g, '-')}`)}
