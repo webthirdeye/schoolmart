@@ -1286,9 +1286,26 @@ const BlockForms = {
             <Field label="Outcome"><TextInput value={c.outcome} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],outcome:v}; set('items',it); }} placeholder="30% Enrollment Growth"/></Field>
             <Field label="Focus Area"><TextInput value={c.focus} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],focus:v}; set('items',it); }} placeholder="Yield Opt"/></Field>
           </div>
+          <Field label="Project Slug / Link" hint="e.g. smart-classroom (links to /p/smart-classroom)"><TextInput value={c.slug} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],slug:v}; set('items',it); }}/></Field>
         </div>
       ))}
-      <button onClick={() => set('items', [...(data?.items||[]), { title:'', location:'', outcome:'', focus:'' }])} className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all">+ Add Case Study</button>
+      <button 
+        onClick={async () => {
+          const name = prompt('Case Study Project Title:');
+          if (!name) return;
+          const safeSlug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+          const finalCmsSlug = `resource-${safeSlug}`; // Using resource prefix for generic case studies
+          
+          try {
+            await createPage(finalCmsSlug, name);
+            set('items', [...(data?.items||[]), { title: name, location: '', outcome: '', focus: '', slug: safeSlug }]);
+            alert(`Case study added and page "${finalCmsSlug}" created!`);
+          } catch (err) {
+            alert('Failed to initialize case study page: ' + err.message);
+          }
+        }} 
+        className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all"
+      >+ Add New Case Study & Auto-Create Page</button>
     </div>
   ),
 

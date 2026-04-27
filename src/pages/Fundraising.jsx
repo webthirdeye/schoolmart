@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useCMSPage } from '../hooks/useCMSBlock';
 import { ArrowRight, MapPin, Award, Phone, Mail } from 'lucide-react';
 
@@ -67,14 +67,21 @@ const Fundraising = () => {
           </div>
           <div className="lg:w-2/3 grid grid-cols-1 lg:grid-cols-2 gap-4">
             {cases.map((cs, i) => (
-              <div key={i} className="bg-gray-50 p-8 rounded-[35px] border border-gray-100 group hover:border-sm-blue transition-colors">
+              <div key={i} className="bg-gray-50 p-8 rounded-[35px] border border-gray-100 group hover:border-sm-blue transition-colors flex flex-col h-full">
                 <div className="flex justify-between items-start mb-6">
                   <span className="text-[10px] font-black text-gray-400 px-3 py-1.5 bg-white rounded-full uppercase tracking-widest border border-gray-100">{cs.focus}</span>
                   <Award size={20} className="text-emerald-500" />
                 </div>
-                <h4 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-2">{cs.title}</h4>
+                <h4 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-2 flex-grow">{cs.title}</h4>
                 <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-6 flex items-center gap-1"><MapPin size={10} /> {cs.location}</p>
-                <p className="text-emerald-600 font-black text-[16px] uppercase tracking-tighter">{cs.outcome}</p>
+                <div className="flex items-center justify-between mt-auto">
+                  <p className="text-emerald-600 font-black text-[16px] uppercase tracking-tighter">{cs.outcome}</p>
+                  {cs.slug && (
+                    <Link to={`/p/${cs.slug}`} className="text-sm-blue hover:underline text-[10px] font-black uppercase tracking-widest flex items-center gap-1">
+                      Details <ArrowRight size={12} />
+                    </Link>
+                  )}
+                </div>
               </div>
             ))}
           </div>
