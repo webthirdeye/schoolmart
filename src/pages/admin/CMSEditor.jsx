@@ -1286,7 +1286,18 @@ const BlockForms = {
             <Field label="Outcome"><TextInput value={c.outcome} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],outcome:v}; set('items',it); }} placeholder="30% Enrollment Growth"/></Field>
             <Field label="Focus Area"><TextInput value={c.focus} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],focus:v}; set('items',it); }} placeholder="Yield Opt"/></Field>
           </div>
-          <Field label="Project Slug / Link" hint="e.g. smart-classroom (links to /p/smart-classroom)"><TextInput value={c.slug} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],slug:v}; set('items',it); }}/></Field>
+          <div className="bg-indigo-50/50 p-4 rounded-xl border border-indigo-100 space-y-3">
+             <div className="flex justify-between items-center">
+                <p className="text-[9px] font-black text-indigo-400 uppercase tracking-widest">Detail Page Mapping</p>
+                <button 
+                  onClick={() => { const slug = c.slug || c.title.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=resource-${slug}`, '_blank'); }}
+                  className="px-3 py-1 bg-white border border-indigo-100 text-indigo-400 text-[8px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all"
+                >Deep Edit Sub-Page</button>
+             </div>
+             <Field label="Project Slug / Link" hint="e.g. smart-classroom (links to /p/smart-classroom)"><TextInput value={c.slug} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],slug:v}; set('items',it); }}/></Field>
+             <Field label="Badge Overide"><TextInput value={c.badge} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],badge:v}; set('items',it); }}/></Field>
+             <Field label="Description Override"><TextArea value={c.description} onChange={v=>{ const it=[...(data.items||[])]; it[i]={...it[i],description:v}; set('items',it); }} rows={2}/></Field>
+          </div>
         </div>
       ))}
       <button 
@@ -1371,8 +1382,14 @@ const BlockForms = {
                 <Field label="Category Tag"><TextInput value={item.c} onChange={v => upd('c', v)} placeholder="Sound, Nature…"/></Field>
               </div>
               <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)}/>
-              <div className="border-t border-gray-100 pt-3 space-y-3">
-                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Detail Page Content</p>
+              <div className="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-4">
+                <div className="flex justify-between items-center">
+                   <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Sub-Page Override Fields</p>
+                   <button 
+                     onClick={() => { const slug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=environment-${slug}`, '_blank'); }}
+                     className="px-4 py-1.5 bg-white border border-indigo-100 text-indigo-400 text-[9px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all shadow-sm"
+                   >Deep Edit Sub-Page</button>
+                </div>
                 <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Case Study 2025"/></Field>
                 <Field label="Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2}/></Field>
                 <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Specs Grid</p>
@@ -1457,8 +1474,14 @@ const BlockForms = {
                 <Field label="Category"><TextInput value={item.c} onChange={v => upd('c', v)}/></Field>
               </div>
               <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)}/>
-              <div className="border-t border-gray-100 pt-3 space-y-3">
-                <p className="text-[9px] font-black text-gray-400 uppercase tracking-widest">Detail Page Content</p>
+              <div className="bg-indigo-50/50 p-5 rounded-2xl border border-indigo-100 space-y-4">
+                <div className="flex justify-between items-center">
+                   <p className="text-[10px] font-black text-indigo-400 uppercase tracking-[0.2em]">Sub-Page Override Fields</p>
+                   <button 
+                     onClick={() => { const slug = item.t.toLowerCase().replace(/[^a-z0-9]/g, '-'); window.open(`/admin/cms?page=guide-${slug}`, '_blank'); }}
+                     className="px-4 py-1.5 bg-white border border-indigo-100 text-indigo-400 text-[9px] font-black uppercase rounded-full hover:bg-indigo-50 transition-all shadow-sm"
+                   >Deep Edit Sub-Page</button>
+                </div>
                 <Field label="Badge"><TextInput value={item.badge} onChange={v => upd('badge', v)} placeholder="Strategic Guide 2025"/></Field>
                 <Field label="Intro Paragraph"><TextArea value={item.intro} onChange={v => upd('intro', v)} rows={2}/></Field>
                 <ImageUpload label="Main Hero Image" value={item.mainImg} onChange={v => upd('mainImg', v)}/>
