@@ -55,9 +55,9 @@ const Guides = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const { blocks, loading } = useCMSPage('guides');
   
-  const d = blocks?.guides_page_content || DEFAULT_CONTENT;
-  const heroData = blocks?.guides_page_content || d.hero;
-  const items = d.caseStudies || DEFAULT_CONTENT.caseStudies;
+  const d = blocks?.guides_page_content;
+  const heroData = d || DEFAULT_CONTENT.hero;
+  const items = d?.caseStudies !== undefined ? d.caseStudies : DEFAULT_CONTENT.caseStudies;
 
   // Instant loading
 

@@ -44,9 +44,9 @@ const Environments = () => {
   const { blocks, loading } = useCMSPage('environments');
   const [selectedItem, setSelectedItem] = useState(null);
   
-  const d = blocks?.environments_page_content || DEFAULT_CONTENT;
-  const heroData = blocks?.environments_page_content || d.hero;
-  const masonryItems = (d.masonryItems?.length ? d.masonryItems : DEFAULT_CONTENT.masonryItems);
+  const d = blocks?.environments_page_content;
+  const heroData = d || DEFAULT_CONTENT.hero;
+  const masonryItems = d?.masonryItems !== undefined ? d.masonryItems : DEFAULT_CONTENT.masonryItems;
 
   // Instant fallback rendering
 
