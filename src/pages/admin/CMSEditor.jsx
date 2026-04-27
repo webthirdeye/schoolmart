@@ -1506,33 +1506,36 @@ const BlockForms = {
     </div>
   ),
 
-  case_studies: ({ data = {}, set }) => (
-    <div className="space-y-4">
-      <SectionTitle>Case Studies</SectionTitle>
+  case_studies: ({ data = {}, set }) => {
+    const items = data?.items || [];
+    return (
       <div className="space-y-4">
-        {items.map((item, i) => (
-          <CaseStudyEditor key={i} item={item} i={i} items={items} set={set} />
-        ))}
+        <SectionTitle>Case Studies</SectionTitle>
+        <div className="space-y-4">
+          {items.map((item, i) => (
+            <CaseStudyEditor key={i} item={item} i={i} items={items} set={set} />
+          ))}
+        </div>
+        <button 
+          onClick={async () => {
+            const name = prompt('Case Study Project Title:');
+            if (!name) return;
+            const safeSlug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
+            const finalCmsSlug = `resource-${safeSlug}`; // Using resource prefix for generic case studies
+            
+            try {
+              await createPage(finalCmsSlug, name);
+              set('items', [...(data?.items||[]), { title: name, location: '', outcome: '', focus: '', slug: safeSlug }]);
+              alert(`Case study added and page "${finalCmsSlug}" created!`);
+            } catch (err) {
+              alert('Failed to initialize case study page: ' + err.message);
+            }
+          }} 
+          className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all"
+        >+ Add New Case Study & Auto-Create Page</button>
       </div>
-      <button 
-        onClick={async () => {
-          const name = prompt('Case Study Project Title:');
-          if (!name) return;
-          const safeSlug = name.toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/-+/g, '-');
-          const finalCmsSlug = `resource-${safeSlug}`; // Using resource prefix for generic case studies
-          
-          try {
-            await createPage(finalCmsSlug, name);
-            set('items', [...(data?.items||[]), { title: name, location: '', outcome: '', focus: '', slug: safeSlug }]);
-            alert(`Case study added and page "${finalCmsSlug}" created!`);
-          } catch (err) {
-            alert('Failed to initialize case study page: ' + err.message);
-          }
-        }} 
-        className="w-full py-4 rounded-2xl border-2 border-dashed border-indigo-100 text-indigo-400 font-black uppercase text-[10px] tracking-widest hover:bg-indigo-50 transition-all"
-      >+ Add New Case Study & Auto-Create Page</button>
-    </div>
-  ),
+    );
+  },
 
   blog_posts: ({ data = {}, set }) => (
     <div className="space-y-4">
