@@ -90,13 +90,13 @@ const GuidePost = () => {
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 pt-8 lg:pt-12">
+      <div className="max-w-4xl mx-auto px-4 pt-6 lg:pt-8">
         {/* HERO AREA (NARRATIVE STYLE) */}
-        <div className="text-center mb-12">
-           <span className="inline-block px-4 py-1.5 bg-blue-50 text-[#004a8e] font-black rounded-full text-[11px] uppercase tracking-[0.2em] mb-6 border border-blue-100">
+        <div className="text-center mb-8">
+           <span className="inline-block px-4 py-1.5 bg-blue-50 text-[#004a8e] font-black rounded-full text-[11px] uppercase tracking-[0.2em] mb-4 border border-blue-100">
               {guideData.badge}
            </span>
-           <h1 className="text-3xl lg:text-5xl font-black font-heading leading-[1.1] tracking-tighter uppercase mb-8 text-gray-900 border-b-2 border-gray-100 pb-8">
+           <h1 className="text-3xl lg:text-5xl font-black font-heading leading-[1.1] tracking-tighter uppercase mb-6 text-gray-900 border-b-2 border-gray-100 pb-6">
               {guideData.title}
            </h1>
            <p className="text-base lg:text-lg text-gray-500 font-medium leading-relaxed max-w-2xl mx-auto">
@@ -105,7 +105,7 @@ const GuidePost = () => {
         </div>
 
         {/* MAIN FEATURE IMAGE */}
-        <div className="rounded-[40px] overflow-hidden mb-12 shadow-2xl border border-gray-100 h-[300px] lg:h-[450px]">
+        <div className="rounded-[40px] overflow-hidden mb-8 shadow-2xl border border-gray-100 h-[300px] lg:h-[450px]">
            <img src={guideData.mainImg} alt="Guide Hero" className="w-full h-full object-cover" />
         </div>
 
@@ -117,7 +117,7 @@ const GuidePost = () => {
         )}
 
         {/* STEP-BY-STEP CONTENT */}
-        <div className="space-y-16">
+        <div className="space-y-10">
            {guideData.steps.map((step, i) => (
               <section key={i} className="relative pl-12 lg:pl-16 border-l-2 border-gray-100">
                  {/* STEP MARKER */}
@@ -158,7 +158,7 @@ const GuidePost = () => {
         </div>
 
         {/* SUMMARY PILL GRID */}
-        <div className="mt-20 py-10 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="mt-12 py-10 border-t border-gray-100 grid grid-cols-2 lg:grid-cols-4 gap-4">
            {guideData.summaryPoints.map((point, i) => {
               const IconComp = ICON_MAP[point.icon] || Star;
               return (
@@ -171,7 +171,7 @@ const GuidePost = () => {
         </div>
 
         {/* FINAL SIGNATURE ACTION */}
-        <div className="mt-16 bg-[#004a8e] rounded-[40px] p-10 lg:p-14 text-center text-white shadow-2xl relative overflow-hidden">
+        <div className="mt-12 bg-[#004a8e] rounded-[40px] p-10 lg:p-14 text-center text-white shadow-2xl relative overflow-hidden">
            <div className="absolute top-0 right-0 w-64 h-64 bg-white/5 rounded-full -mr-32 -mt-32 blur-3xl" />
            <h2 className="text-3xl lg:text-4xl font-black font-heading uppercase tracking-tighter mb-4 leading-tight">
               Scale Your Institutional Influence.
