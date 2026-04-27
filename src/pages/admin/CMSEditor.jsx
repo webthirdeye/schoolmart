@@ -85,7 +85,7 @@ const EnvironmentEditor = ({ item, i, items, set }) => {
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)} /></Field>
                   <Field label="Category Tag"><TextInput value={item.c} onChange={v => upd('c', v)} placeholder="Sound, Nature…" /></Field>
-                  <Field label="Card Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                  <Field label="Card Description"><TextArea value={item.cardDescription} onChange={v => upd('cardDescription', v)} rows={2} /></Field>
                 </div>
                 <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
               </>
@@ -167,7 +167,7 @@ const CaseStudyEditor = ({ item, i, items, set }) => {
                   <Field label="Focus Area"><TextInput value={item.focus} onChange={v => upd('focus', v)} placeholder="Yield Opt" /></Field>
                 </div>
                 <Field label="Project Slug / Link" hint="links to /p/slug"><TextInput value={item.slug} onChange={v => upd('slug', v)} /></Field>
-                <Field label="Card Description"><TextArea value={item.description} onChange={v => upd('description', v)} rows={2} /></Field>
+                <Field label="Card Description"><TextArea value={item.cardDescription} onChange={v => upd('cardDescription', v)} rows={2} /></Field>
                 <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
               </>
             )}
@@ -232,7 +232,7 @@ const GuideEditor = ({ item, i, items, set }) => {
                 <div className="grid grid-cols-2 gap-4">
                   <Field label="Title (used as slug)"><TextInput value={item.t} onChange={v => upd('t', v)} /></Field>
                   <Field label="Category"><TextInput value={item.c} onChange={v => upd('c', v)} /></Field>
-                  <Field label="Card Description"><TextArea value={item.description || item.intro} onChange={v => upd('description', v)} rows={2} /></Field>
+                  <Field label="Card Description"><TextArea value={item.cardDescription || item.description} onChange={v => upd('cardDescription', v)} rows={2} /></Field>
                 </div>
                 <ImageUpload label="Card Image" value={item.img} onChange={v => upd('img', v)} />
               </>

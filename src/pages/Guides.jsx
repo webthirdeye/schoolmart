@@ -117,7 +117,7 @@ const Guides = () => {
               {items.map((work, i) => (
                  <CatalogueCard 
                    key={i}
-                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.intro || work.description }} 
+                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.cardDescription || work.intro || work.description }} 
                    isSelected={selectedItem?.t === work.t} 
                    onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)} 
                    onAction={() => navigate(`/guides/${work.t.toLowerCase().replace(/\s+/g, '-')}`)}

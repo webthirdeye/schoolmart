@@ -106,7 +106,7 @@ const Environments = () => {
               {masonryItems.map((work, i) => (
                  <CatalogueCard 
                    key={i}
-                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.description }} 
+                   work={{ name: work.t, subcategory: work.c, image: work.img, description: work.cardDescription || work.description }} 
                    isSelected={selectedItem?.t === work.t} 
                    onClick={() => setSelectedItem(selectedItem?.t === work.t ? null : work)} 
                    onAction={() => navigate(`/environments/${work.t.toLowerCase().replace(/\s+/g, '-')}`)}

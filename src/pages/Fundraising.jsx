@@ -73,7 +73,10 @@ const Fundraising = () => {
                   <Award size={20} className="text-emerald-500" />
                 </div>
                 <h4 className="text-lg font-black text-gray-900 uppercase tracking-tight mb-2 flex-grow">{cs.title}</h4>
-                <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-6 flex items-center gap-1"><MapPin size={10} /> {cs.location}</p>
+                <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-1"><MapPin size={10} /> {cs.location}</p>
+                <p className="text-gray-500 text-[12px] leading-relaxed mb-6 line-clamp-2">
+                   {cs.cardDescription || cs.description}
+                </p>
                 <div className="flex items-center justify-between mt-auto">
                   <p className="text-emerald-600 font-black text-[16px] uppercase tracking-tighter">{cs.outcome}</p>
                   {cs.slug && (

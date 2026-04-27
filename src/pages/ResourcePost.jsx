@@ -404,7 +404,10 @@ const ResourcePost = () => {
                                                 <Award size={24} className="text-sm-yellow transition-transform group-hover:scale-110" />
                                             </div>
                                             <h4 className="text-xl font-black text-gray-900 uppercase tracking-tight mb-3 flex-grow">{cs.title}</h4>
-                                            <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-10 flex items-center gap-2"><MapPin size={12} className="text-sm-blue" /> {cs.location}</p>
+                                            <p className="text-gray-400 text-[11px] font-bold uppercase tracking-widest mb-4 flex items-center gap-2"><MapPin size={12} className="text-sm-blue" /> {cs.location}</p>
+                                            <p className="text-gray-500 text-[12px] font-medium leading-relaxed mb-10 line-clamp-3">
+                                                {cs.cardDescription || cs.description}
+                                            </p>
                                             <div className="flex items-center justify-between mt-auto pt-6 border-t border-gray-100/50">
                                                 <p className="text-emerald-600 font-black text-[20px] uppercase tracking-tighter">{cs.outcome}</p>
                                                 <Link to={`/p/${cs.slug || cs.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}`} className="text-sm-blue hover:translate-x-1 transition-transform text-[11px] font-black uppercase tracking-widest flex items-center gap-2">
