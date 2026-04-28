@@ -272,6 +272,8 @@ export const bulkUploadFiles = async (files) => {
   return await res.json();
 };
 
+export const getUploadsExportUrl = () => `${API_URL}/upload/export`;
+
 // ─── Site Settings ────────────────────────────────────────────────────────────
 export const getSetting = async (key) => {
   const res = await fetch(`${API_URL}/settings`, { headers: getHeaders() });

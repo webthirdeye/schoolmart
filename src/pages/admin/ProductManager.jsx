@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getProducts, createProduct, updateProduct, deleteProduct, getAllPages } from '../../services/api';
-import { Package, Plus, Search, Filter, Edit3, Trash2, Star, Tag, Layers, ChevronDown, Upload, Image as ImageIcon } from 'lucide-react';
+import { Package, Plus, Search, Filter, Edit3, Trash2, Star, Tag, Layers, ChevronDown, Upload, Image as ImageIcon, Download } from 'lucide-react';
 import ImageUpload from '../../components/admin/ImageUpload';
 import { formatImgUrl } from '../../utils/formatters';
 import BulkUploader from '../../components/admin/BulkUploader';
@@ -625,6 +625,9 @@ export default function ProductManager({ fixedPage, liveCategories }) {
                   <button onClick={() => setEditing(p)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-blue-600 hover:scale-110 hover:bg-blue-50 transition-all shadow-lg" title="Edit">
                     <Edit3 size={18} />
                   </button>
+                  <a href={formatImgUrl(p.images?.[0])} download target="_blank" rel="noreferrer" className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-600 hover:scale-110 hover:bg-emerald-50 transition-all shadow-lg" title="Download Image">
+                    <Download size={18} />
+                  </a>
                   <button onClick={() => remove(pId)} className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-red-500 hover:scale-110 hover:bg-red-50 transition-all shadow-lg" title="Delete">
                     <Trash2 size={18} />
                   </button>

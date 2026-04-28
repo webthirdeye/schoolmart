@@ -1,7 +1,7 @@
 // src/pages/admin/GlobalSettings.jsx — Total Control Edition
 import { useEffect, useState } from 'react';
-import { getAllSettings, updateSetting } from '../../services/api';
-import { Save, Globe, Palette, Type, Lock, FileText, Share2, Bell, Smartphone } from 'lucide-react';
+import { getAllSettings, updateSetting, getUploadsExportUrl } from '../../services/api';
+import { Save, Globe, Palette, Type, Lock, FileText, Share2, Bell, Smartphone, Download, HardDrive } from 'lucide-react';
 
 const ColorInput = ({ label, value, onChange }) => (
   <div className="space-y-1">
@@ -108,6 +108,7 @@ export default function GlobalSettings() {
           { key: 'design_dna', label: 'Design Scaling', icon: Type },
           { key: 'footer', label: 'Footer Hub', icon: Globe },
           { key: 'pdf', label: 'Security Gate', icon: Lock },
+          { key: 'system', label: 'System & Backups', icon: HardDrive },
         ].map(tab => (
           <button key={tab.key} onClick={() => setActiveTab(tab.key)}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-black uppercase tracking-widest transition-all whitespace-nowrap ${activeTab === tab.key ? 'bg-white text-indigo-600 shadow-sm' : 'text-gray-400 hover:text-gray-600 hover:bg-white/50'}`}>
@@ -227,14 +228,46 @@ export default function GlobalSettings() {
               <TextInput label="Name" value={footer.brand?.name} onChange={v => updateLocal('footer', 'brand.name', v)} />
               <TextArea label="Description" value={footer.brand?.description} onChange={v => updateLocal('footer', 'brand.description', v)} />
             </div>
-            <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-6">
-              <h3 className="font-black text-gray-900 text-sm uppercase tracking-widest">📞 Institutional Contacts</h3>
-              <div className="grid grid-cols-2 gap-6">
-                <TextInput label="Email Support" value={footer.contact?.email} onChange={v => updateLocal('footer', 'contact.email', v)} />
-                <TextInput label="Primary Hotline" value={footer.contact?.phone1} onChange={v => updateLocal('footer', 'contact.phone1', v)} />
-                <TextInput label="Secondary Hotline" value={footer.contact?.phone2} onChange={v => updateLocal('footer', 'contact.phone2', v)} />
-                <TextInput label="WhatsApp Center" value={footer.contact?.whatsapp} onChange={v => updateLocal('footer', 'contact.whatsapp', v)} />
+          </div>
+        )}
+
+        {/* System & Backups Tab */}
+        {activeTab === 'system' && (
+          <div className="bg-white rounded-3xl border border-gray-100 shadow-sm p-8 space-y-8">
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center text-blue-600">
+                  <HardDrive size={28} />
+                </div>
+                <div>
+                  <h3 className="font-black text-gray-900 text-sm uppercase tracking-widest">Media & Uploads Backup</h3>
+                  <p className="text-[10px] text-gray-500 font-bold uppercase tracking-widest mt-1">Download all images and files as a compressed archive (.tar.gz)</p>
+                </div>
               </div>
+              <a 
+                href={getUploadsExportUrl()} 
+                download 
+                className="flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-2xl text-xs font-black uppercase tracking-widest hover:bg-blue-700 transition-all shadow-xl shadow-blue-500/20 active:scale-95"
+              >
+                <Download size={18} /> Download All Uploads
+              </a>
+            </div>
+
+            <div className="pt-8 border-t border-gray-100">
+               <h3 className="font-black text-gray-900 text-sm flex items-center gap-2 uppercase tracking-widest mb-4"><Bell size={18} className="text-amber-500" /> Maintenance Mode</h3>
+               <p className="text-xs text-gray-500 mb-6">Use this section to perform system-wide maintenance or export data for offline editing.</p>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Export Log</p>
+                   <p className="text-xs text-gray-600">Download system logs for debugging.</p>
+                   <button className="mt-4 text-xs font-bold text-blue-600 hover:underline">Download Logs (Internal)</button>
+                 </div>
+                 <div className="p-5 rounded-2xl bg-gray-50 border border-gray-100">
+                   <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Database Dump</p>
+                   <p className="text-xs text-gray-600">Export the entire database as JSON (Beta).</p>
+                   <button className="mt-4 text-xs font-bold text-blue-600 hover:underline">Generate Dump</button>
+                 </div>
+               </div>
             </div>
           </div>
         )}

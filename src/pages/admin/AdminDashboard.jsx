@@ -4,8 +4,9 @@ import { Link } from 'react-router-dom';
 import { getQuotes, getContacts, getProducts, getAllPages, getUsers } from '../../services/api';
 import {
   FileText, Package, MessageSquare, Mail, ArrowRight, Clock,
-  Users, Settings, FormInput, Shield, Layers, Globe
+  Users, Settings, FormInput, Shield, Layers, Globe, Download
 } from 'lucide-react';
+import { getUploadsExportUrl } from '../../services/api';
 
 const STATUS_COLORS = {
   new: 'bg-emerald-100 text-emerald-700',
@@ -61,6 +62,7 @@ export default function AdminDashboard() {
     { label: 'Login Form', desc: 'Edit fields & forgot password', icon: Shield, path: '/admin/form-config/login', color: 'bg-cyan-50 text-cyan-600', iconBg: 'bg-cyan-100' },
     { label: 'User Management', desc: `${stats.users} registered users`, icon: Users, path: '/admin/users', color: 'bg-indigo-50 text-indigo-600', iconBg: 'bg-indigo-100' },
     { label: 'Global Settings', desc: 'Footer, branding & PDF access', icon: Settings, path: '/admin/settings', color: 'bg-amber-50 text-amber-600', iconBg: 'bg-amber-100' },
+    { label: 'Download Backups', desc: 'Export all images (.tar.gz)', icon: Download, path: 'EXTERNAL_DOWNLOAD', color: 'bg-blue-50 text-blue-600', iconBg: 'bg-blue-100' },
   ];
 
   const PAGE_ICONS = {
@@ -104,21 +106,30 @@ export default function AdminDashboard() {
           <p className="text-xs text-gray-400 mt-0.5">Jump to any admin section</p>
         </div>
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-0 divide-x divide-y divide-gray-100">
-          {quickLinks.map(link => {
-            const Icon = link.icon;
-            return (
-              <Link key={link.path} to={link.path}
-                className={`flex items-center gap-3 p-5 hover:bg-gray-50 transition-colors group`}>
-                <div className={`w-10 h-10 rounded-xl ${link.iconBg} flex items-center justify-center shrink-0`}>
-                  <Icon size={18} className={link.color.split(' ')[1]} />
-                </div>
-                <div>
-                  <p className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{link.label}</p>
-                  <p className="text-[10px] text-gray-400">{link.desc}</p>
-                </div>
-              </Link>
-            );
-          })}
+              return link.path === 'EXTERNAL_DOWNLOAD' ? (
+                <a key={link.label} href={getUploadsExportUrl()} download
+                  className={`flex items-center gap-3 p-5 hover:bg-gray-50 transition-colors group`}>
+                  <div className={`w-10 h-10 rounded-xl ${link.iconBg} flex items-center justify-center shrink-0`}>
+                    <Icon size={18} className={link.color.split(' ')[1]} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{link.label}</p>
+                    <p className="text-[10px] text-gray-400">{link.desc}</p>
+                  </div>
+                </a>
+              ) : (
+                <Link key={link.path} to={link.path}
+                  className={`flex items-center gap-3 p-5 hover:bg-gray-50 transition-colors group`}>
+                  <div className={`w-10 h-10 rounded-xl ${link.iconBg} flex items-center justify-center shrink-0`}>
+                    <Icon size={18} className={link.color.split(' ')[1]} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-bold text-gray-700 group-hover:text-blue-600 transition-colors">{link.label}</p>
+                    <p className="text-[10px] text-gray-400">{link.desc}</p>
+                  </div>
+                </Link>
+              );
+            })}
         </div>
       </div>
 
