@@ -5,6 +5,7 @@ import TopBar from './components/TopBar';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
+import ChatBot from './components/ChatBot';
 
 // Pages
 import Home from './pages/Home';
@@ -61,6 +62,7 @@ import ContactsInbox from './pages/admin/ContactsInbox';
 import FormConfigEditor from './pages/admin/FormConfigEditor';
 import UserManager from './pages/admin/UserManager';
 import GlobalSettings from './pages/admin/GlobalSettings';
+import ChatLeadsInbox from './pages/admin/ChatLeadsInbox';
 
 import { useCMSPage } from './hooks/useCMSBlock';
 
@@ -90,6 +92,7 @@ function App() {
     <AuthProvider>
       <Router>
         <ScrollToTop />
+        <ChatBot />
         <Routes>
           {/* Main Application Layout */}
           <Route element={<MainLayout />}>
@@ -156,6 +159,7 @@ function App() {
             <Route path="form-config/:slug" element={<FormConfigEditor />} />
             <Route path="users" element={<UserManager />} />
             <Route path="settings" element={<GlobalSettings />} />
+            <Route path="chat-leads" element={<ChatLeadsInbox />} />
           </Route>
         </Routes>
       </Router>

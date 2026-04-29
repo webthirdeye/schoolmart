@@ -5,7 +5,7 @@ import { useAuth } from '../../context/AuthContext';
 import {
   LayoutDashboard, FileText, Package, MessageSquare,
   Mail, LogOut, ExternalLink, ChevronRight, ChevronDown, Menu, X,
-  Users, Settings, Sliders, FormInput, Shield, Globe, Layers
+  Users, Settings, Sliders, FormInput, Shield, Globe, Layers, Bot
 } from 'lucide-react';
 
 const SIDEBAR_SECTIONS = [
@@ -33,6 +33,7 @@ const SIDEBAR_SECTIONS = [
     title: 'Users & Leads',
     items: [
       { label: 'Users', path: '/admin/users', icon: Users, color: 'text-indigo-400' },
+      { label: 'Arjun Chat Leads', path: '/admin/chat-leads', icon: Bot, color: 'text-cyan-400' },
       { label: 'Quote Requests', path: '/admin/quotes', icon: MessageSquare, color: 'text-green-400' },
       { label: 'Messages', path: '/admin/contacts', icon: Mail, color: 'text-pink-400' },
     ]

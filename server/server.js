@@ -38,6 +38,7 @@ app.use('/api/contact', require('./routes/contactRoutes'));
 app.use('/api/cms', require('./routes/cmsRoutes'));
 app.use('/api/settings', require('./routes/settingRoutes'));
 app.use('/api/upload', require('./routes/uploadRoutes'));
+app.use('/api/chat', require('./routes/chatRoutes'));
 
 // Static Folders
 const path = require('path');
@@ -98,6 +99,9 @@ const PORT = process.env.PORT || 5000;
 const startServer = async () => {
   await connectDB();
   
+  // Register models for sync
+  require('./models/ChatLead');
+
   // Sync database - disabled 'alter' in production for speed
   try {
     await sequelize.sync(); // Fast sync
