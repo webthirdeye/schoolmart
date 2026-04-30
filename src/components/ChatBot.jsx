@@ -22,7 +22,7 @@ const SUGGESTED_STARTERS = [
   { text: "We need to modernize our library", icon: "📚" },
 ];
 
-const DEFAULT_GREETING = "👋 Hello! I'm **Arjun**, SchoolMart's Senior Infrastructure Consultant with 20+ years of experience.\n\nI've helped design and furnish **500+ campuses** across India. Whether you're building from scratch or upgrading, I'll give you the same expert advice I give to our biggest clients.\n\n**What are you working on?**";
+const DEFAULT_GREETING = "👋 Hello! I'm **Arjun**, SchoolMart's Senior Infrastructure Consultant.\n\n🏫 **About Me**\n- 20+ years designing school campuses\n- 500+ projects delivered across India\n- Asia's FIRST curriculum-mapped infrastructure team\n\n🎯 **How I Can Help**\n- New school setup or campus upgrades\n- Lab, furniture & sports solutions\n- Budget planning & compliance guidance\n\n**What are you working on?**";
 
 const TypingIndicator = () => (
   <div className="flex items-end gap-2 mb-4">
@@ -42,19 +42,95 @@ const TypingIndicator = () => (
 const MessageBubble = ({ msg }) => {
   const isBot = msg.role === 'bot';
 
-  const formatText = (text) => {
-    return text.split('\n').map((line, i, arr) => {
-      // Bold markdown
-      let formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
-      // Inline links like [text](/path)
-      formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline font-semibold hover:text-[#0066cc]">$1</a>');
-      return (
-        <span key={`line-${i}`}>
-          <span dangerouslySetInnerHTML={{ __html: formatted }} />
-          {i < arr.length - 1 && <br />}
-        </span>
+  const formatInline = (text) => {
+    // Bold markdown
+    let formatted = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    // Inline links like [text](/path)
+    formatted = formatted.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline font-semibold hover:text-[#0066cc]">$1</a>');
+    return formatted;
+  };
+
+  const renderContent = (text) => {
+    const lines = text.split('\n');
+    const elements = [];
+    let i = 0;
+
+    while (i < lines.length) {
+      const line = lines[i].trim();
+
+      // Skip empty lines
+      if (!line) { i++; continue; }
+
+      // Emoji section header (line starting with emoji + bold text)
+      const emojiHeaderMatch = line.match(/^([\u{1F300}-\u{1FAD6}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}\u{1F900}-\u{1F9FF}\u{200D}\u{2702}-\u{27B0}]+)\s*\*\*(.*?)\*\*/u);
+      if (emojiHeaderMatch) {
+        elements.push(
+          <div key={`h-${i}`} className="flex items-center gap-1.5 mt-2.5 mb-1">
+            <span className="text-[14px]">{emojiHeaderMatch[1]}</span>
+            <span className="text-[12px] font-black text-gray-800 uppercase tracking-wide">{emojiHeaderMatch[2]}</span>
+          </div>
+        );
+        // Check if there's text after the header on the same line
+        const remainingText = line.replace(emojiHeaderMatch[0], '').trim();
+        if (remainingText) {
+          elements.push(
+            <p key={`ht-${i}`} className="text-[13px] leading-relaxed" dangerouslySetInnerHTML={{ __html: formatInline(remainingText) }} />
+          );
+        }
+        i++;
+        continue;
+      }
+
+      // Bullet points (- or • )
+      if (line.startsWith('- ') || line.startsWith('• ')) {
+        const bulletItems = [];
+        while (i < lines.length && (lines[i].trim().startsWith('- ') || lines[i].trim().startsWith('• '))) {
+          const bulletText = lines[i].trim().replace(/^[-•]\s*/, '');
+          bulletItems.push(bulletText);
+          i++;
+        }
+        elements.push(
+          <ul key={`ul-${i}`} className="space-y-1 my-1.5">
+            {bulletItems.map((item, j) => (
+              <li key={j} className="flex items-start gap-2 text-[12px] leading-relaxed">
+                <span className="w-1.5 h-1.5 rounded-full bg-[#004a8e]/40 mt-[6px] shrink-0" />
+                <span dangerouslySetInnerHTML={{ __html: formatInline(item) }} />
+              </li>
+            ))}
+          </ul>
+        );
+        continue;
+      }
+
+      // Numbered list (1. 2. 3.)
+      if (/^\d+\.\s/.test(line)) {
+        const numberedItems = [];
+        while (i < lines.length && /^\d+\.\s/.test(lines[i].trim())) {
+          const numText = lines[i].trim().replace(/^\d+\.\s*/, '');
+          numberedItems.push(numText);
+          i++;
+        }
+        elements.push(
+          <ol key={`ol-${i}`} className="space-y-1 my-1.5">
+            {numberedItems.map((item, j) => (
+              <li key={j} className="flex items-start gap-2 text-[12px] leading-relaxed">
+                <span className="text-[10px] font-black text-[#004a8e]/50 mt-[2px] shrink-0 w-4 text-center">{j + 1}.</span>
+                <span dangerouslySetInnerHTML={{ __html: formatInline(item) }} />
+              </li>
+            ))}
+          </ol>
+        );
+        continue;
+      }
+
+      // Regular paragraph
+      elements.push(
+        <p key={`p-${i}`} className="text-[13px] leading-relaxed my-0.5" dangerouslySetInnerHTML={{ __html: formatInline(line) }} />
       );
-    });
+      i++;
+    }
+
+    return elements;
   };
 
   return (
@@ -73,7 +149,7 @@ const MessageBubble = ({ msg }) => {
             ? 'bg-white border border-gray-100 text-gray-800 rounded-bl-sm'
             : 'bg-gradient-to-br from-[#004a8e] to-[#003875] text-white rounded-br-sm'
         }`}>
-          {formatText(msg.text)}
+          {isBot ? renderContent(msg.text) : <span>{msg.text}</span>}
         </div>
 
         {/* Suggested page links (bot messages only) */}

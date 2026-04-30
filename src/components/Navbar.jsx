@@ -1,8 +1,9 @@
 // src/components/Navbar.jsx
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, Armchair, Building2, Laptop, Palette, BookOpen, Trophy, Calculator, FlaskConical, Library } from 'lucide-react';
+import { Menu, X, ChevronDown, User, Armchair, Building2, Laptop, Palette, BookOpen, Trophy, Calculator, FlaskConical, Library, Search } from 'lucide-react';
 import { useCMSBlock } from '../hooks/useCMSBlock';
+import SmartSearch from './SmartSearch';
 
 const ICON_MAP = { Armchair, Building2, Laptop, Palette, BookOpen, Trophy, Calculator, FlaskConical, Library };
 
@@ -10,6 +11,7 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isCorporateOpen, setIsCorporateOpen] = useState(false);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
   const location = useLocation();
 
   // Fetch navbar data from CMS
@@ -62,7 +64,7 @@ const Navbar = () => {
     color: 'bg-sm-gray',
   }));
 
-  return (
+  const navContent = (
     <>
       <nav
         className={`bg-sm-green sticky top-0 z-50 transition-all duration-300 ${isScrolled ? 'shadow-lg' : ''
@@ -132,6 +134,15 @@ const Navbar = () => {
                 </div>
               ))}
 
+              {/* Search Icon */}
+              <button
+                onClick={() => setIsSearchOpen(true)}
+                className="ml-2 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-sm-green transition-all border border-white/20"
+                title="Search"
+              >
+                <Search size={18} />
+              </button>
+
               {/* Identity Icon - Personalized for Member/Admin */}
               {(() => {
                 const userStr = localStorage.getItem('user');
@@ -139,7 +150,7 @@ const Navbar = () => {
                 return user ? (
                   <Link 
                     to={user.role === 'admin' ? '/admin/dashboard' : '/member/dashboard'}
-                    className="ml-4 w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-sm-green transition-all shadow-xl group border border-white/20"
+                    className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white hover:bg-white hover:text-sm-green transition-all shadow-xl group border border-white/20"
                     title="My Dashboard"
                   >
                     <User size={20} className="group- transition-transform" />
@@ -150,6 +161,12 @@ const Navbar = () => {
 
             {/* Mobile Menu Button */}
             <div className="lg:hidden flex items-center gap-3">
+               <button
+                 onClick={() => setIsSearchOpen(true)}
+                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center text-white"
+               >
+                 <Search size={18} />
+               </button>
                {(() => {
                   const userStr = localStorage.getItem('user');
                   const user = (userStr && userStr !== 'undefined') ? JSON.parse(userStr) : null;
@@ -290,6 +307,13 @@ const Navbar = () => {
           </div>
         </div>
       </div>
+    </>
+  );
+
+  return (
+    <>
+      {navContent}
+      {isSearchOpen && <SmartSearch onClose={() => setIsSearchOpen(false)} />}
     </>
   );
 };
